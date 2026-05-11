@@ -673,21 +673,35 @@
   <script>
     /* ─────────────────────────────────────────
        LUME BANK — Sign In Logic
-       API: Azure (all environments)
+       Config is fetched from the backend — no secrets hardcoded here.
     ───────────────────────────────────────── */
 
-    const API         = 'https://lumebank-project.australiaeast.cloudapp.azure.com';
-    const TENANT_ID   = 'd1e81dd5-dac1-4171-8066-54aa681f1a13';
-    const CLIENT_ID   = '42041917-b661-4643-9e12-3063d0fd50ea';
-    const REDIRECT_URI= 'https://gray-mushroom-012071d00.7.azurestaticapps.net/signin.html';
+    const API = 'https://lumebank-project.australiaeast.cloudapp.azure.com';
 
-    /* On load: handle Azure OAuth callback or redirect if already logged in */
-    window.addEventListener('load', () => {
+    // These are populated from /api/config on load
+    let TENANT_ID   = null;
+    let CLIENT_ID   = null;
+    let REDIRECT_URI = null;
+
+    async function loadConfig() {
+      try {
+        const res  = await fetch(`${API}/api/config`);
+        const data = await res.json();
+        TENANT_ID    = data.tenantId;
+        CLIENT_ID    = data.clientId;
+        REDIRECT_URI = data.redirectUri;
+      } catch {
+        console.error('Could not load config from server.');
+      }
+    }
+
+    window.addEventListener('load', async () => {
+      await loadConfig();
+
       const params = new URLSearchParams(window.location.search);
       const code   = params.get('code');
 
       if (code) {
-        // Clean the URL so the code can't be reused accidentally
         window.history.replaceState({}, document.title, window.location.pathname);
         localStorage.removeItem('lume_token');
         localStorage.removeItem('lume_user');
@@ -704,21 +718,21 @@
     /* Tab switching */
     function switchTab(tab) {
       const isEmail = tab === 'email';
-
       document.getElementById('panel-email').classList.toggle('tab-panel--hidden', !isEmail);
       document.getElementById('panel-ms').classList.toggle('tab-panel--hidden',  isEmail);
-
       document.getElementById('tab-email').classList.toggle('tab-btn--active', isEmail);
       document.getElementById('tab-ms').classList.toggle('tab-btn--active', !isEmail);
-
       document.getElementById('tab-email').setAttribute('aria-selected', isEmail);
       document.getElementById('tab-ms').setAttribute('aria-selected', !isEmail);
-
       hideMessages();
     }
 
     /* Microsoft: redirect to Azure AD */
     function signInWithMicrosoft() {
+      if (!TENANT_ID || !CLIENT_ID || !REDIRECT_URI) {
+        showError('Configuration not loaded yet. Please wait a moment and try again.');
+        return;
+      }
       const url = new URL(`https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/authorize`);
       url.searchParams.set('client_id',     CLIENT_ID);
       url.searchParams.set('response_type', 'code');

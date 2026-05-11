@@ -54,6 +54,16 @@ async function startServer() {
 
   console.log("Secrets loaded from Azure Key Vault");
 
+  // Serves non-secret config values to the frontend
+  // so nothing is hardcoded in the HTML files
+  app.get('/api/config', (req, res) => {
+    res.json({
+      tenantId:    TENANT_ID,
+      clientId:    CLIENT_ID,
+      redirectUri: AZURE_REDIRECT_URI
+    });
+  });
+
   app.post('/api/register', async (req, res) => {
     const { firstName, lastName, email, password, phone, dob, address, accountType } = req.body;
 
