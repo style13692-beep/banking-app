@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lume Bank — Private Banking & Wealth Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 100px clamp(1.5rem, 6vw, 6rem) 5rem;
+    }
+
+    .hero__orb-1 {
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(200,146,42,0.07) 0%, transparent 65%);
+      top: -150px; right: -150px;
+    }
+    .hero__orb-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(17,30,54,0.6) 0%, transparent 70%);
+      bottom: -100px; left: -80px;
+    }
+
+    .hero__inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero__tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(200,146,42,0.1);
+      border: 1px solid rgba(200,146,42,0.25);
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold-300);
+      margin-bottom: 1.4rem;
+    }
+
+    .hero__tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold-400);
+    }
+
+    .hero__headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 500;
+      line-height: 1.1;
+      color: var(--cream);
+      margin-bottom: 1.4rem;
+    }
+
+    .hero__headline em {
+      font-style: italic;
+      color: var(--gold-300);
+      display: block;
+    }
+
+    .hero__sub {
+      font-size: 1.05rem;
+      color: var(--muted-lt);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+      max-width: 440px;
+      font-weight: 300;
+    }
+
+    .hero__cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .hero__trust {
+      margin-top: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .trust-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .trust-item__val {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--cream);
+    }
+
+    .trust-item__label {
+      font-size: 0.74rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .trust-divider {
+      width: 1px;
+      height: 36px;
+      background: var(--border);
+    }
+
+    /* Hero card visual */
+    .hero__visual {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1.2rem;
+    }
+
+    .bank-card {
+      width: 340px;
+      height: 210px;
+      background: linear-gradient(135deg, #162240 0%, #0e1830 50%, #09111f 100%);
+      border: 1px solid rgba(200,146,42,0.25);
+      border-radius: 18px;
+      padding: 1.8rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(200,146,42,0.15);
+      position: relative;
+      overflow: hidden;
+      animation: card-float 6s ease-in-out infinite;
+    }
+
+    .bank-card::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(200,146,42,0.1) 0%, transparent 65%);
+    }
+
+    @keyframes card-float {
+      0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+      50%       { transform: translateY(-10px) rotate(-1.5deg); }
+    }
+
+    .bank-card__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .bank-card__chip {
+      width: 38px; height: 28px;
+      background: linear-gradient(135deg, var(--gold-300), var(--gold-500));
+      border-radius: 5px;
+    }
+
+    .bank-card__type {
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--gold-300);
+      letter-spacing: 0.1em;
+    }
+
+    .bank-card__number {
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      color: rgba(244,239,230,0.55);
+      font-weight: 300;
+    }
+
+    .bank-card__footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .bank-card__name {
+      font-size: 0.82rem;
+      color: var(--muted-lt);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .bank-card__logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gold-400);
+      opacity: 0.7;
+    }
+
+    /* Mini notification card */
+    .notif-card {
+      width: 260px;
+      background: var(--navy-800);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-md);
+      animation: notif-in 0.8s 1s ease both;
+    }
+
+    @keyframes notif-in {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .notif-icon {
+      width: 40px; height: 40px;
+      background: rgba(46,139,87,0.15);
+      border: 1px solid rgba(46,139,87,0.3);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .notif-text strong {
+      display: block;
+      font-size: 0.84rem;
+      color: var(--cream);
+      margin-bottom: 2px;
+    }
+
+    .notif-text span {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+      background: var(--navy-800);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem clamp(1.5rem, 6vw, 6rem);
+    }
+
+    .stats-bar__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .stats-bar__item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stats-bar__val {
+      font-family: var(--font-display);
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--gold-300);
+      line-height: 1;
+    }
+
+    .stats-bar__label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+
+    .stats-bar__div {
+      width: 1px;
+      height: 40px;
+      background: var(--border);
+    }
+
+    /* ── Features section ── */
+    .features {
+      padding: 6rem clamp(1.5rem, 6vw, 6rem);
+      position: relative;
+      z-index: 1;
+    }
+
+    .features__header {
+      max-width: 1200px;
+      margin: 0 auto 3.5rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .features__grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+
+    .feat-card {
+      background: var(--navy-800);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.8rem;
+      transition: border-color 0.25s, transform 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feat-card:hover {
+      border-color: var(--border-gold);
+      transform: translateY(-3px);
+    }
+
+    .feat-card__glow {
+      position: absolute;
+      top: 0; right: 0;
+      width: 140px; height: 140px;
+      background: radial-gradient(circle, rgba(200,146,42,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .feat-card__icon {
+      width: 48px; height: 48px;
+      background: rgba(200,146,42,0.1);
+      border: 1px solid rgba(200,146,42,0.2);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .feat-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--cream);
+      margin-bottom: 0.6rem;
+    }
+
+    .feat-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    .feat-card--wide {
+      grid-column: span 3;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(200,146,42,0.08), rgba(17,30,54,0.6));
+      border-color: var(--border-gold);
+    }
+
+    .feat-card--wide .feat-card__body {}
+
+    /* ── CTA banner ── */
+    .cta-banner {
+      margin: 0 clamp(1.5rem, 4vw, 4rem) 5rem;
+      background: linear-gradient(135deg, var(--navy-800) 0%, var(--navy-700) 100%);
+      border: 1px solid var(--border-gold);
+      border-radius: 20px;
+      padding: 4rem clamp(2rem, 6vw, 5rem);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .cta-banner__orb {
+      position: absolute;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(200,146,42,0.08) 0%, transparent 65%);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      pointer-events: none;
+    }
+
+    .cta-banner h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 500;
+      color: var(--cream);
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .cta-banner p {
+      color: var(--muted-lt);
+      margin-bottom: 2rem;
+      font-size: 1rem;
+      position: relative;
+    }
+
+    .cta-banner .btn { position: relative; }
+
+    /* ── Footer ── */
+    .footer {
+      background: var(--navy-950);
+      border-top: 1px solid var(--border);
+      padding: 3rem clamp(1.5rem, 6vw, 6rem);
+      z-index: 1;
+      position: relative;
+    }
+
+    .footer__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .footer__brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer__links {
+      display: flex;
+      gap: 1.8rem;
+      flex-wrap: wrap;
+    }
+
+    .footer__links a {
+      font-size: 0.84rem;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .footer__links a:hover { color: var(--gold-300); }
+
+    .footer__copy {
+      font-size: 0.78rem;
+      color: var(--muted);
+      opacity: 0.6;
+      width: 100%;
+      text-align: center;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero__inner { grid-template-columns: 1fr; gap: 3rem; }
+      .hero__visual { align-items: center; }
+      .bank-card { width: 100%; max-width: 340px; }
+      .features__grid { grid-template-columns: 1fr 1fr; }
+      .feat-card--wide { grid-column: span 2; }
+      .features__header { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 640px) {
+      .features__grid { grid-template-columns: 1fr; }
+      .feat-card--wide { grid-column: span 1; grid-template-columns: 1fr; }
+      .hero__trust { flex-wrap: wrap; }
+      .stats-bar__div { display: none; }
+      .stats-bar__inner { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-bg">
+    <div class="page-bg__grid"></div>
+    <div class="page-bg__orb hero__orb-1"></div>
+    <div class="page-bg__orb hero__orb-2"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html" class="nav__logo" aria-label="Lume Bank home">
+      <div class="nav__emblem">L</div>
+      <span class="nav__wordmark">Lume Bank</span>
+    </a>
+    <ul class="nav__links">
+      <li><a href="#">Personal</a></li>
+      <li><a href="#">Business</a></li>
+      <li><a href="#">Investments</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+    <div style="display:flex;gap:0.75rem;align-items:center;">
+      <a href="signin.html" class="btn btn--ghost">Sign In</a>
+      <a href="signup.html" class="btn btn--primary">Open Account</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Hero section">
+    <div class="hero__inner">
+      <div class="hero__content">
+        <span class="hero__tag">FDIC Insured · Est. 2019</span>
+        <h1 class="hero__headline">
+          Your money,<br/>
+          <em>working harder.</em>
+        </h1>
+        <p class="hero__sub">
+          Lume Bank combines the trust and security of traditional banking with tools built for the modern world. Manage your wealth from anywhere, anytime.
+        </p>
+        <div class="hero__cta">
+          <a href="signup.html" class="btn btn--primary btn--lg">Open a Free Account</a>
+          <a href="#features" class="btn btn--ghost btn--lg">Learn More</a>
+        </div>
+
+        <div class="hero__trust">
+          <div class="trust-item">
+            <span class="trust-item__val">$2.4B+</span>
+            <span class="trust-item__label">Assets held</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <span class="trust-item__val">180k+</span>
+            <span class="trust-item__label">Account holders</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <span class="trust-item__val">4.9 ★</span>
+            <span class="trust-item__label">Customer rating</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__visual">
+        <div class="bank-card" role="img" aria-label="Lume Black credit card">
+          <div class="bank-card__top">
+            <div class="bank-card__chip"></div>
+            <span class="bank-card__type">LUME BLACK</span>
+          </div>
+          <div class="bank-card__number">•••• •••• •••• 4821</div>
+          <div class="bank-card__footer">
+            <div>
+              <div class="bank-card__name">Alex Morgan</div>
+            </div>
+            <div class="bank-card__logo">L</div>
+          </div>
+        </div>
+
+        <div class="notif-card" aria-live="polite">
+          <div class="notif-icon">💸</div>
+          <div class="notif-text">
+            <strong>Payment received</strong>
+            <span>Salary +$4,200.00 · Just now</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats bar -->
+  <div class="stats-bar" aria-label="Key statistics">
+    <div class="stats-bar__inner">
+      <div class="stats-bar__item">
+        <span class="stats-bar__val">$0</span>
+        <span class="stats-bar__label">Monthly account fees</span>
+      </div>
+      <div class="stats-bar__div" aria-hidden="true"></div>
+      <div class="stats-bar__item">
+        <span class="stats-bar__val">0%</span>
+        <span class="stats-bar__label">Transfer fees worldwide</span>
+      </div>
+      <div class="stats-bar__div" aria-hidden="true"></div>
+      <div class="stats-bar__item">
+        <span class="stats-bar__val">3 min</span>
+        <span class="stats-bar__label">To open an account</span>
+      </div>
+      <div class="stats-bar__div" aria-hidden="true"></div>
+      <div class="stats-bar__item">
+        <span class="stats-bar__val">24/7</span>
+        <span class="stats-bar__label">Customer support</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section class="features" id="features" aria-label="Features">
+    <div class="features__header">
+      <div>
+        <p class="section-eyebrow">Why choose Lume</p>
+        <h2 class="section-title">Banking that<br/><em>works for you.</em></h2>
+      </div>
+      <a href="signup.html" class="btn btn--outline-gold" style="flex-shrink:0;">Get started →</a>
+    </div>
+
+    <div class="features__grid">
+      <div class="feat-card">
+        <div class="feat-card__glow"></div>
+        <div class="feat-card__icon" aria-hidden="true">⚡</div>
+        <h3>Instant Transfers</h3>
+        <p>Send and receive money instantly, anywhere in Australia or internationally — with no hidden fees and real-time confirmation.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card__glow"></div>
+        <div class="feat-card__icon" aria-hidden="true">🔒</div>
+        <h3>Vault-Grade Security</h3>
+        <p>256-bit encryption, two-factor authentication, and real-time fraud monitoring protect every transaction, 24 hours a day.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card__glow"></div>
+        <div class="feat-card__icon" aria-hidden="true">📊</div>
+        <h3>Smart Insights</h3>
+        <p>Understand your spending patterns with clear, easy-to-read reports. Set budgets and savings goals that actually stick.</p>
+      </div>
+
+      <div class="feat-card feat-card--wide">
+        <div class="feat-card__glow"></div>
+        <div class="feat-card__body">
+          <div class="feat-card__icon" aria-hidden="true">💎</div>
+          <h3>Lume Black — Premium Banking</h3>
+          <p>Exclusive interest rates, dedicated relationship manager, zero foreign transaction fees, and priority phone support. Everything you'd expect from a private bank, without the barriers to entry.</p>
+        </div>
+        <div>
+          <a href="#" class="btn btn--outline-gold">Explore Premium →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="cta-banner" aria-label="Open account call to action">
+    <div class="cta-banner__orb" aria-hidden="true"></div>
+    <p class="section-eyebrow">Ready to start?</p>
+    <h2>Open your account in under 3 minutes</h2>
+    <p>No paperwork. No branch visit. No account-keeping fees.</p>
+    <a href="signup.html" class="btn btn--primary btn--lg">Join Lume Bank — It's Free</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <div class="nav__emblem" style="width:30px;height:30px;font-size:0.9rem;">L</div>
+        <span class="nav__wordmark" style="font-size:1.1rem;">Lume Bank</span>
+      </div>
+      <nav class="footer__links" aria-label="Footer links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Accessibility</a>
+        <a href="#">Support</a>
+        <a href="#">Careers</a>
+      </nav>
+    </div>
+    <p class="footer__copy">
+      © 2026 Lume Bank Pty Ltd. All rights reserved. FDIC insured. ABN 00 000 000 000. AFSL 000000.<br/>
+      Lume Bank is an authorised deposit-taking institution regulated by APRA.
+    </p>
+  </footer>
+
+</body>
+</html>

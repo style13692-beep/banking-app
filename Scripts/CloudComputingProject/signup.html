@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Open an Account — Lume Bank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .signup-page { background: var(--navy-900); min-height: 100vh; }
+
+    .signup-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      min-height: 100vh;
+      padding-top: 68px;
+    }
+
+    /* ── Left aside ── */
+    .signup-aside {
+      background: var(--navy-800);
+      border-right: 1px solid var(--border);
+      padding: 3.5rem 2.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: sticky;
+      top: 68px;
+      height: calc(100vh - 68px);
+      overflow-y: auto;
+    }
+
+    .aside-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 2.5rem;
+    }
+
+    .aside-title {
+      font-family: var(--font-display);
+      font-size: 1.9rem;
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--cream);
+      margin-bottom: 2rem;
+    }
+
+    .aside-title em { font-style: italic; color: var(--gold-300); }
+
+    .perks {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+      margin-bottom: 2rem;
+    }
+
+    .perk {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .perk__icon {
+      width: 38px; height: 38px;
+      background: rgba(200,146,42,0.1);
+      border: 1px solid rgba(200,146,42,0.2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .perk__body strong {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 2px;
+    }
+
+    .perk__body p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+
+    .aside-rating {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.85rem 1rem;
+      background: rgba(200,146,42,0.07);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius);
+      font-size: 0.8rem;
+      color: var(--muted-lt);
+    }
+
+    .aside-rating__stars { color: var(--gold-400); letter-spacing: 1px; }
+
+    /* ── Form panel ── */
+    .signup-form-panel {
+      padding: 3.5rem clamp(2rem, 5vw, 5rem) 5rem;
+      position: relative;
+      z-index: 1;
+      overflow-y: auto;
+    }
+
+    .form-header {
+      margin-bottom: 2.5rem;
+    }
+
+    .form-header h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 500;
+      color: var(--cream);
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-header p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .form-header a {
+      color: var(--gold-300);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* Form layout */
+    .signup-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+      max-width: 600px;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* Section divider */
+    .form-section {
+      padding-top: 0.4rem;
+    }
+
+    .form-section-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-400);
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-section-label::before {
+      content: '';
+      width: 12px; height: 1px;
+      background: var(--gold-400);
+    }
+
+    /* Password toggle */
+    .input-wrap { position: relative; }
+    .input-wrap input { padding-right: 50px; }
+
+    .pw-toggle {
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 48px;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+
+    .pw-toggle:hover { color: var(--cream); }
+
+    /* Account type */
+    .account-types {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+
+    .acct-option { cursor: pointer; }
+    .acct-option input[type="radio"] { display: none; }
+
+    .acct-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 1.2rem 0.8rem;
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius);
+      background: var(--navy-700);
+      text-align: center;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .acct-option input:checked + .acct-card {
+      border-color: var(--gold-400);
+      background: rgba(200,146,42,0.08);
+      box-shadow: 0 0 0 3px rgba(200,146,42,0.12);
+    }
+
+    .acct-card:hover { border-color: var(--border-gold); }
+
+    .acct-card__icon { font-size: 1.4rem; }
+
+    .acct-card__name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--cream);
+    }
+
+    .acct-card__desc {
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+
+    /* Checkbox */
+    .terms-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.9rem;
+      color: var(--muted-lt);
+      cursor: pointer;
+      line-height: 1.55;
+    }
+
+    .terms-row input[type="checkbox"] { display: none; }
+
+    .checkmark {
+      flex-shrink: 0;
+      width: 20px; height: 20px;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: 4px;
+      background: var(--navy-700);
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .terms-row input:checked ~ .checkmark {
+      background: var(--gold-400);
+      border-color: var(--gold-400);
+    }
+
+    .terms-row input:checked ~ .checkmark::after {
+      content: '✓';
+      font-size: 0.72rem;
+      color: var(--navy-900);
+      font-weight: 700;
+    }
+
+    .terms-row a { color: var(--gold-300); text-decoration: underline; text-underline-offset: 2px; }
+
+    /* Submit */
+    .submit-btn {
+      width: 100%;
+      max-width: 600px;
+      justify-content: center;
+      padding: 15px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: var(--radius);
+      min-height: 54px;
+      letter-spacing: 0.01em;
+      gap: 10px;
+    }
+
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+
+    .btn-spinner {
+      display: none;
+      width: 18px; height: 18px;
+      border: 2px solid rgba(0,0,0,0.25);
+      border-top-color: var(--navy-900);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .submit-btn.loading .btn-text { display: none; }
+    .submit-btn.loading .btn-spinner { display: block; }
+
+    /* Notice */
+    .notice {
+      display: none;
+      max-width: 600px;
+      align-items: flex-start;
+      gap: 12px;
+      margin-top: 1.5rem;
+      padding: 1.2rem 1.4rem;
+      border-radius: var(--radius);
+      animation: fade-up 0.4s ease;
+    }
+
+    .notice--success {
+      background: rgba(46,139,87,0.1);
+      border: 1px solid rgba(46,139,87,0.3);
+    }
+
+    .notice--error {
+      background: rgba(192,57,43,0.1);
+      border: 1px solid rgba(192,57,43,0.3);
+    }
+
+    .notice.show { display: flex; }
+
+    .notice__icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
+
+    .notice strong {
+      display: block;
+      font-size: 0.92rem;
+      color: var(--cream);
+      margin-bottom: 3px;
+    }
+
+    .notice p {
+      font-size: 0.85rem;
+      color: var(--muted-lt);
+      line-height: 1.55;
+    }
+
+    /* Date input */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(0.5) sepia(1) hue-rotate(5deg) saturate(2);
+      opacity: 0.6;
+      cursor: pointer;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1100px) {
+      .signup-layout { grid-template-columns: 280px 1fr; }
+    }
+
+    @media (max-width: 900px) {
+      .signup-layout { grid-template-columns: 1fr; }
+      .signup-aside {
+        position: static;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 2.5rem 2rem;
+      }
+      .perks { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .form-row-2 { grid-template-columns: 1fr; }
+      .account-types { grid-template-columns: 1fr; }
+      .acct-card {
+        flex-direction: row;
+        text-align: left;
+        gap: 12px;
+        padding: 1rem 1.1rem;
+        justify-content: flex-start;
+      }
+      .acct-card__desc { display: none; }
+      .signup-form-panel { padding: 2rem 1.2rem 4rem; }
+    }
+  </style>
+</head>
+<body class="signup-page">
+
+  <div class="page-bg" aria-hidden="true">
+    <div class="page-bg__grid"></div>
+    <div class="page-bg__orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(200,146,42,0.07) 0%,transparent 65%);top:-100px;right:-100px;border-radius:50%;"></div>
+    <div class="page-bg__orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(17,30,54,0.5) 0%,transparent 70%);bottom:0;left:0;border-radius:50%;"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html" class="nav__logo" aria-label="Lume Bank home">
+      <div class="nav__emblem">L</div>
+      <span class="nav__wordmark">Lume Bank</span>
+    </a>
+    <span style="font-size:0.82rem;color:var(--muted);letter-spacing:0.05em;">New account setup</span>
+    <a href="index.html" class="btn btn--ghost">← Back</a>
+  </nav>
+
+  <main class="signup-layout">
+
+    <!-- Left aside -->
+    <aside class="signup-aside">
+      <div class="aside-logo">
+        <div class="nav__emblem">L</div>
+        <span class="nav__wordmark" style="font-size:1.1rem;">Lume Bank</span>
+      </div>
+
+      <h2 class="aside-title">Join <em>180,000+</em> people<br/>banking smarter.</h2>
+
+      <ul class="perks" aria-label="Benefits of Lume Bank">
+        <li class="perk">
+          <div class="perk__icon" aria-hidden="true">⚡</div>
+          <div class="perk__body">
+            <strong>Up and running in minutes</strong>
+            <p>No paperwork. No branch visit required.</p>
+          </div>
+        </li>
+        <li class="perk">
+          <div class="perk__icon" aria-hidden="true">🔒</div>
+          <div class="perk__body">
+            <strong>Bank-grade security</strong>
+            <p>Your data is encrypted end-to-end, always.</p>
+          </div>
+        </li>
+        <li class="perk">
+          <div class="perk__icon" aria-hidden="true">💳</div>
+          <div class="perk__body">
+            <strong>Free Lume Black card</strong>
+            <p>Physical and virtual card included, no annual fee.</p>
+          </div>
+        </li>
+        <li class="perk">
+          <div class="perk__icon" aria-hidden="true">🌍</div>
+          <div class="perk__body">
+            <strong>Zero international fees</strong>
+            <p>Send money globally at no cost to you.</p>
+          </div>
+        </li>
+      </ul>
+
+      <div class="aside-rating">
+        <span class="aside-rating__stars" aria-label="5 stars">★★★★★</span>
+        <span>Rated 4.9/5 by our customers</span>
+      </div>
+    </aside>
+
+    <!-- Form panel -->
+    <section class="signup-form-panel">
+      <div class="form-header">
+        <p class="section-eyebrow">Step 1 of 1</p>
+        <h1>Create your<br/><em style="font-style:italic;color:var(--gold-300);">Lume account.</em></h1>
+        <p>Already have an account? <a href="signin.html">Sign in here</a></p>
+      </div>
+
+      <form class="signup-form" id="signupForm" onsubmit="handleSubmit(event)" novalidate>
+
+        <!-- Personal details -->
+        <div class="form-section">
+          <div class="form-section-label">Personal Details</div>
+
+          <div class="form-row-2" style="margin-bottom:1.2rem;">
+            <div class="field">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" name="firstName" placeholder="e.g. Alex" autocomplete="given-name" required />
+            </div>
+            <div class="field">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" name="lastName" placeholder="e.g. Morgan" autocomplete="family-name" required />
+            </div>
+          </div>
+
+          <div class="field" style="margin-bottom:1.2rem;">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+          </div>
+
+          <div class="form-row-2">
+            <div class="field">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="+61 400 000 000" autocomplete="tel" />
+            </div>
+            <div class="field">
+              <label for="dob">Date of Birth</label>
+              <input type="date" id="dob" name="dob" autocomplete="bday" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div class="form-section">
+          <div class="form-section-label">Residential Address</div>
+          <div class="field">
+            <label for="address">Street Address</label>
+            <input type="text" id="address" name="address" placeholder="123 Main Street, Sydney NSW 2000" autocomplete="street-address" />
+          </div>
+        </div>
+
+        <!-- Security -->
+        <div class="form-section">
+          <div class="form-section-label">Set Your Password</div>
+          <div class="form-row-2">
+            <div class="field">
+              <label for="password">Password</label>
+              <div class="input-wrap">
+                <input type="password" id="password" name="password" placeholder="Minimum 8 characters" autocomplete="new-password" required />
+                <button type="button" class="pw-toggle" onclick="togglePw('password', this)" aria-label="Show password">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="confirmPassword">Confirm Password</label>
+              <div class="input-wrap">
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repeat password" autocomplete="new-password" required />
+                <button type="button" class="pw-toggle" onclick="togglePw('confirmPassword', this)" aria-label="Show password">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Account type -->
+        <div class="form-section">
+          <div class="form-section-label">Account Type</div>
+          <div class="account-types" role="radiogroup" aria-label="Select account type">
+            <label class="acct-option">
+              <input type="radio" name="accountType" value="personal" checked />
+              <span class="acct-card">
+                <span class="acct-card__icon" aria-hidden="true">👤</span>
+                <span class="acct-card__name">Personal</span>
+                <span class="acct-card__desc">Everyday banking</span>
+              </span>
+            </label>
+            <label class="acct-option">
+              <input type="radio" name="accountType" value="savings" />
+              <span class="acct-card">
+                <span class="acct-card__icon" aria-hidden="true">💰</span>
+                <span class="acct-card__name">Savings</span>
+                <span class="acct-card__desc">Grow your money</span>
+              </span>
+            </label>
+            <label class="acct-option">
+              <input type="radio" name="accountType" value="business" />
+              <span class="acct-card">
+                <span class="acct-card__icon" aria-hidden="true">🏢</span>
+                <span class="acct-card__name">Business</span>
+                <span class="acct-card__desc">For companies</span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Terms -->
+        <label class="terms-row">
+          <input type="checkbox" id="terms" name="terms" />
+          <span class="checkmark"></span>
+          <span>
+            I have read and agree to Lume Bank's
+            <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+            I confirm I am 18 years of age or older.
+          </span>
+        </label>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn--primary submit-btn" id="submitBtn">
+          <span class="btn-text">Create My Account →</span>
+          <span class="btn-spinner"></span>
+        </button>
+
+        <p style="font-size:0.78rem;color:var(--muted);max-width:600px;line-height:1.5;">
+          🔒 Your information is encrypted and never sold. By opening an account, you agree our <a href="#" style="color:var(--gold-300);">standard terms</a> apply.
+        </p>
+
+      </form>
+
+      <!-- Notice -->
+      <div class="notice" id="notice" role="alert" aria-live="assertive">
+        <span class="notice__icon" id="noticeIcon" aria-hidden="true">🎉</span>
+        <div>
+          <strong id="noticeTitle">Success</strong>
+          <p id="noticeMsg"></p>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    /* ─────────────────────────────────────────
+       LUME BANK — Sign Up Logic
+       API: Azure backend
+    ───────────────────────────────────────── */
+
+    const API = "https://lumebank-project.australiaeast.cloudapp.azure.com";
+    async function handleSubmit(e) {
+      e.preventDefault();
+      hideNotice();
+
+      const pw      = document.getElementById('password').value;
+      const pwConf  = document.getElementById('confirmPassword').value;
+      const terms   = document.getElementById('terms').checked;
+
+      // Client-side validation
+      if (!document.getElementById('firstName').value.trim()) {
+        return showNotice('error', '⚠️', 'Missing information', 'Please enter your first name.');
+      }
+      if (!document.getElementById('email').value.trim()) {
+        return showNotice('error', '⚠️', 'Missing information', 'Please enter your email address.');
+      }
+      if (pw.length < 8) {
+        return showNotice('error', '⚠️', 'Password too short', 'Your password must be at least 8 characters long.');
+      }
+      if (pw !== pwConf) {
+        return showNotice('error', '⚠️', 'Passwords do not match', 'Please make sure both password fields contain the same password.');
+      }
+      if (!terms) {
+        return showNotice('error', '⚠️', 'Agreement required', 'Please read and agree to our Terms of Service and Privacy Policy to continue.');
+      }
+
+      const btn     = document.getElementById('submitBtn');
+      btn.disabled  = true;
+      btn.classList.add('loading');
+
+      const payload = {
+        firstName:   document.getElementById('firstName').value.trim(),
+        lastName:    document.getElementById('lastName').value.trim(),
+        email:       document.getElementById('email').value.trim(),
+        password:    pw,
+        phone:       document.getElementById('phone').value.trim(),
+        dob:         document.getElementById('dob').value,
+        address:     document.getElementById('address').value.trim(),
+        accountType: document.querySelector('input[name="accountType"]:checked').value
+      };
+
+      try {
+        const res  = await fetch(`${API}/api/register`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (data.success || res.ok) {
+          // Store session
+          const userObj = data.user || {
+            firstName: payload.firstName,
+            lastName:  payload.lastName
+          };
+          localStorage.setItem('lume_token', data.token);
+          localStorage.setItem('lume_user',  JSON.stringify(userObj));
+
+          showNotice('success', '🎉', 'Account created!', 'Welcome to Lume Bank. Redirecting you to your dashboard…');
+          setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+        } else {
+          showNotice('error', '❌', 'Registration failed', data.message || 'Something went wrong. Please try again or contact support.');
+          btn.disabled = false;
+          btn.classList.remove('loading');
+        }
+      } catch (err) {
+        showNotice('error', '⚠️', 'Connection error', 'Could not reach Lume servers. Please check your internet connection and try again.');
+        btn.disabled = false;
+        btn.classList.remove('loading');
+      }
+    }
+
+    function showNotice(type, icon, title, msg) {
+      const el = document.getElementById('notice');
+      el.className = `notice notice--${type} show`;
+      document.getElementById('noticeIcon').textContent  = icon;
+      document.getElementById('noticeTitle').textContent = title;
+      document.getElementById('noticeMsg').textContent   = msg;
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function hideNotice() {
+      document.getElementById('notice').className = 'notice';
+    }
+
+    function togglePw(fieldId, btn) {
+      const inp  = document.getElementById(fieldId);
+      const show = inp.type === 'password';
+      inp.type   = show ? 'text' : 'password';
+      btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+      btn.style.color = show ? 'var(--gold-300)' : '';
+    }
+  </script>
+
+</body>
+</html>

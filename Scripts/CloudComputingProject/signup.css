@@ -1,0 +1,499 @@
+/* ─────────────────────────────────────────
+   LUME BANK — Signup Page Styles
+───────────────────────────────────────── */
+
+/* ── Page base ── */
+.signup-page {
+  background: var(--navy-900);
+  min-height: 100vh;
+}
+
+/* ── Background effects ── */
+.signup-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.signup-bg__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(245, 166, 35, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 166, 35, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.signup-bg__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+}
+.signup-bg__orb--1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(245, 166, 35, 0.09) 0%, transparent 70%);
+  top: -80px; right: -80px;
+}
+.signup-bg__orb--2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(26, 58, 120, 0.3) 0%, transparent 70%);
+  bottom: 0; left: 0;
+}
+
+/* ── Nav tweaks for signup ── */
+.signup-page .nav__tagline {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+/* ── Main layout ── */
+.signup-wrap {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  min-height: 100vh;
+  padding-top: 80px;
+}
+
+/* ── Left aside ── */
+.signup-aside {
+  background: var(--navy-800);
+  border-right: 1px solid var(--border);
+  padding: 4rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.aside-title {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--cream);
+  margin-bottom: 2.5rem;
+}
+
+/* ── Perks list ── */
+.perks {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.perk {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.perk__icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.perk strong {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--cream);
+  margin-bottom: 2px;
+}
+
+.perk p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+/* ── Rating badge ── */
+.aside-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.9rem 1.2rem;
+  background: rgba(245, 166, 35, 0.07);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.aside-badge__stars {
+  color: var(--amber-400);
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+}
+
+/* ── Form panel ── */
+.signup-form-panel {
+  padding: 4rem 5vw 6rem;
+  max-width: 680px;
+}
+
+.form-header {
+  margin-bottom: 2.5rem;
+}
+
+.form-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.15;
+  margin-bottom: 0.6rem;
+}
+
+.form-sub {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+/* ── Form fields ── */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  transition: opacity 0.4s ease;
+}
+
+.form-row--2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.field label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.field input {
+  background: var(--navy-700);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 13px 16px;
+  font-family: var(--font-body);
+  /* Prevent iOS zoom on focus */
+  font-size: max(0.9rem, 16px);
+  color: var(--cream);
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  width: 100%;
+}
+
+.field input::placeholder { color: rgba(138, 143, 168, 0.5); }
+
+.field input:focus {
+  border-color: var(--amber-400);
+  box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.12);
+}
+
+/* Date input fix */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.6) sepia(1) hue-rotate(5deg) saturate(3);
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+/* Password toggle wrapper */
+.input-wrap {
+  position: relative;
+}
+.input-wrap input {
+  padding-right: 46px;
+}
+.toggle-pw {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  opacity: 0.45;
+  transition: opacity 0.2s;
+  padding: 4px;
+  /* Larger tap target on mobile */
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.toggle-pw:hover { opacity: 0.9; }
+
+/* ── Account type selector ── */
+.account-type-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.type-option {
+  cursor: pointer;
+}
+.type-option input[type="radio"] {
+  display: none;
+}
+.type-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 1.1rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--navy-700);
+  text-align: center;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+.type-option input:checked + .type-card {
+  border-color: var(--amber-400);
+  background: rgba(245, 166, 35, 0.08);
+  box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.1);
+}
+.type-card:hover {
+  border-color: rgba(245, 166, 35, 0.4);
+}
+.type-icon { font-size: 1.4rem; }
+.type-card strong {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--cream);
+}
+.type-card small {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* ── Checkbox ── */
+.checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1.5;
+}
+.checkbox-row input[type="checkbox"] {
+  display: none;
+}
+.checkmark {
+  flex-shrink: 0;
+  width: 18px; height: 18px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--navy-700);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.checkbox-row input:checked ~ .checkmark {
+  background: var(--amber-400);
+  border-color: var(--amber-400);
+}
+.checkbox-row input:checked ~ .checkmark::after {
+  content: '✓';
+  font-size: 0.7rem;
+  color: var(--navy-900);
+  font-weight: 700;
+}
+.checkbox-row a {
+  color: var(--amber-300);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ── Submit button ── */
+.submit-btn {
+  width: 100%;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  font-size: 0.95rem;
+  border-radius: var(--radius-sm);
+  margin-top: 0.5rem;
+  min-height: 54px;
+}
+.submit-btn__icon {
+  transition: transform 0.2s ease;
+}
+.submit-btn:hover .submit-btn__icon {
+  transform: translateX(5px);
+}
+
+/* ── Sign in link ── */
+.signin-link {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.signin-link a {
+  color: var(--amber-300);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ── Coming soon notice ── */
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 1.4rem 1.6rem;
+  background: rgba(245, 166, 35, 0.08);
+  border: 1px solid rgba(245, 166, 35, 0.3);
+  border-radius: var(--radius);
+  animation: fade-in 0.5s ease forwards;
+}
+.notice__icon { font-size: 1.5rem; flex-shrink: 0; }
+.notice strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--amber-300);
+  margin-bottom: 4px;
+}
+.notice p {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+
+/* ── Large tablet: slim the aside ── */
+@media (max-width: 1200px) {
+  .signup-wrap {
+    grid-template-columns: 300px 1fr;
+  }
+  .signup-aside {
+    padding: 3rem 2rem;
+  }
+  .aside-title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+  .perks {
+    gap: 1.2rem;
+  }
+}
+
+/* ── Tablet: hide aside perks, keep badge ── */
+@media (max-width: 1000px) {
+  .signup-wrap {
+    grid-template-columns: 260px 1fr;
+  }
+  .signup-aside {
+    padding: 2.5rem 1.8rem;
+  }
+  .aside-title {
+    font-size: 1.6rem;
+  }
+  .perk p {
+    display: none;
+  }
+  .signup-form-panel {
+    padding: 3rem 4vw 5rem;
+  }
+}
+
+/* ── Stack to single column ── */
+@media (max-width: 900px) {
+  .signup-wrap {
+    grid-template-columns: 1fr;
+  }
+  .signup-aside {
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 6vw;
+  }
+  .perk p {
+    display: block;
+  }
+  .perks { display: none; }
+  .signup-form-panel {
+    padding: 3rem 6vw 5rem;
+    max-width: 100%;
+  }
+}
+
+/* ── Phone landscape / large phone ── */
+@media (max-width: 640px) {
+  .signup-form-panel {
+    padding: 2.5rem 5vw 4rem;
+  }
+  .form-title {
+    font-size: 2rem;
+  }
+  .account-type-group {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ── Phone ── */
+@media (max-width: 540px) {
+  .form-row--2col { grid-template-columns: 1fr; }
+  .signup-page .nav__tagline { display: none; }
+  .signup-form-panel {
+    padding: 2rem 5vw 4rem;
+  }
+}
+
+/* ── Small phones ── */
+@media (max-width: 400px) {
+  .account-type-group {
+    grid-template-columns: 1fr;
+  }
+  .type-card {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 0.9rem 1rem;
+  }
+  .type-icon { font-size: 1.2rem; }
+  .type-card strong { font-size: 0.85rem; }
+  .type-card small { display: none; }
+  .signup-form-panel {
+    padding: 1.5rem 5vw 3rem;
+  }
+  .form-title {
+    font-size: 1.8rem;
+  }
+  .submit-btn {
+    padding: 14px;
+  }
+}

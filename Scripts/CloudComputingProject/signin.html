@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In — Lume Bank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Page layout ── */
+    .signin-page {
+      background: var(--navy-900);
+      min-height: 100vh;
+    }
+
+    .signin-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+      padding-top: 68px;
+    }
+
+    /* ── Left panel ── */
+    .signin-left {
+      background: linear-gradient(160deg, var(--navy-800) 0%, var(--navy-950) 100%);
+      border-right: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem clamp(2rem, 4vw, 4rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .signin-left::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold-400), transparent);
+      opacity: 0.5;
+    }
+
+    .signin-left__orb {
+      position: absolute;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(200,146,42,0.07) 0%, transparent 65%);
+      top: -100px; left: -100px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .signin-brand {
+      position: relative;
+      z-index: 1;
+      max-width: 360px;
+      width: 100%;
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 2.5rem;
+    }
+
+    .brand-lockup .nav__emblem {
+      width: 44px; height: 44px;
+      font-size: 1.2rem;
+    }
+
+    .brand-lockup-text {}
+
+    .brand-lockup-text .brand-name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1;
+    }
+
+    .brand-lockup-text .brand-sub {
+      font-size: 0.74rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+    }
+
+    .brand-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 4vw, 3.4rem);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--cream);
+      margin-bottom: 1rem;
+    }
+
+    .brand-headline em {
+      font-style: italic;
+      color: var(--gold-300);
+    }
+
+    .brand-desc {
+      font-size: 0.95rem;
+      color: var(--muted-lt);
+      line-height: 1.65;
+      font-weight: 300;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Floating card */
+    .brand-card {
+      width: 100%;
+      max-width: 300px;
+      height: 180px;
+      background: linear-gradient(135deg, #162240 0%, #0e1a30 100%);
+      border: 1px solid rgba(200,146,42,0.25);
+      border-radius: 16px;
+      padding: 1.5rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(200,146,42,0.12);
+      position: relative;
+      overflow: hidden;
+      animation: card-float 6s ease-in-out infinite;
+      margin-bottom: 1.5rem;
+    }
+
+    .brand-card::before {
+      content: '';
+      position: absolute;
+      top: -50px; right: -50px;
+      width: 150px; height: 150px;
+      background: radial-gradient(circle, rgba(200,146,42,0.1) 0%, transparent 65%);
+    }
+
+    @keyframes card-float {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50%       { transform: translateY(-8px) rotate(-1deg); }
+    }
+
+    .bc-chip {
+      width: 34px; height: 25px;
+      background: linear-gradient(135deg, var(--gold-300), var(--gold-500));
+      border-radius: 4px;
+    }
+
+    .bc-label {
+      position: absolute;
+      top: 1.5rem; right: 1.6rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--gold-300);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .bc-number {
+      font-size: 0.88rem;
+      letter-spacing: 0.2em;
+      color: rgba(244,239,230,0.5);
+      font-weight: 300;
+    }
+
+    .bc-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .brand-trust {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.9rem 1.1rem;
+      background: rgba(46,139,87,0.08);
+      border: 1px solid rgba(46,139,87,0.2);
+      border-radius: var(--radius);
+      font-size: 0.8rem;
+      color: rgba(100,200,130,0.85);
+    }
+
+    /* ── Right panel (form) ── */
+    .signin-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem clamp(2rem, 5vw, 5rem);
+      overflow-y: auto;
+    }
+
+    .signin-form-wrap {
+      width: 100%;
+      max-width: 420px;
+      animation: fade-up 0.5s ease forwards;
+    }
+
+    .signin-form-wrap h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3vw, 2.6rem);
+      font-weight: 500;
+      color: var(--cream);
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+
+    .signin-form-wrap .form-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .signin-form-wrap .form-sub a {
+      color: var(--gold-300);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* Tab switcher */
+    .tab-switcher {
+      display: flex;
+      background: var(--navy-700);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 4px;
+      margin-bottom: 1.8rem;
+      width: 100%;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: 50px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 500;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-height: 44px;
+    }
+
+    .tab-btn--active {
+      background: var(--navy-900);
+      color: var(--gold-300);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .tab-btn:hover:not(.tab-btn--active) { color: var(--cream); }
+
+    .tab-panel { display: block; }
+    .tab-panel--hidden { display: none; }
+
+    /* Form fields */
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* Password toggle */
+    .input-wrap { position: relative; }
+    .input-wrap input { padding-right: 50px; }
+
+    .pw-toggle {
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 48px;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+
+    .pw-toggle:hover { color: var(--cream); }
+
+    /* Field extras */
+    .field-extras {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .field-extras label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted-lt);
+    }
+
+    .field-extras a {
+      font-size: 0.8rem;
+      color: var(--gold-300);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    /* Remember me */
+    .remember-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--muted-lt);
+      cursor: pointer;
+    }
+
+    .remember-row input[type="checkbox"] { display: none; }
+
+    .checkmark {
+      width: 20px; height: 20px;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: 4px;
+      background: var(--navy-700);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .remember-row input:checked ~ .checkmark {
+      background: var(--gold-400);
+      border-color: var(--gold-400);
+    }
+
+    .remember-row input:checked ~ .checkmark::after {
+      content: '✓';
+      font-size: 0.72rem;
+      color: var(--navy-900);
+      font-weight: 700;
+    }
+
+    /* Submit */
+    .submit-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 15px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: var(--radius);
+      min-height: 52px;
+      letter-spacing: 0.01em;
+      position: relative;
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .submit-btn .btn-spinner {
+      display: none;
+      width: 18px; height: 18px;
+      border: 2px solid rgba(0,0,0,0.3);
+      border-top-color: var(--navy-900);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .submit-btn.loading .btn-label { display: none; }
+    .submit-btn.loading .btn-spinner { display: block; }
+
+    /* Divider */
+    .or-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .or-divider::before,
+    .or-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Microsoft btn */
+    .ms-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 14px 18px;
+      background: var(--navy-700);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius);
+      color: var(--cream);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-height: 52px;
+    }
+
+    .ms-btn:hover {
+      border-color: var(--border-gold);
+      background: rgba(200,146,42,0.06);
+    }
+
+    /* Status messages */
+    .status-msg {
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 13px 16px;
+      border-radius: var(--radius);
+      font-size: 0.88rem;
+      margin-top: 1rem;
+      line-height: 1.5;
+    }
+
+    .status-msg--error {
+      background: rgba(192,57,43,0.1);
+      border: 1px solid rgba(192,57,43,0.3);
+      color: #ff9090;
+    }
+
+    .status-msg--success {
+      background: rgba(200,146,42,0.08);
+      border: 1px solid rgba(200,146,42,0.25);
+      color: var(--gold-200);
+    }
+
+    .status-msg.show { display: flex; animation: fade-up 0.3s ease; }
+
+    /* Microsoft info box */
+    .ms-info {
+      padding: 1.2rem 1.4rem;
+      background: rgba(24,40,68,0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.88rem;
+      color: var(--muted-lt);
+      line-height: 1.6;
+    }
+
+    .ms-info strong { color: var(--cream); display: block; margin-bottom: 4px; }
+
+    /* Footer note */
+    .form-footer-note {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.76rem;
+      color: var(--muted);
+      opacity: 0.6;
+      line-height: 1.5;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .signin-layout { grid-template-columns: 1fr; }
+      .signin-left {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 3rem 2rem;
+      }
+      .brand-card { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .signin-right { padding: 2rem 1.2rem; }
+    }
+  </style>
+</head>
+<body class="signin-page">
+
+  <div class="page-bg" aria-hidden="true">
+    <div class="page-bg__grid"></div>
+    <div class="page-bg__orb" style="width:500px;height:500px;background:radial-gradient(circle, rgba(200,146,42,0.07) 0%, transparent 65%);top:-100px;right:-100px;"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html" class="nav__logo" aria-label="Lume Bank home">
+      <div class="nav__emblem">L</div>
+      <span class="nav__wordmark">Lume Bank</span>
+    </a>
+    <span style="font-size:0.82rem;color:var(--muted);letter-spacing:0.05em;">Private Banking &amp; Wealth</span>
+    <a href="signup.html" class="btn btn--ghost">Open Account</a>
+  </nav>
+
+  <main class="signin-layout">
+
+    <!-- Left Brand Panel -->
+    <div class="signin-left" aria-hidden="true">
+      <div class="signin-left__orb"></div>
+      <div class="signin-brand">
+        <div class="brand-lockup">
+          <div class="nav__emblem" style="width:44px;height:44px;font-size:1.2rem;">L</div>
+          <div class="brand-lockup-text">
+            <div class="brand-name">Lume Bank</div>
+            <div class="brand-sub">Private Banking &amp; Wealth Management</div>
+          </div>
+        </div>
+
+        <h2 class="brand-headline">Welcome<br/>back.</h2>
+        <p class="brand-desc">Secure access to your accounts, cards, and financial tools — all in one place.</p>
+
+        <div class="brand-card">
+          <div class="bc-chip"></div>
+          <span class="bc-label">Lume Black</span>
+          <div class="bc-number">•••• •••• •••• 4291</div>
+          <div class="bc-footer">
+            <span>Private Client</span>
+            <span style="font-family:var(--font-display);font-size:1.1rem;color:var(--gold-400);">L</span>
+          </div>
+        </div>
+
+        <div class="brand-trust">
+          <span>🔒</span>
+          <span>256-bit encrypted · APRA regulated · FDIC insured</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Form Panel -->
+    <div class="signin-right">
+      <div class="signin-form-wrap">
+
+        <h1>Sign in to<br/>your account</h1>
+        <p class="form-sub">
+          New to Lume? <a href="signup.html">Open a free account</a>
+        </p>
+
+        <!-- Tab switcher -->
+        <div class="tab-switcher" role="tablist" aria-label="Sign in method">
+          <button
+            class="tab-btn tab-btn--active"
+            role="tab"
+            aria-selected="true"
+            aria-controls="panel-email"
+            id="tab-email"
+            onclick="switchTab('email')">
+            Email &amp; Password
+          </button>
+          <button
+            class="tab-btn"
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-ms"
+            id="tab-ms"
+            onclick="switchTab('microsoft')">
+            Microsoft
+          </button>
+        </div>
+
+        <!-- Email tab -->
+        <div id="panel-email" class="tab-panel" role="tabpanel" aria-labelledby="tab-email">
+          <form class="auth-form" id="emailForm" onsubmit="handleEmailSignIn(event)" novalidate>
+
+            <div class="field">
+              <label for="email">Email Address</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+
+            <div class="field">
+              <div class="field-extras">
+                <label for="password">Password</label>
+                <a href="#" tabindex="-1">Forgot password?</a>
+              </div>
+              <div class="input-wrap">
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  autocomplete="current-password"
+                  required
+                />
+                <button type="button" class="pw-toggle" onclick="togglePw('password', this)" aria-label="Show or hide password">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <label class="remember-row">
+              <input type="checkbox" id="rememberMe" />
+              <span class="checkmark"></span>
+              Keep me signed in for 30 days
+            </label>
+
+            <button type="submit" class="btn btn--primary submit-btn" id="emailSubmitBtn">
+              <span class="btn-label">Access My Account →</span>
+              <span class="btn-spinner"></span>
+            </button>
+
+          </form>
+        </div>
+
+        <!-- Microsoft tab -->
+        <div id="panel-ms" class="tab-panel tab-panel--hidden" role="tabpanel" aria-labelledby="tab-ms">
+          <div class="auth-form">
+            <div class="ms-info">
+              <strong>Sign in with Microsoft</strong>
+              Use your <strong>stud.mit.edu.au</strong> university account or any Microsoft / Outlook account. You will be redirected to Microsoft's secure login page.
+            </div>
+
+            <button type="button" class="ms-btn" onclick="signInWithMicrosoft()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 21 21">
+                <rect x="1"  y="1"  width="9" height="9" fill="#f25022"/>
+                <rect x="11" y="1"  width="9" height="9" fill="#7fba00"/>
+                <rect x="1"  y="11" width="9" height="9" fill="#00a4ef"/>
+                <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
+              </svg>
+              Continue with Microsoft
+            </button>
+
+            <p style="font-size:0.76rem;color:var(--muted);text-align:center;">
+              Powered by Microsoft Entra ID (Azure Active Directory)
+            </p>
+          </div>
+        </div>
+
+        <!-- Status messages -->
+        <div id="errorMsg" class="status-msg status-msg--error" role="alert" aria-live="assertive">
+          <span style="flex-shrink:0;margin-top:1px;">⚠</span>
+          <span id="errorText"></span>
+        </div>
+        <div id="successMsg" class="status-msg status-msg--success" role="status" aria-live="polite">
+          <span style="flex-shrink:0;margin-top:1px;">✓</span>
+          <span id="successText"></span>
+        </div>
+
+        <p class="form-footer-note">
+          Protected by 256-bit encryption · Microsoft Entra ID<br/>
+          Your data is never sold or shared with third parties.
+        </p>
+
+      </div>
+    </div>
+  </main>
+
+  <script>
+    /* ─────────────────────────────────────────
+       LUME BANK — Sign In Logic
+       API: Azure (all environments)
+    ───────────────────────────────────────── */
+
+    const API         = 'https://lumebank-project.australiaeast.cloudapp.azure.com';
+    const TENANT_ID   = 'd1e81dd5-dac1-4171-8066-54aa681f1a13';
+    const CLIENT_ID   = '42041917-b661-4643-9e12-3063d0fd50ea';
+    const REDIRECT_URI= 'https://gray-mushroom-012071d00.7.azurestaticapps.net/signin.html';
+
+    /* On load: handle Azure OAuth callback or redirect if already logged in */
+    window.addEventListener('load', () => {
+      const params = new URLSearchParams(window.location.search);
+      const code   = params.get('code');
+
+      if (code) {
+        // Clean the URL so the code can't be reused accidentally
+        window.history.replaceState({}, document.title, window.location.pathname);
+        localStorage.removeItem('lume_token');
+        localStorage.removeItem('lume_user');
+        switchTab('microsoft');
+        handleAzureCallback(code);
+        return;
+      }
+
+      if (localStorage.getItem('lume_token')) {
+        window.location.href = 'dashboard.html';
+      }
+    });
+
+    /* Tab switching */
+    function switchTab(tab) {
+      const isEmail = tab === 'email';
+
+      document.getElementById('panel-email').classList.toggle('tab-panel--hidden', !isEmail);
+      document.getElementById('panel-ms').classList.toggle('tab-panel--hidden',  isEmail);
+
+      document.getElementById('tab-email').classList.toggle('tab-btn--active', isEmail);
+      document.getElementById('tab-ms').classList.toggle('tab-btn--active', !isEmail);
+
+      document.getElementById('tab-email').setAttribute('aria-selected', isEmail);
+      document.getElementById('tab-ms').setAttribute('aria-selected', !isEmail);
+
+      hideMessages();
+    }
+
+    /* Microsoft: redirect to Azure AD */
+    function signInWithMicrosoft() {
+      const url = new URL(`https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/authorize`);
+      url.searchParams.set('client_id',     CLIENT_ID);
+      url.searchParams.set('response_type', 'code');
+      url.searchParams.set('redirect_uri',  REDIRECT_URI);
+      url.searchParams.set('scope',         'openid profile email User.Read');
+      url.searchParams.set('response_mode', 'query');
+      window.location.href = url.toString();
+    }
+
+    /* Microsoft: exchange code for token via our backend */
+    async function handleAzureCallback(code) {
+      showSuccess('Completing Microsoft sign-in — please wait…');
+      try {
+        const res  = await fetch(`${API}/api/auth/azure`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ code })
+        });
+        const data = await res.json();
+        if (!res.ok) { showError(data.error || 'Microsoft sign-in failed. Please try again.'); return; }
+        storeAndRedirect(data);
+      } catch {
+        showError('Could not connect to Lume servers. Please check your connection and try again.');
+      }
+    }
+
+    /* Email/password sign-in */
+    async function handleEmailSignIn(e) {
+      e.preventDefault();
+      hideMessages();
+
+      const emailVal = document.getElementById('email').value.trim();
+      const pwVal    = document.getElementById('password').value;
+
+      if (!emailVal || !pwVal) {
+        showError('Please enter your email address and password.');
+        return;
+      }
+
+      const btn = document.getElementById('emailSubmitBtn');
+      btn.disabled = true;
+      btn.classList.add('loading');
+
+      try {
+        const res  = await fetch(`${API}/api/login`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ username: emailVal, password: pwVal })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          showError(data.error || 'Incorrect email or password. Please try again.');
+          btn.disabled = false;
+          btn.classList.remove('loading');
+          return;
+        }
+
+        storeAndRedirect(data, emailVal);
+      } catch {
+        showError('Could not connect to Lume servers. Please check your internet connection.');
+        btn.disabled = false;
+        btn.classList.remove('loading');
+      }
+    }
+
+    /* Store session and navigate */
+    function storeAndRedirect(data, fallbackEmail) {
+      let firstName = 'Account';
+      let lastName  = '';
+
+      if (data.username) {
+        const parts = data.username.split(' ');
+        firstName   = parts[0] || firstName;
+        lastName    = parts.slice(1).join(' ') || '';
+      } else if (fallbackEmail) {
+        firstName = fallbackEmail.split('@')[0];
+      }
+
+      localStorage.setItem('lume_token', data.token);
+      localStorage.setItem('lume_user', JSON.stringify({ firstName, lastName }));
+      window.location.href = 'dashboard.html';
+    }
+
+    /* Password visibility toggle */
+    function togglePw(fieldId, btn) {
+      const inp = document.getElementById(fieldId);
+      const show = inp.type === 'password';
+      inp.type = show ? 'text' : 'password';
+      btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+      btn.style.color = show ? 'var(--gold-300)' : '';
+    }
+
+    /* Message helpers */
+    function showError(msg) {
+      document.getElementById('errorText').textContent = msg;
+      document.getElementById('errorMsg').classList.add('show');
+      document.getElementById('successMsg').classList.remove('show');
+    }
+
+    function showSuccess(msg) {
+      document.getElementById('successText').textContent = msg;
+      document.getElementById('successMsg').classList.add('show');
+      document.getElementById('errorMsg').classList.remove('show');
+    }
+
+    function hideMessages() {
+      document.getElementById('errorMsg').classList.remove('show');
+      document.getElementById('successMsg').classList.remove('show');
+    }
+  </script>
+
+</body>
+</html>
