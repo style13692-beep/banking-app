@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const http = require('http');
 const { DefaultAzureCredential } = require('@azure/identity');
 const { SecretClient } = require('@azure/keyvault-secrets');
 
@@ -17,6 +18,9 @@ const credential = new DefaultAzureCredential();
 const secretClient = new SecretClient(keyVaultUrl, credential);
 
 const USERS_FILE = path.join(__dirname, 'users.json');
+
+const CERT_PATH = 'C:/lume-bank/certs';
+const DOMAIN    = 'lumebank-project.australiaeast.cloudapp.azure.com';
 
 function loadUsers() {
   if (!fs.existsSync(USERS_FILE)) {
@@ -175,9 +179,35 @@ async function startServer() {
     }
   });
 
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, '127.0.0.1', () => {
-    console.log(`Server running securely on localhost:${PORT}`);
+  // ── HTTPS server ──────────────────────────────────────────────────────────
+  // Cert files are generated and auto-renewed by win-acme.
+  // win-acme naming convention: <domain>-key.pem and <domain>-crt.pem
+  const certKey  = path.join(CERT_PATH, `${DOMAIN}-key.pem`);
+  const certFile = path.join(CERT_PATH, `${DOMAIN}-crt.pem`);
+
+  if (!fs.existsSync(certKey) || !fs.existsSync(certFile)) {
+    console.error(`TLS cert files not found in ${CERT_PATH}`);
+    console.error(`Expected:\n  ${certKey}\n  ${certFile}`);
+    console.error('Run win-acme first to generate your certificate, then restart the server.');
+    process.exit(1);
+  }
+
+  const tlsOptions = {
+    key:  fs.readFileSync(certKey),
+    cert: fs.readFileSync(certFile),
+  };
+
+  // HTTP on port 80 — only used to redirect to HTTPS
+  http.createServer((req, res) => {
+    res.writeHead(301, { Location: `https://${DOMAIN}${req.url}` });
+    res.end();
+  }).listen(80, '0.0.0.0', () => {
+    console.log('HTTP :80 → redirecting to HTTPS');
+  });
+
+  // HTTPS on port 443
+  https.createServer(tlsOptions, app).listen(443, '0.0.0.0', () => {
+    console.log(`Server running on https://${DOMAIN}`);
   });
 }
 
