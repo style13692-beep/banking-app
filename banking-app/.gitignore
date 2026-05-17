@@ -1,0 +1,9 @@
+<<<<<<< HEAD
+.env
+node_modules/
+daemon/
+=======
+node_modules/
+.env
+*.log
+>>>>>>> 1955a372ff2d0f5ff318c9fc92e6c4e2fd3aac16

@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LumeBank — Banking Built Around You</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --g900: #0f1f0f;
+  --g800: #1a3018;
+  --g700: #243f22;
+  --g600: #2f5c2c;
+  --g500: #3d7a39;
+  --g400: #5a9e55;
+  --g200: #a8d4a3;
+  --g100: #d6edd4;
+  --g50:  #f0f8ef;
+  --gold:      #c9a84c;
+  --gold-light:#e8c96a;
+  --gold-pale: #faf3e0;
+  --cream:     #f8f5ee;
+  --ink:       #0e1a0e;
+  --ink-mid:   #2d3d2d;
+  --ink-soft:  #5a6e5a;
+  --white:     #ffffff;
+  --border:    rgba(15,31,15,0.1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ─── CURSOR ─── */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--gold);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9999;
+  transition: transform 0.15s ease, opacity 0.2s;
+  mix-blend-mode: multiply;
+}
+.cursor-ring {
+  width: 40px; height: 40px;
+  border: 1.5px solid var(--gold);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9998;
+  transition: transform 0.35s ease, width 0.3s, height 0.3s, opacity 0.2s;
+  opacity: 0.5;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.5rem 3rem;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: all 0.4s ease;
+}
+nav.scrolled {
+  background: rgba(15,31,15,0.96);
+  backdrop-filter: blur(20px);
+  padding: 1rem 3rem;
+  box-shadow: 0 2px 40px rgba(0,0,0,0.3);
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.nav-logo-icon {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+  box-shadow: 0 4px 12px rgba(201,168,76,0.4);
+}
+.logo-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.55rem; font-weight: 600;
+  color: var(--white);
+  letter-spacing: -0.01em;
+}
+.logo-text em { color: var(--gold-light); font-style: normal; }
+
+.nav-links {
+  display: flex; align-items: center; gap: 0.25rem;
+  list-style: none;
+}
+.nav-links a {
+  padding: 0.45rem 1rem;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.87rem; font-weight: 500;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.08); }
+
+.nav-ctas { display: flex; align-items: center; gap: 0.75rem; }
+.btn-ghost {
+  padding: 0.5rem 1.2rem;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.87rem; font-weight: 500;
+  text-decoration: none; cursor: pointer;
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,0.5); color: var(--white); background: rgba(255,255,255,0.08); }
+.btn-gold {
+  padding: 0.5rem 1.4rem;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  border: none; border-radius: 8px;
+  color: var(--g900);
+  font-size: 0.87rem; font-weight: 600;
+  text-decoration: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  box-shadow: 0 4px 16px rgba(201,168,76,0.35);
+  transition: all 0.2s;
+}
+.btn-gold:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(201,168,76,0.5); }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  background: var(--g800);
+  position: relative;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Animated background */
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 50%, rgba(61,122,57,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 10% 80%, rgba(201,168,76,0.08) 0%, transparent 50%),
+    linear-gradient(160deg, #0f1f0f 0%, #1a3018 40%, #0f1f0f 100%);
+}
+
+/* Grid lines */
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+
+/* Floating orbs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  animation: floatOrb 8s ease-in-out infinite;
+}
+.orb-1 { width: 500px; height: 500px; background: rgba(61,122,57,0.18); top: -100px; right: -100px; animation-delay: 0s; }
+.orb-2 { width: 300px; height: 300px; background: rgba(201,168,76,0.1); bottom: 50px; left: -80px; animation-delay: -3s; }
+.orb-3 { width: 200px; height: 200px; background: rgba(90,158,85,0.15); top: 40%; left: 40%; animation-delay: -6s; }
+
+@keyframes floatOrb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-20px, 30px) scale(0.95); }
+}
+
+.hero-inner {
+  position: relative; z-index: 2;
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 3rem;
+  padding-top: 100px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center; gap: 4rem;
+}
+
+.hero-left { }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 20px; padding: 0.35rem 1rem;
+  font-size: 0.78rem; font-weight: 600;
+  color: var(--gold-light); letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 1.75rem;
+  animation: fadeUp 0.8s ease both;
+}
+.badge-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold-light);
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.7); }
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.5rem, 6vw, 5.5rem);
+  font-weight: 300;
+  color: var(--white);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.8s 0.1s ease both;
+}
+.hero-title em {
+  font-style: italic; color: var(--gold-light);
+  display: block;
+}
+.hero-title strong {
+  font-weight: 600; display: block;
+}
+
+.hero-sub {
+  color: rgba(255,255,255,0.55);
+  font-size: 1.05rem; line-height: 1.75;
+  max-width: 440px;
+  margin-bottom: 2.5rem;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+
+.hero-actions {
+  display: flex; align-items: center; gap: 1rem;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+.btn-hero-primary {
+  padding: 0.9rem 2rem;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+  border: none; border-radius: 10px;
+  color: var(--g900); font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem; font-weight: 700;
+  text-decoration: none; cursor: pointer;
+  box-shadow: 0 8px 32px rgba(201,168,76,0.4);
+  transition: all 0.25s;
+  letter-spacing: 0.01em;
+}
+.btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(201,168,76,0.55); }
+.btn-hero-secondary {
+  padding: 0.9rem 1.8rem;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px; color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem; font-weight: 500;
+  text-decoration: none; cursor: pointer;
+  transition: all 0.25s;
+  display: flex; align-items: center; gap: 8px;
+}
+.btn-hero-secondary:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.35); }
+
+.hero-trust {
+  margin-top: 3rem;
+  display: flex; align-items: center; gap: 1.5rem;
+  animation: fadeUp 0.8s 0.4s ease both;
+}
+.trust-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.15); }
+.trust-item { font-size: 0.78rem; color: rgba(255,255,255,0.45); line-height: 1.3; }
+.trust-item strong { display: block; font-size: 1.05rem; color: rgba(255,255,255,0.85); font-weight: 600; }
+
+/* Hero right - card mockup */
+.hero-right {
+  animation: fadeIn 1s 0.5s ease both;
+  position: relative;
+}
+
+.card-mockup {
+  background: linear-gradient(135deg, #1e3d1b 0%, #2d5a2a 50%, #1a3018 100%);
+  border-radius: 20px;
+  padding: 2rem 2.25rem;
+  box-shadow:
+    0 40px 80px rgba(0,0,0,0.5),
+    0 0 0 1px rgba(255,255,255,0.07),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  position: relative; overflow: hidden;
+  transform: perspective(1000px) rotateY(-8deg) rotateX(3deg);
+  transition: transform 0.5s ease;
+}
+.card-mockup:hover { transform: perspective(1000px) rotateY(-4deg) rotateX(1deg); }
+
+.card-mockup::before {
+  content: '';
+  position: absolute; top: -80px; right: -80px;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,0.15), transparent 70%);
+}
+.card-mockup::after {
+  content: '';
+  position: absolute; bottom: -40px; left: -40px;
+  width: 150px; height: 150px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(90,158,85,0.12), transparent 70%);
+}
+
+.card-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 2rem;
+}
+.card-bank-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem; font-weight: 500;
+  color: rgba(255,255,255,0.9); letter-spacing: 0.02em;
+}
+.card-chip {
+  width: 36px; height: 28px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  border-radius: 5px; position: relative;
+  box-shadow: 0 2px 8px rgba(201,168,76,0.4);
+}
+.card-chip::after {
+  content: '';
+  position: absolute; inset: 5px;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 2px;
+}
+
+.card-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem; letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.85); margin-bottom: 1.5rem;
+}
+
+.card-footer {
+  display: flex; justify-content: space-between; align-items: flex-end;
+}
+.card-holder { }
+.card-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); margin-bottom: 3px; }
+.card-value { font-size: 0.9rem; font-weight: 500; color: rgba(255,255,255,0.85); }
+.card-logo { font-size: 1.6rem; opacity: 0.7; }
+
+/* Floating stat cards */
+.float-card {
+  position: absolute;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.5);
+  animation: floatCard 4s ease-in-out infinite;
+}
+.float-card-1 {
+  top: -30px; right: -20px;
+  animation-delay: 0s;
+  min-width: 160px;
+}
+.float-card-2 {
+  bottom: 40px; left: -40px;
+  animation-delay: -2s;
+  min-width: 145px;
+}
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.fc-label { font-size: 0.7rem; color: var(--ink-soft); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.fc-value { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--ink); }
+.fc-value.green { color: var(--g600); }
+.fc-sub { font-size: 0.72rem; color: var(--ink-soft); margin-top: 2px; }
+.fc-trend {
+  display: inline-flex; align-items: center; gap: 3px;
+  background: #e8f5e8; color: var(--g600);
+  border-radius: 20px; padding: 2px 8px;
+  font-size: 0.7rem; font-weight: 700;
+  margin-top: 4px;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ─── MARQUEE ─── */
+.marquee-section {
+  background: var(--g900);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 1rem 0; overflow: hidden;
+}
+.marquee-track {
+  display: flex; width: max-content;
+  animation: marquee 30s linear infinite;
+}
+.marquee-item {
+  padding: 0 3rem;
+  font-size: 0.78rem; font-weight: 600;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase; letter-spacing: 0.12em;
+  white-space: nowrap;
+  display: flex; align-items: center; gap: 1.5rem;
+}
+.marquee-item span { color: var(--gold); }
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ─── FEATURES ─── */
+.features {
+  padding: 8rem 3rem;
+  max-width: 1200px; margin: 0 auto;
+}
+
+.section-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--g600); margin-bottom: 1rem;
+}
+.section-tag::before {
+  content: '';
+  width: 24px; height: 2px;
+  background: var(--g500);
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.4rem, 4vw, 3.5rem);
+  font-weight: 400; line-height: 1.1;
+  color: var(--ink); margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+.section-title em { font-style: italic; color: var(--g600); }
+
+.section-sub {
+  color: var(--ink-soft); font-size: 1rem;
+  line-height: 1.7; max-width: 520px;
+  margin-bottom: 4rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.feature-card {
+  background: var(--white);
+  border: 1.5px solid rgba(0,0,0,0.07);
+  border-radius: 18px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  position: relative; overflow: hidden;
+  cursor: default;
+}
+.feature-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--g500), var(--gold));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.35s ease;
+}
+.feature-card:hover { transform: translateY(-4px); border-color: rgba(61,122,57,0.2); box-shadow: 0 20px 50px rgba(0,0,0,0.08); }
+.feature-card:hover::before { transform: scaleX(1); }
+
+.feature-card.featured {
+  background: var(--g800);
+  border-color: transparent;
+  box-shadow: 0 20px 50px rgba(15,31,15,0.3);
+}
+.feature-card.featured .feat-title { color: var(--white); }
+.feature-card.featured .feat-desc { color: rgba(255,255,255,0.55); }
+.feature-card.featured .feat-icon-wrap { background: rgba(255,255,255,0.1); }
+
+.feat-icon-wrap {
+  width: 48px; height: 48px;
+  background: var(--g50);
+  border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin-bottom: 1.25rem;
+}
+.feat-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem; font-weight: 600;
+  color: var(--ink); margin-bottom: 0.6rem;
+}
+.feat-desc {
+  font-size: 0.875rem; color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+/* ─── STATS BAND ─── */
+.stats-band {
+  background: var(--g800);
+  padding: 5rem 3rem;
+  position: relative; overflow: hidden;
+}
+.stats-band::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 80% 50%, rgba(61,122,57,0.2), transparent),
+    radial-gradient(ellipse 40% 60% at 20% 50%, rgba(201,168,76,0.08), transparent);
+}
+.stats-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 2rem; position: relative; z-index: 1;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.5rem; font-weight: 300;
+  color: var(--white); line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.stat-num em { color: var(--gold-light); font-style: normal; }
+.stat-label {
+  font-size: 0.82rem; color: rgba(255,255,255,0.45);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+
+/* ─── SECURITY SECTION ─── */
+.security-section {
+  padding: 8rem 3rem;
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 6rem; align-items: center;
+}
+
+.security-visual {
+  position: relative;
+}
+.sec-center {
+  width: 120px; height: 120px;
+  background: linear-gradient(135deg, var(--g700), var(--g600));
+  border-radius: 30px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem; margin: 60px auto;
+  box-shadow: 0 20px 50px rgba(36,63,34,0.4), 0 0 0 1px rgba(255,255,255,0.08);
+  position: relative; z-index: 2;
+  animation: secPulse 3s ease-in-out infinite;
+}
+@keyframes secPulse {
+  0%, 100% { box-shadow: 0 20px 50px rgba(36,63,34,0.4), 0 0 0 1px rgba(255,255,255,0.08), 0 0 0 0 rgba(61,122,57,0.3); }
+  50% { box-shadow: 0 20px 50px rgba(36,63,34,0.4), 0 0 0 1px rgba(255,255,255,0.08), 0 0 0 30px rgba(61,122,57,0); }
+}
+
+.sec-ring {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%; border: 1px solid rgba(61,122,57,0.2);
+  animation: ringExpand 3s ease-in-out infinite;
+}
+.sec-ring-1 { width: 180px; height: 180px; animation-delay: 0s; }
+.sec-ring-2 { width: 260px; height: 260px; animation-delay: 0.5s; }
+.sec-ring-3 { width: 340px; height: 340px; animation-delay: 1s; }
+@keyframes ringExpand {
+  0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.15; transform: translate(-50%, -50%) scale(1.04); }
+}
+
+.sec-badges {
+  display: flex; flex-direction: column; gap: 0.75rem;
+}
+.sec-badge {
+  background: var(--white);
+  border: 1.5px solid rgba(0,0,0,0.07);
+  border-radius: 12px; padding: 1rem 1.25rem;
+  display: flex; align-items: center; gap: 12px;
+  transition: all 0.25s;
+}
+.sec-badge:hover { border-color: rgba(61,122,57,0.3); transform: translateX(4px); }
+.sec-badge-icon {
+  width: 38px; height: 38px;
+  background: var(--g50); border-radius: 9px;
+  display: flex; align-items: center; justify-content: center; font-size: 17px;
+  flex-shrink: 0;
+}
+.sec-badge-label { font-size: 0.88rem; font-weight: 600; color: var(--ink); }
+.sec-badge-sub { font-size: 0.75rem; color: var(--ink-soft); margin-top: 1px; }
+.sec-badge-status {
+  margin-left: auto;
+  font-size: 0.7rem; font-weight: 700;
+  padding: 3px 10px; border-radius: 20px;
+  background: var(--g50); color: var(--g600);
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+
+/* ─── GUIDES SECTION ─── */
+.guides-section {
+  background: var(--g50);
+  border-top: 1px solid rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  padding: 7rem 3rem;
+}
+.guides-inner {
+  max-width: 1200px; margin: 0 auto;
+}
+.guides-header {
+  text-align: center; margin-bottom: 3.5rem;
+}
+.guides-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+}
+.guide-card {
+  background: var(--white);
+  border: 1.5px solid rgba(0,0,0,0.07);
+  border-radius: 18px; padding: 2rem;
+  text-decoration: none; color: inherit;
+  transition: all 0.3s ease;
+  display: flex; flex-direction: column;
+  position: relative; overflow: hidden;
+}
+.guide-card:hover { transform: translateY(-5px); box-shadow: 0 25px 60px rgba(0,0,0,0.1); border-color: rgba(61,122,57,0.25); }
+.guide-thumb {
+  width: 100%; height: 160px;
+  background: linear-gradient(135deg, var(--g800), var(--g700));
+  border-radius: 12px; margin-bottom: 1.5rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3.5rem;
+  position: relative; overflow: hidden;
+}
+.guide-thumb::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(201,168,76,0.08), transparent);
+}
+.guide-type {
+  font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--g600); margin-bottom: 0.5rem;
+}
+.guide-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem; font-weight: 600;
+  color: var(--ink); margin-bottom: 0.5rem; line-height: 1.25;
+}
+.guide-desc {
+  font-size: 0.85rem; color: var(--ink-soft);
+  line-height: 1.6; margin-bottom: 1.5rem; flex: 1;
+}
+.guide-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.85rem; font-weight: 600;
+  color: var(--g600); text-decoration: none;
+}
+.guide-cta .arrow {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--g50);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; transition: all 0.2s;
+}
+.guide-card:hover .guide-cta .arrow { background: var(--g500); color: white; transform: translateX(2px); }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--g900);
+  padding: 4rem 3rem 2.5rem;
+}
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+}
+.footer-top {
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 3rem; margin-bottom: 3rem;
+}
+.footer-brand .logo-text { font-size: 1.4rem; }
+.footer-brand p {
+  margin-top: 0.85rem;
+  font-size: 0.84rem; color: rgba(255,255,255,0.4); line-height: 1.7; max-width: 260px;
+}
+.footer-col h4 {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: rgba(255,255,255,0.5);
+  margin-bottom: 1rem;
+}
+.footer-col a {
+  display: block; font-size: 0.87rem; color: rgba(255,255,255,0.55);
+  text-decoration: none; margin-bottom: 0.6rem; transition: color 0.2s;
+}
+.footer-col a:hover { color: var(--white); }
+.footer-divider { height: 1px; background: rgba(255,255,255,0.07); margin-bottom: 1.5rem; }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-bottom p { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+.footer-legal { display: flex; gap: 1.5rem; }
+.footer-legal a { font-size: 0.78rem; color: rgba(255,255,255,0.3); text-decoration: none; }
+.footer-legal a:hover { color: rgba(255,255,255,0.6); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .hero-inner { grid-template-columns: 1fr; padding-top: 130px; }
+  .hero-right { display: none; }
+  .features-grid { grid-template-columns: 1fr 1fr; }
+  .stats-inner { grid-template-columns: repeat(2, 1fr); }
+  .security-section { grid-template-columns: 1fr; }
+  .security-visual { display: none; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  nav.scrolled { padding: 0.75rem 1.5rem; }
+  .nav-links { display: none; }
+  .hero-inner { padding: 0 1.5rem; padding-top: 110px; }
+  .features, .security-section { padding: 5rem 1.5rem; }
+  .guides-section { padding: 5rem 1.5rem; }
+  .features-grid, .guides-grid { grid-template-columns: 1fr; }
+  .stats-band { padding: 4rem 1.5rem; }
+  .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  footer { padding: 3rem 1.5rem 2rem; }
+  .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+  .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+  .cursor, .cursor-ring { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ─── NAV ─── -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">🏦</div>
+    <span class="logo-text">Lume<em>Bank</em></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#security">Security</a></li>
+    <li><a href="#guides">User Guides</a></li>
+  </ul>
+  <div class="nav-ctas">
+    <a href="signin.html" class="btn-ghost">Sign in</a>
+    <a href="signup.html" class="btn-gold">Open account →</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge">
+        <div class="badge-dot"></div>
+        Now available — University demo
+      </div>
+      <h1 class="hero-title">
+        <span>Banking</span>
+        <em>reimagined</em>
+        <strong>for you.</strong>
+      </h1>
+      <p class="hero-sub">Manage your money with confidence. LumeBank gives you the tools to track, save, and plan — secured by enterprise-grade infrastructure.</p>
+      <div class="hero-actions">
+        <a href="signup.html" class="btn-hero-primary">Open your account</a>
+        <a href="signin.html" class="btn-hero-secondary">
+          <span>→</span> Sign in
+        </a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item"><strong>256-bit</strong>SSL Encrypted</div>
+        <div class="trust-divider"></div>
+        <div class="trust-item"><strong>Azure</strong>Key Vault</div>
+        <div class="trust-divider"></div>
+        <div class="trust-item"><strong>JWT</strong>Auth Tokens</div>
+        <div class="trust-divider"></div>
+        <div class="trust-item"><strong>RBAC</strong>Access Control</div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="float-card float-card-1">
+        <div class="fc-label">Available balance</div>
+        <div class="fc-value green">$12,480.00</div>
+        <div class="fc-trend">↑ 4.2% this month</div>
+      </div>
+
+      <div class="card-mockup">
+        <div class="card-header">
+          <span class="card-bank-name">LumeBank</span>
+          <div class="card-chip"></div>
+        </div>
+        <div class="card-number">4821 •••• •••• 7304</div>
+        <div class="card-footer">
+          <div class="card-holder">
+            <div class="card-label">Card holder</div>
+            <div class="card-value">J. Smith</div>
+          </div>
+          <div class="card-holder">
+            <div class="card-label">Expires</div>
+            <div class="card-value">08 / 28</div>
+          </div>
+          <div class="card-logo">💳</div>
+        </div>
+      </div>
+
+      <div class="float-card float-card-2">
+        <div class="fc-label">Last transaction</div>
+        <div class="fc-value" style="font-size:1.2rem;">−$42.50</div>
+        <div class="fc-sub">Grocery store · 2h ago</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MARQUEE ─── -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <!-- duplicated for seamless loop -->
+    <div class="marquee-item">Azure Key Vault <span>✦</span></div>
+    <div class="marquee-item">JWT Authentication <span>✦</span></div>
+    <div class="marquee-item">Role-Based Access Control <span>✦</span></div>
+    <div class="marquee-item">Real-Time Transactions <span>✦</span></div>
+    <div class="marquee-item">256-bit Encryption <span>✦</span></div>
+    <div class="marquee-item">Managed Identity <span>✦</span></div>
+    <div class="marquee-item">Instant Dashboard <span>✦</span></div>
+    <div class="marquee-item">Secure Admin Panel <span>✦</span></div>
+    <div class="marquee-item">Azure Key Vault <span>✦</span></div>
+    <div class="marquee-item">JWT Authentication <span>✦</span></div>
+    <div class="marquee-item">Role-Based Access Control <span>✦</span></div>
+    <div class="marquee-item">Real-Time Transactions <span>✦</span></div>
+    <div class="marquee-item">256-bit Encryption <span>✦</span></div>
+    <div class="marquee-item">Managed Identity <span>✦</span></div>
+    <div class="marquee-item">Instant Dashboard <span>✦</span></div>
+    <div class="marquee-item">Secure Admin Panel <span>✦</span></div>
+  </div>
+</div>
+
+<!-- ─── FEATURES ─── -->
+<section class="features" id="features">
+  <div class="section-tag">Platform features</div>
+  <h2 class="section-title">Everything you need,<br><em>nothing you don't.</em></h2>
+  <p class="section-sub">A fully functional banking platform built with modern security architecture and a clean, intuitive interface.</p>
+
+  <div class="features-grid">
+    <div class="feature-card featured">
+      <div class="feat-icon-wrap">🏦</div>
+      <div class="feat-title" style="color:var(--white)">Live dashboard</div>
+      <div class="feat-desc" style="color:rgba(255,255,255,0.5)">See your balance, recent transactions, and account status at a glance — updated in real time every session.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon-wrap">🔐</div>
+      <div class="feat-title">JWT security</div>
+      <div class="feat-desc">Industry-standard JSON Web Token authentication keeps your session secure and verifiable on every request.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon-wrap">☁️</div>
+      <div class="feat-title">Azure Key Vault</div>
+      <div class="feat-desc">Secrets, keys and credentials are stored in Microsoft Azure Key Vault — never hardcoded, always encrypted.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon-wrap">👥</div>
+      <div class="feat-title">RBAC roles</div>
+      <div class="feat-desc">Role-based access control separates customer and admin capabilities, so the right people see the right data.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon-wrap">📊</div>
+      <div class="feat-title">Transaction history</div>
+      <div class="feat-desc">A full ledger of credits and debits, with timestamps, descriptions and easy-to-read formatting.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon-wrap">🆔</div>
+      <div class="feat-title">Managed identity</div>
+      <div class="feat-desc">Azure Managed Identity handles service-to-service authentication automatically — no secrets passed in code.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── STATS ─── -->
+<div class="stats-band">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num">256<em>-bit</em></div>
+      <div class="stat-label">Encryption standard</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num"><em>&lt;</em>200<em>ms</em></div>
+      <div class="stat-label">Average API response</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">3<em>+</em></div>
+      <div class="stat-label">Security layers</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">24<em>h</em></div>
+      <div class="stat-label">Session token lifetime</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SECURITY ─── -->
+<section class="security-section" id="security">
+  <div class="security-visual">
+    <div class="sec-ring sec-ring-1"></div>
+    <div class="sec-ring sec-ring-2"></div>
+    <div class="sec-ring sec-ring-3"></div>
+    <div class="sec-center">🛡️</div>
+  </div>
+  <div class="security-right">
+    <div class="section-tag">Security architecture</div>
+    <h2 class="section-title">Built secure<br><em>from the ground up.</em></h2>
+    <p class="section-sub" style="margin-bottom:2rem">LumeBank's backend is designed around enterprise security patterns used in production banking systems worldwide.</p>
+    <div class="sec-badges">
+      <div class="sec-badge">
+        <div class="sec-badge-icon">🔑</div>
+        <div>
+          <div class="sec-badge-label">JWT token auth</div>
+          <div class="sec-badge-sub">Signed, verified on every request</div>
+        </div>
+        <span class="sec-badge-status">Active</span>
+      </div>
+      <div class="sec-badge">
+        <div class="sec-badge-icon">☁️</div>
+        <div>
+          <div class="sec-badge-label">Azure Key Vault</div>
+          <div class="sec-badge-sub">All secrets encrypted at rest</div>
+        </div>
+        <span class="sec-badge-status">Connected</span>
+      </div>
+      <div class="sec-badge">
+        <div class="sec-badge-icon">🆔</div>
+        <div>
+          <div class="sec-badge-label">Managed identity</div>
+          <div class="sec-badge-sub">No credentials in source code</div>
+        </div>
+        <span class="sec-badge-status">Enabled</span>
+      </div>
+      <div class="sec-badge">
+        <div class="sec-badge-icon">👥</div>
+        <div>
+          <div class="sec-badge-label">Role-based access</div>
+          <div class="sec-badge-sub">Admin &amp; customer privilege separation</div>
+        </div>
+        <span class="sec-badge-status">RBAC</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── GUIDES ─── -->
+<section class="guides-section" id="guides">
+  <div class="guides-inner">
+    <div class="guides-header">
+      <div class="section-tag" style="justify-content:center">Learning resources</div>
+      <h2 class="section-title" style="text-align:center">User guides &amp; <em>documentation</em></h2>
+      <p class="section-sub" style="margin:0.5rem auto 0;text-align:center">Everything you need to get started and make the most of LumeBank.</p>
+    </div>
+    <div class="guides-grid">
+      <!-- Video guide card -->
+      <a href="user-guide.html" class="guide-card">
+        <div class="guide-thumb">
+          <span style="position:relative;z-index:1;">🎬</span>
+          <div style="position:absolute;bottom:12px;right:12px;background:rgba(255,255,255,0.15);border-radius:8px;padding:4px 10px;font-size:0.72rem;color:rgba(255,255,255,0.8);font-weight:600;z-index:1;">Video guide</div>
+        </div>
+        <div class="guide-type">Video tutorial</div>
+        <div class="guide-title">Getting started with LumeBank</div>
+        <div class="guide-desc">Walk through account creation, signing in, reading your dashboard and making your first transaction — step by step.</div>
+        <div class="guide-cta">Watch the guide <span class="arrow">▶</span></div>
+      </a>
+
+      <!-- PDF manual card -->
+      <a href="user-guide.pdf" class="guide-card" target="_blank" rel="noopener">
+        <div class="guide-thumb">
+          <span style="position:relative;z-index:1;">📄</span>
+          <div style="position:absolute;bottom:12px;right:12px;background:rgba(201,168,76,0.25);border-radius:8px;padding:4px 10px;font-size:0.72rem;color:var(--gold-light);font-weight:600;z-index:1;">PDF</div>
+        </div>
+        <div class="guide-type">Downloadable manual</div>
+        <div class="guide-title">Full user manual</div>
+        <div class="guide-desc">The complete reference document — all features, settings, security overview and FAQ in a single printable PDF.</div>
+        <div class="guide-cta">Download PDF <span class="arrow">↓</span></div>
+      </a>
+
+      <!-- Quick start card -->
+      <a href="user-guide.html#quickstart" class="guide-card">
+        <div class="guide-thumb">
+          <span style="position:relative;z-index:1;">⚡</span>
+          <div style="position:absolute;bottom:12px;right:12px;background:rgba(255,255,255,0.15);border-radius:8px;padding:4px 10px;font-size:0.72rem;color:rgba(255,255,255,0.8);font-weight:600;z-index:1;">Quick read</div>
+        </div>
+        <div class="guide-type">Quick start</div>
+        <div class="guide-title">Up and running in 3 minutes</div>
+        <div class="guide-desc">A condensed cheat-sheet covering account setup, logging in, checking your balance and understanding your access level.</div>
+        <div class="guide-cta">Read now <span class="arrow">→</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="text-decoration:none">
+          <div class="nav-logo-icon" style="width:34px;height:34px;font-size:16px;">🏦</div>
+          <span class="logo-text">Lume<em>Bank</em></span>
+        </a>
+        <p>A university demonstration project showcasing modern banking architecture with enterprise-grade security patterns.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="signin.html">Sign in</a>
+        <a href="signup.html">Create account</a>
+        <a href="dashboard.html">Dashboard</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="user-guide.html">Video guide</a>
+        <a href="user-guide.pdf" target="_blank">PDF manual</a>
+        <a href="user-guide.html#quickstart">Quick start</a>
+      </div>
+      <div class="footer-col">
+        <h4>Security</h4>
+        <a href="#security">Architecture</a>
+        <a href="#features">Features</a>
+        <a href="#">Privacy policy</a>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <p>© 2025 LumeBank · University demonstration project · Not a real bank</p>
+      <div class="footer-legal">
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+        <a href="#">Security</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── Cursor ── */
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
+});
+
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx - 20}px, ${ry - 20}px)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform += ' scale(0)';
+    ring.style.width = '60px';
+    ring.style.height = '60px';
+    ring.style.opacity = '0.8';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.width = '40px';
+    ring.style.height = '40px';
+    ring.style.opacity = '0.5';
+  });
+});
+
+/* ── Nav scroll ── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+/* ── Scroll reveal ── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.feature-card, .guide-card, .sec-badge, .stat-item').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+
+/* Stagger cards */
+document.querySelectorAll('.features-grid .feature-card, .guides-grid .guide-card').forEach((el, i) => {
+  el.style.transitionDelay = `${i * 0.08}s`;
+});
+</script>
+</body>
+</html>
