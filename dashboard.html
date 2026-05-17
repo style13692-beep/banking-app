@@ -15,7 +15,8 @@
     --success: #22c55e; --danger: #ef4444; --warning: #f59e0b;
     --radius: 12px; --radius-lg: 16px;
 }
-body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--text); min-height: 100vh; }
+/* Hide body until auth check passes — prevents flash */
+body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--text); min-height: 100vh; visibility: hidden; }
 
 /* Nav */
 nav {
@@ -270,17 +271,25 @@ nav {
 <script>
 const API = 'https://20.5.49.64/api';
 
-// Auth guard
+// Auth guard — runs immediately before anything renders
 const token = localStorage.getItem('token');
 const userData = JSON.parse(localStorage.getItem('user') || '{}');
-if (!token) window.location.href = 'signin.html';
 
-// Verify token with backend
+if (!token) {
+    window.location.href = 'signin.html';
+} else {
+    // Token exists — show the page and load data
+    document.body.style.visibility = 'visible';
+    verifyAndLoad();
+}
+
 async function verifyAndLoad() {
     try {
         const res = await fetch(`${API}/auth/verify`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
+
+        // If token is invalid, sign out immediately
         if (!res.ok) { signOut(); return; }
 
         const profile = await fetch(`${API}/user/profile`, {
@@ -326,7 +335,7 @@ function renderUser(user) {
         document.getElementById('lastLogin').textContent = new Date(user.lastLogin).toLocaleTimeString('en-AU', { hour:'2-digit', minute:'2-digit' });
     }
 
-    // Show admin panel
+    // Show admin panel if Admin role
     if (role === 'Admin') {
         document.getElementById('adminPanel').style.display = 'block';
     }
@@ -395,8 +404,6 @@ function signOut() {
     localStorage.removeItem('user');
     window.location.href = 'signin.html';
 }
-
-verifyAndLoad();
 </script>
 </body>
 </html>
