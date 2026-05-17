@@ -1,0 +1,99 @@
+[
+  {
+    "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Resources/deployments/CreateVm-MicrosoftWindowsServer.WindowsServer-202-20260518035014/operations/BACBB9CBF725B5E8",
+    "operationId": "BACBB9CBF725B5E8",
+    "properties": {
+      "provisioningOperation": "Create",
+      "provisioningState": "Succeeded",
+      "timestamp": "2026-05-17T18:02:20.9272887Z",
+      "duration": "PT1M9.2080684S",
+      "trackingId": "3d9b4082-dfe3-4d73-8cb4-e810d836ab77",
+      "statusCode": "OK",
+      "targetResource": {
+        "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Compute/virtualMachines/vm-banking-backend",
+        "resourceType": "Microsoft.Compute/virtualMachines",
+        "resourceName": "vm-banking-backend"
+      }
+    }
+  },
+  {
+    "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Resources/deployments/CreateVm-MicrosoftWindowsServer.WindowsServer-202-20260518035014/operations/08DCE9EAB52A5459",
+    "operationId": "08DCE9EAB52A5459",
+    "properties": {
+      "provisioningOperation": "Create",
+      "provisioningState": "Succeeded",
+      "timestamp": "2026-05-17T18:02:20.9272887Z",
+      "duration": "PT1.6193451S",
+      "trackingId": "cb9d3967-2f87-4984-b0d9-6517153a2dfc",
+      "statusCode": "OK",
+      "targetResource": {
+        "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Network/networkInterfaces/vm-banking-backend336_z3",
+        "resourceType": "Microsoft.Network/networkInterfaces",
+        "resourceName": "vm-banking-backend336_z3"
+      }
+    }
+  },
+  {
+    "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Resources/deployments/CreateVm-MicrosoftWindowsServer.WindowsServer-202-20260518035014/operations/5CB6FDCC58E09E30",
+    "operationId": "5CB6FDCC58E09E30",
+    "properties": {
+      "provisioningOperation": "Create",
+      "provisioningState": "Succeeded",
+      "timestamp": "2026-05-17T18:02:14.9005886Z",
+      "duration": "PT5.8641282S",
+      "trackingId": "70cd006f-df07-429d-859e-59657079c33a",
+      "statusCode": "OK",
+      "targetResource": {
+        "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Network/virtualNetworks/vm-banking-backend-vnet",
+        "resourceType": "Microsoft.Network/virtualNetworks",
+        "resourceName": "vm-banking-backend-vnet"
+      }
+    }
+  },
+  {
+    "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Resources/deployments/CreateVm-MicrosoftWindowsServer.WindowsServer-202-20260518035014/operations/C08549C6600CAEE2",
+    "operationId": "C08549C6600CAEE2",
+    "properties": {
+      "provisioningOperation": "Create",
+      "provisioningState": "Succeeded",
+      "timestamp": "2026-05-17T18:02:14.9005886Z",
+      "duration": "PT4.3966046S",
+      "trackingId": "e01820ce-ac3b-4977-b758-0a85ab5267d3",
+      "statusCode": "OK",
+      "targetResource": {
+        "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Network/networkSecurityGroups/vm-banking-backend-nsg",
+        "resourceType": "Microsoft.Network/networkSecurityGroups",
+        "resourceName": "vm-banking-backend-nsg"
+      }
+    }
+  },
+  {
+    "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Resources/deployments/CreateVm-MicrosoftWindowsServer.WindowsServer-202-20260518035014/operations/E167CE91A1F4102A",
+    "operationId": "E167CE91A1F4102A",
+    "properties": {
+      "provisioningOperation": "Create",
+      "provisioningState": "Succeeded",
+      "timestamp": "2026-05-17T18:02:14.9005886Z",
+      "duration": "PT5.441483S",
+      "trackingId": "173963a9-30d5-410e-9c90-fd095780a44d",
+      "statusCode": "OK",
+      "targetResource": {
+        "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Network/publicIpAddresses/vm-banking-backend-ip",
+        "resourceType": "Microsoft.Network/publicIpAddresses",
+        "resourceName": "vm-banking-backend-ip"
+      }
+    }
+  },
+  {
+    "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Resources/deployments/CreateVm-MicrosoftWindowsServer.WindowsServer-202-20260518035014/operations/08584225659510275387",
+    "operationId": "08584225659510275387",
+    "properties": {
+      "provisioningOperation": "EvaluateDeploymentOutput",
+      "provisioningState": "Succeeded",
+      "timestamp": "2026-05-17T18:02:20.9272887Z",
+      "duration": "PT1M9.3643194S",
+      "trackingId": "29f38957-09c5-4747-928a-a2c6e2aaca24",
+      "statusCode": "OK"
+    }
+  }
+]

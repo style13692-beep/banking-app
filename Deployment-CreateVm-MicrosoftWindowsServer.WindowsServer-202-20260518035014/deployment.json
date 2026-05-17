@@ -1,0 +1,300 @@
+{
+  "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Resources/deployments/CreateVm-MicrosoftWindowsServer.WindowsServer-202-20260518035014",
+  "name": "CreateVm-MicrosoftWindowsServer.WindowsServer-202-20260518035014",
+  "type": "Microsoft.Resources/deployments",
+  "properties": {
+    "templateHash": "15424159773442324949",
+    "parameters": {
+      "location": {
+        "type": "String",
+        "value": "australiaeast"
+      },
+      "networkInterfaceName3": {
+        "type": "String",
+        "value": "vm-banking-backend336_z3"
+      },
+      "networkSecurityGroupName": {
+        "type": "String",
+        "value": "vm-banking-backend-nsg"
+      },
+      "networkSecurityGroupRules": {
+        "type": "Array",
+        "value": [
+          {
+            "name": "RDP",
+            "properties": {
+              "priority": 300,
+              "protocol": "TCP",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "3389"
+            }
+          },
+          {
+            "name": "HTTP",
+            "properties": {
+              "priority": 320,
+              "protocol": "TCP",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "80"
+            }
+          },
+          {
+            "name": "HTTPS",
+            "properties": {
+              "priority": 340,
+              "protocol": "TCP",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "443"
+            }
+          }
+        ]
+      },
+      "subnetName": {
+        "type": "String",
+        "value": "default"
+      },
+      "virtualNetworkName": {
+        "type": "String",
+        "value": "vm-banking-backend-vnet"
+      },
+      "addressPrefixes": {
+        "type": "Array",
+        "value": [
+          "10.0.0.0/16"
+        ]
+      },
+      "subnets": {
+        "type": "Array",
+        "value": [
+          {
+            "name": "default",
+            "properties": {
+              "addressPrefix": "10.0.0.0/24"
+            }
+          }
+        ]
+      },
+      "publicIpAddressName3": {
+        "type": "String",
+        "value": "vm-banking-backend-ip"
+      },
+      "publicIpAddressType": {
+        "type": "String",
+        "value": "Static"
+      },
+      "publicIpAddressSku": {
+        "type": "String",
+        "value": "Standard"
+      },
+      "pipDeleteOption": {
+        "type": "String",
+        "value": "Detach"
+      },
+      "virtualMachineName": {
+        "type": "String",
+        "value": "vm-banking-backend"
+      },
+      "virtualMachineName3": {
+        "type": "String",
+        "value": "vm-banking-backend"
+      },
+      "virtualMachineComputerName3": {
+        "type": "String",
+        "value": "vm-banking-back"
+      },
+      "virtualMachineRG": {
+        "type": "String",
+        "value": "rg-banking-app"
+      },
+      "osDiskType": {
+        "type": "String",
+        "value": "Premium_LRS"
+      },
+      "osDiskDeleteOption": {
+        "type": "String",
+        "value": "Delete"
+      },
+      "virtualMachineSize": {
+        "type": "String",
+        "value": "Standard_B2als_v2"
+      },
+      "nicDeleteOption": {
+        "type": "String",
+        "value": "Detach"
+      },
+      "hibernationEnabled": {
+        "type": "Bool",
+        "value": false
+      },
+      "adminUsername": {
+        "type": "String",
+        "value": "bankadmin"
+      },
+      "adminPassword": {
+        "type": "SecureString"
+      },
+      "patchMode": {
+        "type": "String",
+        "value": "AutomaticByOS"
+      },
+      "enablePeriodicAssessment": {
+        "type": "String",
+        "value": "ImageDefault"
+      },
+      "enableHotpatching": {
+        "type": "Bool",
+        "value": false
+      },
+      "securityType": {
+        "type": "String",
+        "value": "TrustedLaunch"
+      },
+      "secureBoot": {
+        "type": "Bool",
+        "value": true
+      },
+      "vTPM": {
+        "type": "Bool",
+        "value": true
+      },
+      "vCPUsPerCore": {
+        "type": "String",
+        "value": "1"
+      },
+      "vCPUsAvailable": {
+        "type": "String",
+        "value": "1"
+      },
+      "virtualMachine3Zone": {
+        "type": "String",
+        "value": "3"
+      }
+    },
+    "mode": "Incremental",
+    "debugSetting": {
+      "detailLevel": "None"
+    },
+    "provisioningState": "Succeeded",
+    "timestamp": "2026-05-17T18:03:30.322858Z",
+    "duration": "PT1M15.8773662S",
+    "correlationId": "794ac1d2-60d3-494d-b916-8a502f5ab27e",
+    "providers": [
+      {
+        "namespace": "Microsoft.Network",
+        "resourceTypes": [
+          {
+            "resourceType": "networkInterfaces",
+            "locations": [
+              "australiaeast"
+            ]
+          },
+          {
+            "resourceType": "networkSecurityGroups",
+            "locations": [
+              "australiaeast"
+            ]
+          },
+          {
+            "resourceType": "virtualNetworks",
+            "locations": [
+              "australiaeast"
+            ]
+          },
+          {
+            "resourceType": "publicIpAddresses",
+            "locations": [
+              "australiaeast"
+            ]
+          }
+        ]
+      },
+      {
+        "namespace": "Microsoft.Compute",
+        "resourceTypes": [
+          {
+            "resourceType": "virtualMachines",
+            "locations": [
+              "australiaeast"
+            ]
+          }
+        ]
+      }
+    ],
+    "dependencies": [
+      {
+        "dependsOn": [
+          {
+            "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Network/networkSecurityGroups/vm-banking-backend-nsg",
+            "resourceType": "Microsoft.Network/networkSecurityGroups",
+            "resourceName": "vm-banking-backend-nsg"
+          },
+          {
+            "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Network/virtualNetworks/vm-banking-backend-vnet",
+            "resourceType": "Microsoft.Network/virtualNetworks",
+            "resourceName": "vm-banking-backend-vnet"
+          },
+          {
+            "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Network/publicIpAddresses/vm-banking-backend-ip",
+            "resourceType": "Microsoft.Network/publicIpAddresses",
+            "resourceName": "vm-banking-backend-ip"
+          }
+        ],
+        "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Network/networkInterfaces/vm-banking-backend336_z3",
+        "resourceType": "Microsoft.Network/networkInterfaces",
+        "resourceName": "vm-banking-backend336_z3"
+      },
+      {
+        "dependsOn": [
+          {
+            "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Network/networkInterfaces/vm-banking-backend336_z3",
+            "resourceType": "Microsoft.Network/networkInterfaces",
+            "resourceName": "vm-banking-backend336_z3"
+          }
+        ],
+        "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Compute/virtualMachines/vm-banking-backend",
+        "resourceType": "Microsoft.Compute/virtualMachines",
+        "resourceName": "vm-banking-backend"
+      }
+    ],
+    "outputs": {
+      "adminUsername": {
+        "type": "String",
+        "value": "bankadmin"
+      }
+    },
+    "outputResources": [
+      {
+        "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Compute/virtualMachines/vm-banking-backend"
+      },
+      {
+        "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Network/networkInterfaces/vm-banking-backend336_z3"
+      },
+      {
+        "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Network/networkSecurityGroups/vm-banking-backend-nsg"
+      },
+      {
+        "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Network/publicIpAddresses/vm-banking-backend-ip"
+      },
+      {
+        "id": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourceGroups/rg-banking-app/providers/Microsoft.Network/virtualNetworks/vm-banking-backend-vnet"
+      }
+    ],
+    "validationLevel": "Template"
+  },
+  "tags": {
+    "primaryResourceId": "/subscriptions/978ff48f-d4a8-47eb-b38f-c01fad7b1fa7/resourcegroups/rg-banking-app/providers/Microsoft.Compute/virtualMachines/vm-banking-backend",
+    "provisioningHash": "SolutionProvider"
+  }
+}

@@ -1,692 +1,403 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Dashboard — Lume Bank</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .dashboard-page {
-      background: var(--navy-900);
-      min-height: 100vh;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard — SecureBank</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+    --navy: #0a1628; --navy2: #0f2044; --navy3: #162035;
+    --gold: #c9a84c; --gold2: #f0c674;
+    --white: #ffffff; --gray: #e8edf5; --gray2: #94a3b8; --gray3: #64748b;
+    --text: #f1f5f9; --text2: #cbd5e1;
+    --success: #22c55e; --danger: #ef4444; --warning: #f59e0b;
+    --radius: 12px; --radius-lg: 16px;
+}
+body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--text); min-height: 100vh; }
 
-    /* ── Nav extras for dashboard ── */
-    .dash-nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 clamp(1.5rem, 3vw, 3rem);
-      height: 68px;
-      background: rgba(6,12,26,0.95);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 200;
-    }
+/* Nav */
+nav {
+    background: rgba(10,22,40,0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--gold), var(--gold2)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.nav-logo-name { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: var(--white); }
+.nav-logo-name span { color: var(--gold2); }
+.nav-right { display: flex; align-items: center; gap: 1rem; }
+.nav-user { display: flex; align-items: center; gap: 10px; }
+.nav-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--gold2)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; color: var(--navy); }
+.nav-name { font-size: 0.88rem; font-weight: 500; color: var(--text2); }
+.role-badge { font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.06em; }
+.role-badge.customer { background: rgba(26,86,219,0.2); color: #93c5fd; border: 1px solid rgba(26,86,219,0.3); }
+.role-badge.admin { background: rgba(201,168,76,0.2); color: var(--gold2); border: 1px solid rgba(201,168,76,0.3); }
+.btn-signout { background: transparent; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.4rem 0.9rem; color: var(--gray2); font-family: 'DM Sans', sans-serif; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
+.btn-signout:hover { border-color: rgba(255,255,255,0.3); color: var(--white); }
 
-    .dash-nav__user {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+/* Layout */
+.main { max-width: 1100px; margin: 0 auto; padding: 2rem; }
 
-    .user-avatar {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: rgba(200,146,42,0.15);
-      border: 1.5px solid rgba(200,146,42,0.35);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--gold-300);
-      letter-spacing: 0.02em;
-      flex-shrink: 0;
-    }
+/* Welcome */
+.welcome { margin-bottom: 2rem; }
+.welcome h1 { font-family: 'DM Serif Display', serif; font-size: 1.9rem; color: var(--white); margin-bottom: 0.3rem; }
+.welcome p { color: var(--gray2); font-size: 0.9rem; }
 
-    .user-info {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-    }
+/* Stats grid */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 2rem; }
 
-    .user-info__name {
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--cream);
-      line-height: 1;
-    }
+.stat-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: border-color 0.2s;
+}
+.stat-card:hover { border-color: rgba(255,255,255,0.15); }
+.stat-card.featured { background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(240,198,116,0.08)); border-color: rgba(201,168,76,0.3); }
 
-    .user-info__role {
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.03em;
-    }
+.stat-label { font-size: 0.78rem; font-weight: 600; color: var(--gray2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 6px; }
+.stat-icon { font-size: 14px; }
+.stat-value { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--white); margin-bottom: 0.3rem; }
+.stat-card.featured .stat-value { color: var(--gold2); }
+.stat-sub { font-size: 0.78rem; color: var(--gray3); }
 
-    .signout-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 8px 16px;
-      color: var(--muted);
-      font-family: var(--font-body);
-      font-size: 0.82rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      min-height: 36px;
-    }
+/* Grid */
+.content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+@media (max-width: 768px) { .content-grid { grid-template-columns: 1fr; } }
 
-    .signout-btn:hover {
-      border-color: var(--border-gold);
-      color: var(--cream);
-    }
+/* Panel */
+.panel {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+.panel-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; }
+.panel-title { font-size: 0.95rem; font-weight: 600; color: var(--white); }
+.panel-body { padding: 1.5rem; }
 
-    /* ── Main content ── */
-    .dash-wrap {
-      position: relative;
-      z-index: 1;
-      padding: 100px clamp(1.5rem, 4vw, 3.5rem) 4rem;
-      max-width: 1300px;
-      margin: 0 auto;
-    }
+/* Transactions */
+.tx-list { list-style: none; }
+.tx-item { display: flex; align-items: center; gap: 1rem; padding: 0.85rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.tx-item:last-child { border-bottom: none; padding-bottom: 0; }
+.tx-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.tx-icon.credit { background: rgba(34,197,94,0.15); }
+.tx-icon.debit { background: rgba(239,68,68,0.15); }
+.tx-info { flex: 1; min-width: 0; }
+.tx-desc { font-size: 0.88rem; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tx-date { font-size: 0.75rem; color: var(--gray3); margin-top: 2px; }
+.tx-amount { font-size: 0.92rem; font-weight: 600; white-space: nowrap; }
+.tx-amount.credit { color: var(--success); }
+.tx-amount.debit { color: var(--danger); }
 
-    /* ── Welcome header ── */
-    .dash-header {
-      margin-bottom: 2.5rem;
-      animation: fade-up 0.5s ease;
-    }
+.empty-state { text-align: center; padding: 2rem; color: var(--gray3); font-size: 0.88rem; }
+.empty-icon { font-size: 2rem; margin-bottom: 0.5rem; }
 
-    .dash-header__eyebrow {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--gold-400);
-      margin-bottom: 0.4rem;
-    }
+/* Security info */
+.security-item { display: flex; align-items: center; gap: 10px; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; }
+.security-item:last-child { border-bottom: none; }
+.security-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.security-dot.green { background: var(--success); box-shadow: 0 0 6px rgba(34,197,94,0.5); }
+.security-dot.gold { background: var(--gold2); box-shadow: 0 0 6px rgba(240,198,116,0.4); }
+.security-label { color: var(--text2); flex: 1; }
+.security-status { color: var(--gray3); font-size: 0.75rem; }
 
-    .dash-header__title {
-      font-family: var(--font-display);
-      font-size: clamp(1.8rem, 3vw, 2.6rem);
-      font-weight: 500;
-      color: var(--cream);
-      line-height: 1.15;
-    }
+/* Admin panel */
+.admin-panel { margin-top: 1.5rem; }
+.admin-notice { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25); border-radius: var(--radius); padding: 1rem 1.25rem; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--gold2); margin-bottom: 1rem; }
 
-    .dash-header__title em { font-style: italic; color: var(--gold-300); }
+/* Loading */
+.skeleton { background: rgba(255,255,255,0.06); border-radius: 6px; animation: pulse 1.5s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
 
-    .dash-header__date {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-top: 0.3rem;
-    }
-
-    /* ── Summary cards ── */
-    .dash-summary {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-bottom: 2rem;
-      animation: fade-up 0.5s 0.1s ease both;
-    }
-
-    .summary-card {
-      background: var(--navy-800);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.6rem 1.8rem;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.25s, transform 0.25s;
-    }
-
-    .summary-card:hover {
-      border-color: var(--border-gold);
-      transform: translateY(-2px);
-    }
-
-    .summary-card__glow {
-      position: absolute;
-      top: -20px; right: -20px;
-      width: 120px; height: 120px;
-      background: radial-gradient(circle, rgba(200,146,42,0.07) 0%, transparent 65%);
-      pointer-events: none;
-    }
-
-    .summary-card--primary {
-      border-color: var(--border-gold);
-      background: linear-gradient(135deg, rgba(200,146,42,0.06), var(--navy-800));
-    }
-
-    .summary-card__label {
-      font-size: 0.76rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.6rem;
-    }
-
-    .summary-card__value {
-      font-family: var(--font-display);
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--cream);
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
-
-    .summary-card__change {
-      font-size: 0.78rem;
-      color: #4ade80;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .summary-card__change--neutral { color: var(--muted); }
-
-    /* ── Main grid ── */
-    .dash-grid {
-      display: grid;
-      grid-template-columns: 1fr 360px;
-      gap: 1.5rem;
-      animation: fade-up 0.5s 0.2s ease both;
-    }
-
-    /* ── Panel card ── */
-    .panel {
-      background: var(--navy-800);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-    }
-
-    .panel__head {
-      padding: 1.3rem 1.8rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .panel__title {
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted-lt);
-    }
-
-    .panel__action {
-      font-size: 0.8rem;
-      color: var(--gold-300);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .panel__action:hover { color: var(--gold-200); }
-
-    /* ── Transactions ── */
-    .txn-list { padding: 0.4rem 0; }
-
-    .txn {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem 1.8rem;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      transition: background 0.15s;
-    }
-
-    .txn:last-child { border-bottom: none; }
-    .txn:hover { background: rgba(200,146,42,0.03); }
-
-    .txn__icon {
-      width: 40px; height: 40px;
-      border-radius: 10px;
-      background: var(--navy-700);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-    }
-
-    .txn__info { flex: 1; min-width: 0; }
-
-    .txn__name {
-      font-size: 0.92rem;
-      font-weight: 500;
-      color: var(--cream);
-      margin-bottom: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .txn__date {
-      font-size: 0.76rem;
-      color: var(--muted);
-    }
-
-    .txn__amount {
-      font-size: 0.95rem;
-      font-weight: 600;
-      flex-shrink: 0;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .txn__amount--debit { color: var(--cream); }
-    .txn__amount--credit { color: #4ade80; }
-
-    /* ── Right column ── */
-    .dash-right { display: flex; flex-direction: column; gap: 1.2rem; }
-
-    /* ── Bank card ── */
-    .card-visual {
-      margin: 1.5rem 1.5rem 0;
-      background: linear-gradient(135deg, #162240 0%, #0e1830 60%, #09111e 100%);
-      border: 1px solid rgba(200,146,42,0.2);
-      border-radius: 14px;
-      padding: 1.6rem 1.7rem;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 12px 35px rgba(0,0,0,0.4), inset 0 1px 0 rgba(200,146,42,0.12);
-    }
-
-    .card-visual::before {
-      content: '';
-      position: absolute;
-      top: -50px; right: -50px;
-      width: 180px; height: 180px;
-      background: radial-gradient(circle, rgba(200,146,42,0.1) 0%, transparent 65%);
-      pointer-events: none;
-    }
-
-    .card-visual__top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1.4rem;
-    }
-
-    .card-chip {
-      width: 34px; height: 25px;
-      background: linear-gradient(135deg, var(--gold-300), var(--gold-500));
-      border-radius: 4px;
-    }
-
-    .card-type {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--gold-300);
-    }
-
-    .card-number {
-      font-size: 0.9rem;
-      letter-spacing: 0.2em;
-      color: rgba(244,239,230,0.5);
-      font-weight: 300;
-      margin-bottom: 1.2rem;
-    }
-
-    .card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .card-holder {
-      font-size: 0.78rem;
-      color: var(--muted-lt);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .card-logo {
-      font-family: var(--font-display);
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--gold-400);
-      opacity: 0.7;
-    }
-
-    .card-status {
-      margin: 0.75rem 1.5rem 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 0.8rem 1rem;
-      background: rgba(46,139,87,0.08);
-      border: 1px solid rgba(46,139,87,0.2);
-      border-radius: var(--radius);
-      font-size: 0.8rem;
-      color: rgba(100,200,130,0.85);
-    }
-
-    /* ── Quick actions ── */
-    .quick-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-      padding: 1.2rem 1.5rem;
-    }
-
-    .qa-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 7px;
-      padding: 1.1rem 0.8rem;
-      background: var(--navy-700);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: var(--font-body);
-      min-height: 80px;
-    }
-
-    .qa-btn:hover {
-      border-color: var(--border-gold);
-      background: rgba(200,146,42,0.07);
-      transform: translateY(-2px);
-    }
-
-    .qa-btn__icon { font-size: 1.3rem; }
-
-    .qa-btn__label {
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: var(--muted-lt);
-      text-align: center;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 1000px) {
-      .dash-grid { grid-template-columns: 1fr; }
-      .dash-right { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-    }
-
-    @media (max-width: 768px) {
-      .dash-summary { grid-template-columns: 1fr 1fr; }
-      .dash-right { grid-template-columns: 1fr; }
-      .dash-nav__user .user-info { display: none; }
-    }
-
-    @media (max-width: 540px) {
-      .dash-summary { grid-template-columns: 1fr; }
-      .dash-wrap { padding: 88px 1.2rem 3rem; }
-    }
-  </style>
+/* Quick actions */
+.quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1.5rem; }
+.action-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius); padding: 0.9rem; text-align: center; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; color: var(--text2); font-size: 0.82rem; }
+.action-btn:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.2); color: var(--white); }
+.action-btn .action-icon { font-size: 1.3rem; margin-bottom: 0.3rem; }
+</style>
 </head>
-<body class="dashboard-page">
+<body>
 
-  <div class="page-bg" aria-hidden="true">
-    <div class="page-bg__grid"></div>
-    <div class="page-bg__orb" style="width:600px;height:600px;background:radial-gradient(circle,rgba(200,146,42,0.05) 0%,transparent 65%);top:-120px;right:-100px;border-radius:50%;"></div>
-    <div class="page-bg__orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(17,30,54,0.4) 0%,transparent 70%);bottom:0;left:0;border-radius:50%;"></div>
-  </div>
-
-  <!-- Navigation -->
-  <nav class="dash-nav">
-    <a href="index.html" class="nav__logo" aria-label="Lume Bank home">
-      <div class="nav__emblem">L</div>
-      <span class="nav__wordmark">Lume Bank</span>
+<nav>
+    <a href="#" class="nav-logo">
+        <div class="nav-logo-icon">🏦</div>
+        <span class="nav-logo-name">Secure<span>Bank</span></span>
     </a>
-
-    <div style="display:flex;align-items:center;gap:1rem;">
-      <div class="dash-nav__user">
-        <div class="user-avatar" id="navAvatar" aria-hidden="true">?</div>
-        <div class="user-info">
-          <span class="user-info__name" id="navName">Loading…</span>
-          <span class="user-info__role">Lume Black Account</span>
+    <div class="nav-right">
+        <div class="nav-user">
+            <div class="nav-avatar" id="navAvatar">?</div>
+            <div>
+                <div class="nav-name" id="navName">Loading...</div>
+                <div class="role-badge customer" id="roleBadge">Customer</div>
+            </div>
         </div>
-      </div>
-      <button class="signout-btn" onclick="signOut()">Sign Out</button>
+        <button class="btn-signout" onclick="signOut()">Sign out</button>
     </div>
-  </nav>
+</nav>
 
-  <!-- Dashboard content -->
-  <main class="dash-wrap">
-
-    <!-- Welcome header -->
-    <header class="dash-header">
-      <p class="dash-header__eyebrow">Your Dashboard</p>
-      <h1 class="dash-header__title">
-        Good <em id="timeGreeting">day</em>, <span id="welcomeName">…</span>
-      </h1>
-      <p class="dash-header__date" id="todayDate"></p>
-    </header>
-
-    <!-- Summary cards -->
-    <div class="dash-summary" role="region" aria-label="Account summary">
-      <div class="summary-card summary-card--primary">
-        <div class="summary-card__glow"></div>
-        <div class="summary-card__label">Total Balance</div>
-        <div class="summary-card__value">$12,482.50</div>
-        <div class="summary-card__change">↑ +2.4% this month</div>
-      </div>
-      <div class="summary-card">
-        <div class="summary-card__glow"></div>
-        <div class="summary-card__label">Monthly Spending</div>
-        <div class="summary-card__value">$3,241.00</div>
-        <div class="summary-card__change summary-card__change--neutral">Last 30 days</div>
-      </div>
-      <div class="summary-card">
-        <div class="summary-card__glow"></div>
-        <div class="summary-card__label">Savings Goal</div>
-        <div class="summary-card__value">68%</div>
-        <div class="summary-card__change">↑ On track</div>
-      </div>
+<main class="main">
+    <div class="welcome">
+        <h1 id="welcomeMsg">Welcome back</h1>
+        <p id="welcomeSub">Here's your account overview</p>
     </div>
 
-    <!-- Main grid -->
-    <div class="dash-grid">
-
-      <!-- Transactions panel -->
-      <div class="panel" role="region" aria-label="Recent transactions">
-        <div class="panel__head">
-          <span class="panel__title">Recent Transactions</span>
-          <a href="#" class="panel__action">View all →</a>
+    <div class="stats-grid">
+        <div class="stat-card featured">
+            <div class="stat-label"><span class="stat-icon">💰</span>Available balance</div>
+            <div class="stat-value" id="balance">$0.00</div>
+            <div class="stat-sub" id="accountNumber">ACC···</div>
         </div>
-        <div class="txn-list">
-
-          <div class="txn">
-            <div class="txn__icon" aria-hidden="true">🛒</div>
-            <div class="txn__info">
-              <div class="txn__name">Woolworths</div>
-              <div class="txn__date">Today, 9:42 AM</div>
-            </div>
-            <div class="txn__amount txn__amount--debit" aria-label="Debit $84.20">−$84.20</div>
-          </div>
-
-          <div class="txn">
-            <div class="txn__icon" aria-hidden="true">💼</div>
-            <div class="txn__info">
-              <div class="txn__name">Salary Deposit</div>
-              <div class="txn__date">Yesterday, 12:00 PM</div>
-            </div>
-            <div class="txn__amount txn__amount--credit" aria-label="Credit $4,200.00">+$4,200.00</div>
-          </div>
-
-          <div class="txn">
-            <div class="txn__icon" aria-hidden="true">⚡</div>
-            <div class="txn__info">
-              <div class="txn__name">Origin Energy</div>
-              <div class="txn__date">25 Apr, 8:15 AM</div>
-            </div>
-            <div class="txn__amount txn__amount--debit" aria-label="Debit $142.60">−$142.60</div>
-          </div>
-
-          <div class="txn">
-            <div class="txn__icon" aria-hidden="true">🎵</div>
-            <div class="txn__info">
-              <div class="txn__name">Spotify</div>
-              <div class="txn__date">24 Apr, 12:00 AM</div>
-            </div>
-            <div class="txn__amount txn__amount--debit" aria-label="Debit $11.99">−$11.99</div>
-          </div>
-
-          <div class="txn">
-            <div class="txn__icon" aria-hidden="true">🍜</div>
-            <div class="txn__info">
-              <div class="txn__name">Uber Eats</div>
-              <div class="txn__date">23 Apr, 7:30 PM</div>
-            </div>
-            <div class="txn__amount txn__amount--debit" aria-label="Debit $38.50">−$38.50</div>
-          </div>
-
-          <div class="txn">
-            <div class="txn__icon" aria-hidden="true">🏠</div>
-            <div class="txn__info">
-              <div class="txn__name">Rent Payment</div>
-              <div class="txn__date">22 Apr, 9:00 AM</div>
-            </div>
-            <div class="txn__amount txn__amount--debit" aria-label="Debit $1,650.00">−$1,650.00</div>
-          </div>
-
+        <div class="stat-card">
+            <div class="stat-label"><span class="stat-icon">📅</span>Member since</div>
+            <div class="stat-value" id="memberSince">—</div>
+            <div class="stat-sub">Account active</div>
         </div>
-      </div>
-
-      <!-- Right column -->
-      <div class="dash-right">
-
-        <!-- Card panel -->
-        <div class="panel" role="region" aria-label="Your card">
-          <div class="panel__head">
-            <span class="panel__title">Your Card</span>
-            <a href="#" class="panel__action">Manage →</a>
-          </div>
-
-          <div class="card-visual" role="img" aria-label="Lume Black card">
-            <div class="card-visual__top">
-              <div class="card-chip"></div>
-              <span class="card-type">Lume Black</span>
-            </div>
-            <div class="card-number">•••• •••• •••• 4821</div>
-            <div class="card-footer">
-              <span class="card-holder" id="cardName">— —</span>
-              <span class="card-logo">L</span>
-            </div>
-          </div>
-
-          <div class="card-status">
-            <span aria-hidden="true">🔒</span>
-            <span>Card active · 256-bit encrypted</span>
-          </div>
+        <div class="stat-card">
+            <div class="stat-label"><span class="stat-icon">🔐</span>Last login</div>
+            <div class="stat-value" id="lastLogin">Now</div>
+            <div class="stat-sub">Session secured</div>
         </div>
-
-        <!-- Quick actions panel -->
-        <div class="panel" role="region" aria-label="Quick actions">
-          <div class="panel__head">
-            <span class="panel__title">Quick Actions</span>
-          </div>
-          <div class="quick-actions">
-            <button class="qa-btn" onclick="comingSoon('Send Money')" aria-label="Send money (coming soon)">
-              <span class="qa-btn__icon" aria-hidden="true">↗</span>
-              <span class="qa-btn__label">Send Money</span>
-            </button>
-            <button class="qa-btn" onclick="comingSoon('Receive')" aria-label="Receive money (coming soon)">
-              <span class="qa-btn__icon" aria-hidden="true">↙</span>
-              <span class="qa-btn__label">Receive</span>
-            </button>
-            <button class="qa-btn" onclick="comingSoon('Pay Bill')" aria-label="Pay a bill (coming soon)">
-              <span class="qa-btn__icon" aria-hidden="true">💳</span>
-              <span class="qa-btn__label">Pay a Bill</span>
-            </button>
-            <button class="qa-btn" onclick="comingSoon('Insights')" aria-label="View spending insights (coming soon)">
-              <span class="qa-btn__icon" aria-hidden="true">📊</span>
-              <span class="qa-btn__label">Insights</span>
-            </button>
-          </div>
+        <div class="stat-card">
+            <div class="stat-label"><span class="stat-icon">🛡️</span>Security status</div>
+            <div class="stat-value" style="font-size:1.2rem;color:var(--success);">Active</div>
+            <div class="stat-sub">All systems normal</div>
         </div>
-
-      </div>
-
     </div>
-  </main>
 
-  <script>
-    /* ─────────────────────────────────────────
-       LUME BANK — Dashboard Logic
-    ───────────────────────────────────────── */
+    <div class="content-grid">
+        <!-- Transactions -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">Recent transactions</span>
+                <span style="font-size:0.78rem;color:var(--gray3)">Last 20</span>
+            </div>
+            <div class="panel-body">
+                <ul class="tx-list" id="txList">
+                    <li class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        No transactions yet
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-    const API = 'https://lumebank-project.australiaeast.cloudapp.azure.com';
+        <!-- Right column -->
+        <div>
+            <!-- Security panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Security overview</span>
+                </div>
+                <div class="panel-body" style="padding: 0.5rem 1.5rem;">
+                    <div class="security-item">
+                        <div class="security-dot green"></div>
+                        <span class="security-label">JWT token</span>
+                        <span class="security-status">Valid</span>
+                    </div>
+                    <div class="security-item">
+                        <div class="security-dot green"></div>
+                        <span class="security-label">Azure Key Vault</span>
+                        <span class="security-status">Connected</span>
+                    </div>
+                    <div class="security-item">
+                        <div class="security-dot green"></div>
+                        <span class="security-label">Managed Identity</span>
+                        <span class="security-status">Active</span>
+                    </div>
+                    <div class="security-item">
+                        <div class="security-dot green"></div>
+                        <span class="security-label">RBAC roles</span>
+                        <span class="security-status" id="rbacStatus">Customer</span>
+                    </div>
+                    <div class="security-item">
+                        <div class="security-dot gold"></div>
+                        <span class="security-label">Session expires</span>
+                        <span class="security-status" id="sessionExpiry">24h</span>
+                    </div>
+                </div>
+            </div>
 
-    // Verify session; redirect if not authenticated
-    const token   = localStorage.getItem('lume_token');
-    const userRaw = localStorage.getItem('lume_user');
+            <!-- Quick actions -->
+            <div class="quick-actions">
+                <button class="action-btn" onclick="alert('Feature coming soon')">
+                    <div class="action-icon">💸</div>Transfer
+                </button>
+                <button class="action-btn" onclick="alert('Feature coming soon')">
+                    <div class="action-icon">📥</div>Deposit
+                </button>
+                <button class="action-btn" onclick="alert('Feature coming soon')">
+                    <div class="action-icon">📊</div>Statements
+                </button>
+                <button class="action-btn" onclick="alert('Feature coming soon')">
+                    <div class="action-icon">⚙️</div>Settings
+                </button>
+            </div>
+        </div>
+    </div>
 
-    if (!token || !userRaw) {
-      window.location.href = 'signin.html';
+    <!-- Admin panel (only shown to Admin role) -->
+    <div class="admin-panel" id="adminPanel" style="display:none">
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">⚡ Admin panel</span>
+                <span class="role-badge admin">Admin</span>
+            </div>
+            <div class="panel-body">
+                <div class="admin-notice">
+                    🔐 You have administrator access. Handle user data with care.
+                </div>
+                <button class="action-btn" style="width:100%;text-align:left;display:flex;align-items:center;gap:10px;" onclick="loadAllUsers()">
+                    <span>👥</span> View all registered users
+                </button>
+                <div id="adminUserList" style="margin-top:1rem;"></div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+const API = 'http:/20.5.49.64:3000/api';
+
+
+// Auth guard
+const token = localStorage.getItem('token');
+const userData = JSON.parse(localStorage.getItem('user') || '{}');
+if (!token) window.location.href = 'signin.html';
+
+// Verify token with backend
+async function verifyAndLoad() {
+    try {
+        const res = await fetch(`${API}/auth/verify`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) { signOut(); return; }
+
+        const profile = await fetch(`${API}/user/profile`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const user = await profile.json();
+        renderUser(user);
+
+        const txRes = await fetch(`${API}/user/transactions`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const txData = await txRes.json();
+        renderTransactions(txData.transactions || []);
+    } catch (err) {
+        // Fallback to cached user data if API unreachable
+        renderUser(userData);
+        renderTransactions([]);
+    }
+}
+
+function renderUser(user) {
+    const name = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'User';
+    const initials = (user.firstName?.[0] || '') + (user.lastName?.[0] || '');
+
+    document.getElementById('navAvatar').textContent = initials || '?';
+    document.getElementById('navName').textContent = name;
+    document.getElementById('welcomeMsg').textContent = `Welcome back, ${user.firstName || 'there'} 👋`;
+    document.getElementById('welcomeSub').textContent = `${new Date().toLocaleDateString('en-AU', { weekday:'long', year:'numeric', month:'long', day:'numeric' })}`;
+
+    const role = user.role || 'Customer';
+    const badge = document.getElementById('roleBadge');
+    badge.textContent = role;
+    badge.className = `role-badge ${role.toLowerCase()}`;
+    document.getElementById('rbacStatus').textContent = role;
+
+    document.getElementById('balance').textContent = `$${parseFloat(user.balance || 0).toFixed(2)}`;
+    document.getElementById('accountNumber').textContent = user.accountNumber || 'ACC···';
+
+    if (user.createdAt) {
+        document.getElementById('memberSince').textContent = new Date(user.createdAt).toLocaleDateString('en-AU', { month:'short', year:'numeric' });
+    }
+    if (user.lastLogin) {
+        document.getElementById('lastLogin').textContent = new Date(user.lastLogin).toLocaleTimeString('en-AU', { hour:'2-digit', minute:'2-digit' });
     }
 
-    // Populate user details
-    let user      = {};
-    try { user    = JSON.parse(userRaw); } catch {}
-
-    const firstName = (user.firstName || 'there').trim();
-    const lastName  = (user.lastName  || '').trim();
-    const fullName  = [firstName, lastName].filter(Boolean).join(' ');
-    const initials  = [firstName[0], lastName[0]].filter(Boolean).join('').toUpperCase() || '?';
-
-    document.getElementById('welcomeName').textContent = firstName;
-    document.getElementById('navName').textContent     = fullName;
-    document.getElementById('navAvatar').textContent   = initials;
-    document.getElementById('cardName').textContent    = fullName.toUpperCase();
-
-    // Greeting by time of day
-    const hour = new Date().getHours();
-    document.getElementById('timeGreeting').textContent =
-      hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening';
-
-    // Today's date
-    document.getElementById('todayDate').textContent =
-      new Date().toLocaleDateString('en-AU', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-      }) + ' · Lume Black Account';
-
-    // Periodic health check (non-blocking; logs warning if backend unreachable)
-    fetch(`${API}/api/health`)
-      .then(r => r.ok ? r.json() : null)
-      .then(data => {
-        if (data && data.status !== 'online') {
-          console.warn('[Lume] Backend reports degraded status:', data);
-        }
-      })
-      .catch(() => console.warn('[Lume] Backend health check unreachable — this may be transient.'));
-
-    /* Actions */
-    function signOut() {
-      localStorage.removeItem('lume_token');
-      localStorage.removeItem('lume_user');
-      window.location.href = 'signin.html';
+    // Show admin panel
+    if (role === 'Admin') {
+        document.getElementById('adminPanel').style.display = 'block';
     }
 
-    function comingSoon(feature) {
-      // Friendlier inline notification instead of alert()
-      const btn = event.currentTarget;
-      const original = btn.querySelector('.qa-btn__label').textContent;
-      btn.querySelector('.qa-btn__label').textContent = 'Coming soon!';
-      btn.style.borderColor = 'var(--border-gold)';
-      setTimeout(() => {
-        btn.querySelector('.qa-btn__label').textContent = original;
-        btn.style.borderColor = '';
-      }, 2000);
-    }
-  </script>
+    // Session expiry from JWT
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const exp = new Date(payload.exp * 1000);
+        const diff = Math.round((exp - new Date()) / 3600000);
+        document.getElementById('sessionExpiry').textContent = `${diff}h remaining`;
+    } catch(e) {}
+}
 
+function renderTransactions(txs) {
+    const list = document.getElementById('txList');
+    if (!txs.length) {
+        list.innerHTML = `<li class="empty-state"><div class="empty-icon">📭</div>No transactions yet</li>`;
+        return;
+    }
+    list.innerHTML = txs.map(tx => {
+        const isCredit = tx.type === 'credit' || tx.amount > 0;
+        return `<li class="tx-item">
+            <div class="tx-icon ${isCredit ? 'credit' : 'debit'}">${isCredit ? '↓' : '↑'}</div>
+            <div class="tx-info">
+                <div class="tx-desc">${tx.description || tx.type}</div>
+                <div class="tx-date">${new Date(tx.createdAt).toLocaleDateString('en-AU')}</div>
+            </div>
+            <div class="tx-amount ${isCredit ? 'credit' : 'debit'}">${isCredit ? '+' : '-'}$${Math.abs(tx.amount).toFixed(2)}</div>
+        </li>`;
+    }).join('');
+}
+
+async function loadAllUsers() {
+    const container = document.getElementById('adminUserList');
+    container.innerHTML = '<div style="color:var(--gray2);font-size:0.85rem">Loading users...</div>';
+    try {
+        const res = await fetch(`${API}/admin/users`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (!res.ok) { container.innerHTML = `<div style="color:var(--danger)">${data.error}</div>`; return; }
+        container.innerHTML = `
+            <table style="width:100%;border-collapse:collapse;font-size:0.82rem;margin-top:0.5rem">
+                <thead><tr style="color:var(--gray2);border-bottom:1px solid rgba(255,255,255,0.08)">
+                    <th style="text-align:left;padding:0.5rem 0">Name</th>
+                    <th style="text-align:left;padding:0.5rem 0">Email</th>
+                    <th style="text-align:left;padding:0.5rem 0">Role</th>
+                    <th style="text-align:right;padding:0.5rem 0">Balance</th>
+                </tr></thead>
+                <tbody>${data.users.map(u => `
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                        <td style="padding:0.6rem 0;color:var(--text)">${u.firstName} ${u.lastName}</td>
+                        <td style="padding:0.6rem 0;color:var(--gray2)">${u.email}</td>
+                        <td style="padding:0.6rem 0"><span class="role-badge ${u.role?.toLowerCase()}">${u.role}</span></td>
+                        <td style="padding:0.6rem 0;text-align:right;color:var(--gold2)">$${parseFloat(u.balance||0).toFixed(2)}</td>
+                    </tr>`).join('')}
+                </tbody>
+            </table>`;
+    } catch(e) {
+        container.innerHTML = '<div style="color:var(--danger)">Failed to load users</div>';
+    }
+}
+
+function signOut() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = 'signin.html';
+}
+
+verifyAndLoad();
+</script>
 </body>
 </html>

@@ -1,704 +1,522 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Open an Account — Lume Bank</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .signup-page { background: var(--navy-900); min-height: 100vh; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Create Account — SecureBank</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    .signup-layout {
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      min-height: 100vh;
-      padding-top: 68px;
-    }
+:root {
+    --navy: #0a1628;
+    --navy2: #0f2044;
+    --blue: #1a56db;
+    --blue2: #1e429f;
+    --gold: #c9a84c;
+    --gold2: #f0c674;
+    --white: #ffffff;
+    --gray: #e8edf5;
+    --gray2: #94a3b8;
+    --text: #1e293b;
+    --danger: #dc2626;
+    --success: #16a34a;
+    --radius: 12px;
+}
 
-    /* ── Left aside ── */
-    .signup-aside {
-      background: var(--navy-800);
-      border-right: 1px solid var(--border);
-      padding: 3.5rem 2.2rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      position: sticky;
-      top: 68px;
-      height: calc(100vh - 68px);
-      overflow-y: auto;
-    }
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
 
-    .aside-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 2.5rem;
-    }
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 80% 50% at 20% 20%, rgba(26,86,219,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(201,168,76,0.08) 0%, transparent 50%);
+    pointer-events: none;
+}
 
-    .aside-title {
-      font-family: var(--font-display);
-      font-size: 1.9rem;
-      font-weight: 400;
-      line-height: 1.2;
-      color: var(--cream);
-      margin-bottom: 2rem;
-    }
+.grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+}
 
-    .aside-title em { font-style: italic; color: var(--gold-300); }
+.container {
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    z-index: 1;
+}
 
-    .perks {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 1.4rem;
-      margin-bottom: 2rem;
-    }
+.logo {
+    text-align: center;
+    margin-bottom: 2rem;
+}
 
-    .perk {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-    }
+.logo-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
 
-    .perk__icon {
-      width: 38px; height: 38px;
-      background: rgba(200,146,42,0.1);
-      border: 1px solid rgba(200,146,42,0.2);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
+.logo-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
 
-    .perk__body strong {
-      display: block;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--cream);
-      margin-bottom: 2px;
-    }
+.logo-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    color: var(--white);
+    letter-spacing: -0.02em;
+}
 
-    .perk__body p {
-      font-size: 0.8rem;
-      color: var(--muted);
-      font-weight: 300;
-      line-height: 1.5;
-    }
+.logo-name span { color: var(--gold2); }
 
-    .aside-rating {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 0.85rem 1rem;
-      background: rgba(200,146,42,0.07);
-      border: 1px solid var(--border-gold);
-      border-radius: var(--radius);
-      font-size: 0.8rem;
-      color: var(--muted-lt);
-    }
+.card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 2.5rem;
+    backdrop-filter: blur(20px);
+}
 
-    .aside-rating__stars { color: var(--gold-400); letter-spacing: 1px; }
+.card-header {
+    margin-bottom: 2rem;
+}
 
-    /* ── Form panel ── */
-    .signup-form-panel {
-      padding: 3.5rem clamp(2rem, 5vw, 5rem) 5rem;
-      position: relative;
-      z-index: 1;
-      overflow-y: auto;
-    }
+.card-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+}
 
-    .form-header {
-      margin-bottom: 2.5rem;
-    }
+.card-header p {
+    color: var(--gray2);
+    font-size: 0.9rem;
+}
 
-    .form-header h1 {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 3.5vw, 2.8rem);
-      font-weight: 500;
-      color: var(--cream);
-      line-height: 1.15;
-      margin-bottom: 0.5rem;
-    }
+.card-header p a {
+    color: var(--gold2);
+    text-decoration: none;
+    font-weight: 500;
+}
 
-    .form-header p {
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
+.card-header p a:hover { text-decoration: underline; }
 
-    .form-header a {
-      color: var(--gold-300);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
 
-    /* Form layout */
-    .signup-form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.4rem;
-      max-width: 600px;
-    }
+.form-group {
+    margin-bottom: 1.25rem;
+}
 
-    .form-row-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
+.form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gray2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+}
 
-    /* Section divider */
-    .form-section {
-      padding-top: 0.4rem;
-    }
+.input-wrap {
+    position: relative;
+}
 
-    .form-section-label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--gold-400);
-      margin-bottom: 1.2rem;
-      padding-bottom: 0.6rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+.input-wrap input {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius);
+    padding: 0.8rem 1rem;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+}
 
-    .form-section-label::before {
-      content: '';
-      width: 12px; height: 1px;
-      background: var(--gold-400);
-    }
+.input-wrap input::placeholder { color: rgba(255,255,255,0.25); }
 
-    /* Password toggle */
-    .input-wrap { position: relative; }
-    .input-wrap input { padding-right: 50px; }
+.input-wrap input:focus {
+    border-color: var(--gold);
+    background: rgba(255,255,255,0.09);
+}
 
-    .pw-toggle {
-      position: absolute;
-      right: 0; top: 0; bottom: 0;
-      width: 48px;
-      background: transparent;
-      border: none;
-      color: var(--muted);
-      font-size: 0.95rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: color 0.2s;
-    }
+.input-wrap input.error { border-color: var(--danger); }
+.input-wrap input.valid { border-color: var(--success); }
 
-    .pw-toggle:hover { color: var(--cream); }
+.field-error {
+    font-size: 0.78rem;
+    color: #f87171;
+    margin-top: 0.35rem;
+    display: none;
+}
 
-    /* Account type */
-    .account-types {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.75rem;
-    }
+.field-error.show { display: block; }
 
-    .acct-option { cursor: pointer; }
-    .acct-option input[type="radio"] { display: none; }
+.password-strength {
+    margin-top: 0.5rem;
+    display: none;
+}
 
-    .acct-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      padding: 1.2rem 0.8rem;
-      border: 1.5px solid rgba(255,255,255,0.1);
-      border-radius: var(--radius);
-      background: var(--navy-700);
-      text-align: center;
-      transition: all 0.2s;
-      cursor: pointer;
-    }
+.password-strength.show { display: block; }
 
-    .acct-option input:checked + .acct-card {
-      border-color: var(--gold-400);
-      background: rgba(200,146,42,0.08);
-      box-shadow: 0 0 0 3px rgba(200,146,42,0.12);
-    }
+.strength-bars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 4px;
+}
 
-    .acct-card:hover { border-color: var(--border-gold); }
+.strength-bar {
+    height: 3px;
+    flex: 1;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.1);
+    transition: background 0.3s;
+}
 
-    .acct-card__icon { font-size: 1.4rem; }
+.strength-label {
+    font-size: 0.75rem;
+    color: var(--gray2);
+}
 
-    .acct-card__name {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--cream);
-    }
+.requirements {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-top: 0.5rem;
+    display: none;
+}
 
-    .acct-card__desc {
-      font-size: 0.74rem;
-      color: var(--muted);
-    }
+.requirements.show { display: block; }
 
-    /* Checkbox */
-    .terms-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 0.9rem;
-      color: var(--muted-lt);
-      cursor: pointer;
-      line-height: 1.55;
-    }
+.req-item {
+    font-size: 0.78rem;
+    color: var(--gray2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+}
 
-    .terms-row input[type="checkbox"] { display: none; }
+.req-item:last-child { margin-bottom: 0; }
+.req-item .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: background 0.2s; }
+.req-item.met { color: #4ade80; }
+.req-item.met .dot { background: #4ade80; }
 
-    .checkmark {
-      flex-shrink: 0;
-      width: 20px; height: 20px;
-      border: 1.5px solid rgba(255,255,255,0.15);
-      border-radius: 4px;
-      background: var(--navy-700);
-      margin-top: 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
+.terms {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+    font-size: 0.82rem;
+    color: var(--gray2);
+    line-height: 1.5;
+}
 
-    .terms-row input:checked ~ .checkmark {
-      background: var(--gold-400);
-      border-color: var(--gold-400);
-    }
+.terms input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    accent-color: var(--gold);
+    flex-shrink: 0;
+    cursor: pointer;
+}
 
-    .terms-row input:checked ~ .checkmark::after {
-      content: '✓';
-      font-size: 0.72rem;
-      color: var(--navy-900);
-      font-weight: 700;
-    }
+.terms a { color: var(--gold2); text-decoration: none; }
+.terms a:hover { text-decoration: underline; }
 
-    .terms-row a { color: var(--gold-300); text-decoration: underline; text-underline-offset: 2px; }
+.btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    border: none;
+    border-radius: var(--radius);
+    padding: 0.9rem;
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    letter-spacing: 0.02em;
+}
 
-    /* Submit */
-    .submit-btn {
-      width: 100%;
-      max-width: 600px;
-      justify-content: center;
-      padding: 15px 24px;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: var(--radius);
-      min-height: 54px;
-      letter-spacing: 0.01em;
-      gap: 10px;
-    }
+.btn-primary:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+.btn-primary:active:not(:disabled) { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+.btn-primary.loading {
+    position: relative;
+    color: transparent;
+}
 
-    .btn-spinner {
-      display: none;
-      width: 18px; height: 18px;
-      border: 2px solid rgba(0,0,0,0.25);
-      border-top-color: var(--navy-900);
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      flex-shrink: 0;
-    }
+.btn-primary.loading::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--navy);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
 
-    @keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-    .submit-btn.loading .btn-text { display: none; }
-    .submit-btn.loading .btn-spinner { display: block; }
+.alert {
+    padding: 0.9rem 1rem;
+    border-radius: var(--radius);
+    font-size: 0.88rem;
+    margin-bottom: 1.25rem;
+    display: none;
+    align-items: center;
+    gap: 8px;
+}
 
-    /* Notice */
-    .notice {
-      display: none;
-      max-width: 600px;
-      align-items: flex-start;
-      gap: 12px;
-      margin-top: 1.5rem;
-      padding: 1.2rem 1.4rem;
-      border-radius: var(--radius);
-      animation: fade-up 0.4s ease;
-    }
+.alert.show { display: flex; }
+.alert.error { background: rgba(220,38,38,0.15); border: 1px solid rgba(220,38,38,0.3); color: #fca5a5; }
+.alert.success { background: rgba(22,163,74,0.15); border: 1px solid rgba(22,163,74,0.3); color: #86efac; }
 
-    .notice--success {
-      background: rgba(46,139,87,0.1);
-      border: 1px solid rgba(46,139,87,0.3);
-    }
+.security-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.3);
+}
 
-    .notice--error {
-      background: rgba(192,57,43,0.1);
-      border: 1px solid rgba(192,57,43,0.3);
-    }
-
-    .notice.show { display: flex; }
-
-    .notice__icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
-
-    .notice strong {
-      display: block;
-      font-size: 0.92rem;
-      color: var(--cream);
-      margin-bottom: 3px;
-    }
-
-    .notice p {
-      font-size: 0.85rem;
-      color: var(--muted-lt);
-      line-height: 1.55;
-    }
-
-    /* Date input */
-    input[type="date"]::-webkit-calendar-picker-indicator {
-      filter: invert(0.5) sepia(1) hue-rotate(5deg) saturate(2);
-      opacity: 0.6;
-      cursor: pointer;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 1100px) {
-      .signup-layout { grid-template-columns: 280px 1fr; }
-    }
-
-    @media (max-width: 900px) {
-      .signup-layout { grid-template-columns: 1fr; }
-      .signup-aside {
-        position: static;
-        height: auto;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-        padding: 2.5rem 2rem;
-      }
-      .perks { display: none; }
-    }
-
-    @media (max-width: 640px) {
-      .form-row-2 { grid-template-columns: 1fr; }
-      .account-types { grid-template-columns: 1fr; }
-      .acct-card {
-        flex-direction: row;
-        text-align: left;
-        gap: 12px;
-        padding: 1rem 1.1rem;
-        justify-content: flex-start;
-      }
-      .acct-card__desc { display: none; }
-      .signup-form-panel { padding: 2rem 1.2rem 4rem; }
-    }
-  </style>
+.security-badge svg { width: 14px; height: 14px; }
+</style>
 </head>
-<body class="signup-page">
+<body>
+<div class="grid-bg"></div>
+<div class="container">
+    <div class="logo">
+        <a href="index.html" class="logo-mark">
+            <div class="logo-icon">🏦</div>
+            <span class="logo-name">Secure<span>Bank</span></span>
+        </a>
+    </div>
 
-  <div class="page-bg" aria-hidden="true">
-    <div class="page-bg__grid"></div>
-    <div class="page-bg__orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(200,146,42,0.07) 0%,transparent 65%);top:-100px;right:-100px;border-radius:50%;"></div>
-    <div class="page-bg__orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(17,30,54,0.5) 0%,transparent 70%);bottom:0;left:0;border-radius:50%;"></div>
-  </div>
-
-  <!-- Navigation -->
-  <nav class="nav">
-    <a href="index.html" class="nav__logo" aria-label="Lume Bank home">
-      <div class="nav__emblem">L</div>
-      <span class="nav__wordmark">Lume Bank</span>
-    </a>
-    <span style="font-size:0.82rem;color:var(--muted);letter-spacing:0.05em;">New account setup</span>
-    <a href="index.html" class="btn btn--ghost">← Back</a>
-  </nav>
-
-  <main class="signup-layout">
-
-    <!-- Left aside -->
-    <aside class="signup-aside">
-      <div class="aside-logo">
-        <div class="nav__emblem">L</div>
-        <span class="nav__wordmark" style="font-size:1.1rem;">Lume Bank</span>
-      </div>
-
-      <h2 class="aside-title">Join <em>180,000+</em> people<br/>banking smarter.</h2>
-
-      <ul class="perks" aria-label="Benefits of Lume Bank">
-        <li class="perk">
-          <div class="perk__icon" aria-hidden="true">⚡</div>
-          <div class="perk__body">
-            <strong>Up and running in minutes</strong>
-            <p>No paperwork. No branch visit required.</p>
-          </div>
-        </li>
-        <li class="perk">
-          <div class="perk__icon" aria-hidden="true">🔒</div>
-          <div class="perk__body">
-            <strong>Bank-grade security</strong>
-            <p>Your data is encrypted end-to-end, always.</p>
-          </div>
-        </li>
-        <li class="perk">
-          <div class="perk__icon" aria-hidden="true">💳</div>
-          <div class="perk__body">
-            <strong>Free Lume Black card</strong>
-            <p>Physical and virtual card included, no annual fee.</p>
-          </div>
-        </li>
-        <li class="perk">
-          <div class="perk__icon" aria-hidden="true">🌍</div>
-          <div class="perk__body">
-            <strong>Zero international fees</strong>
-            <p>Send money globally at no cost to you.</p>
-          </div>
-        </li>
-      </ul>
-
-      <div class="aside-rating">
-        <span class="aside-rating__stars" aria-label="5 stars">★★★★★</span>
-        <span>Rated 4.9/5 by our customers</span>
-      </div>
-    </aside>
-
-    <!-- Form panel -->
-    <section class="signup-form-panel">
-      <div class="form-header">
-        <p class="section-eyebrow">Step 1 of 1</p>
-        <h1>Create your<br/><em style="font-style:italic;color:var(--gold-300);">Lume account.</em></h1>
-        <p>Already have an account? <a href="signin.html">Sign in here</a></p>
-      </div>
-
-      <form class="signup-form" id="signupForm" onsubmit="handleSubmit(event)" novalidate>
-
-        <!-- Personal details -->
-        <div class="form-section">
-          <div class="form-section-label">Personal Details</div>
-
-          <div class="form-row-2" style="margin-bottom:1.2rem;">
-            <div class="field">
-              <label for="firstName">First Name</label>
-              <input type="text" id="firstName" name="firstName" placeholder="e.g. Alex" autocomplete="given-name" required />
-            </div>
-            <div class="field">
-              <label for="lastName">Last Name</label>
-              <input type="text" id="lastName" name="lastName" placeholder="e.g. Morgan" autocomplete="family-name" required />
-            </div>
-          </div>
-
-          <div class="field" style="margin-bottom:1.2rem;">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required />
-          </div>
-
-          <div class="form-row-2">
-            <div class="field">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" name="phone" placeholder="+61 400 000 000" autocomplete="tel" />
-            </div>
-            <div class="field">
-              <label for="dob">Date of Birth</label>
-              <input type="date" id="dob" name="dob" autocomplete="bday" />
-            </div>
-          </div>
+    <div class="card">
+        <div class="card-header">
+            <h1>Create account</h1>
+            <p>Already have an account? <a href="signin.html">Sign in</a></p>
         </div>
 
-        <!-- Address -->
-        <div class="form-section">
-          <div class="form-section-label">Residential Address</div>
-          <div class="field">
-            <label for="address">Street Address</label>
-            <input type="text" id="address" name="address" placeholder="123 Main Street, Sydney NSW 2000" autocomplete="street-address" />
-          </div>
+        <div class="alert error" id="alertError">
+            <span>⚠</span><span id="alertErrorMsg"></span>
+        </div>
+        <div class="alert success" id="alertSuccess">
+            <span>✓</span><span id="alertSuccessMsg"></span>
         </div>
 
-        <!-- Security -->
-        <div class="form-section">
-          <div class="form-section-label">Set Your Password</div>
-          <div class="form-row-2">
-            <div class="field">
-              <label for="password">Password</label>
-              <div class="input-wrap">
-                <input type="password" id="password" name="password" placeholder="Minimum 8 characters" autocomplete="new-password" required />
-                <button type="button" class="pw-toggle" onclick="togglePw('password', this)" aria-label="Show password">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                </button>
-              </div>
+        <form id="signupForm" novalidate>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>First name</label>
+                    <div class="input-wrap">
+                        <input type="text" id="firstName" placeholder="John" autocomplete="given-name"/>
+                    </div>
+                    <div class="field-error" id="firstNameError">Required</div>
+                </div>
+                <div class="form-group">
+                    <label>Last name</label>
+                    <div class="input-wrap">
+                        <input type="text" id="lastName" placeholder="Smith" autocomplete="family-name"/>
+                    </div>
+                    <div class="field-error" id="lastNameError">Required</div>
+                </div>
             </div>
-            <div class="field">
-              <label for="confirmPassword">Confirm Password</label>
-              <div class="input-wrap">
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repeat password" autocomplete="new-password" required />
-                <button type="button" class="pw-toggle" onclick="togglePw('confirmPassword', this)" aria-label="Show password">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                </button>
-              </div>
+
+            <div class="form-group">
+                <label>Email address</label>
+                <div class="input-wrap">
+                    <input type="email" id="email" placeholder="john@example.com" autocomplete="email"/>
+                </div>
+                <div class="field-error" id="emailError">Enter a valid email</div>
             </div>
-          </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <div class="input-wrap">
+                    <input type="password" id="password" placeholder="Min. 8 characters" autocomplete="new-password"/>
+                </div>
+                <div class="password-strength" id="strengthWrap">
+                    <div class="strength-bars">
+                        <div class="strength-bar" id="bar1"></div>
+                        <div class="strength-bar" id="bar2"></div>
+                        <div class="strength-bar" id="bar3"></div>
+                        <div class="strength-bar" id="bar4"></div>
+                    </div>
+                    <div class="strength-label" id="strengthLabel">Too weak</div>
+                </div>
+                <div class="requirements show" id="requirements">
+                    <div class="req-item" id="req-length"><span class="dot"></span>At least 8 characters</div>
+                    <div class="req-item" id="req-upper"><span class="dot"></span>One uppercase letter</div>
+                    <div class="req-item" id="req-number"><span class="dot"></span>One number</div>
+                    <div class="req-item" id="req-special"><span class="dot"></span>One special character</div>
+                </div>
+                <div class="field-error" id="passwordError">Password is too weak</div>
+            </div>
+
+            <div class="form-group">
+                <label>Confirm password</label>
+                <div class="input-wrap">
+                    <input type="password" id="confirmPassword" placeholder="Repeat password" autocomplete="new-password"/>
+                </div>
+                <div class="field-error" id="confirmError">Passwords do not match</div>
+            </div>
+
+            <div class="terms">
+                <input type="checkbox" id="terms"/>
+                <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand this is a university demonstration project.</label>
+            </div>
+
+            <button type="submit" class="btn-primary" id="submitBtn">Create account</button>
+        </form>
+
+        <div class="security-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Secured with Azure Key Vault & JWT
         </div>
+    </div>
+</div>
 
-        <!-- Account type -->
-        <div class="form-section">
-          <div class="form-section-label">Account Type</div>
-          <div class="account-types" role="radiogroup" aria-label="Select account type">
-            <label class="acct-option">
-              <input type="radio" name="accountType" value="personal" checked />
-              <span class="acct-card">
-                <span class="acct-card__icon" aria-hidden="true">👤</span>
-                <span class="acct-card__name">Personal</span>
-                <span class="acct-card__desc">Everyday banking</span>
-              </span>
-            </label>
-            <label class="acct-option">
-              <input type="radio" name="accountType" value="savings" />
-              <span class="acct-card">
-                <span class="acct-card__icon" aria-hidden="true">💰</span>
-                <span class="acct-card__name">Savings</span>
-                <span class="acct-card__desc">Grow your money</span>
-              </span>
-            </label>
-            <label class="acct-option">
-              <input type="radio" name="accountType" value="business" />
-              <span class="acct-card">
-                <span class="acct-card__icon" aria-hidden="true">🏢</span>
-                <span class="acct-card__name">Business</span>
-                <span class="acct-card__desc">For companies</span>
-              </span>
-            </label>
-          </div>
-        </div>
+<script>
+const API = 'http:/20.5.49.64:3000/api';
 
-        <!-- Terms -->
-        <label class="terms-row">
-          <input type="checkbox" id="terms" name="terms" />
-          <span class="checkmark"></span>
-          <span>
-            I have read and agree to Lume Bank's
-            <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
-            I confirm I am 18 years of age or older.
-          </span>
-        </label>
+// Password strength
+const pwInput = document.getElementById('password');
+pwInput.addEventListener('input', () => {
+    const val = pwInput.value;
+    document.getElementById('strengthWrap').classList.toggle('show', val.length > 0);
 
-        <!-- Submit -->
-        <button type="submit" class="btn btn--primary submit-btn" id="submitBtn">
-          <span class="btn-text">Create My Account →</span>
-          <span class="btn-spinner"></span>
-        </button>
+    const checks = {
+        length: val.length >= 8,
+        upper: /[A-Z]/.test(val),
+        number: /[0-9]/.test(val),
+        special: /[^A-Za-z0-9]/.test(val)
+    };
 
-        <p style="font-size:0.78rem;color:var(--muted);max-width:600px;line-height:1.5;">
-          🔒 Your information is encrypted and never sold. By opening an account, you agree our <a href="#" style="color:var(--gold-300);">standard terms</a> apply.
-        </p>
+    document.getElementById('req-length').classList.toggle('met', checks.length);
+    document.getElementById('req-upper').classList.toggle('met', checks.upper);
+    document.getElementById('req-number').classList.toggle('met', checks.number);
+    document.getElementById('req-special').classList.toggle('met', checks.special);
 
-      </form>
+    const score = Object.values(checks).filter(Boolean).length;
+    const colors = ['', '#ef4444', '#f97316', '#eab308', '#22c55e'];
+    const labels = ['', 'Too weak', 'Weak', 'Good', 'Strong'];
+    const bars = ['bar1','bar2','bar3','bar4'];
+    bars.forEach((id, i) => {
+        document.getElementById(id).style.background = i < score ? colors[score] : 'rgba(255,255,255,0.1)';
+    });
+    document.getElementById('strengthLabel').textContent = labels[score] || '';
+    document.getElementById('strengthLabel').style.color = colors[score] || '';
+});
 
-      <!-- Notice -->
-      <div class="notice" id="notice" role="alert" aria-live="assertive">
-        <span class="notice__icon" id="noticeIcon" aria-hidden="true">🎉</span>
-        <div>
-          <strong id="noticeTitle">Success</strong>
-          <p id="noticeMsg"></p>
-        </div>
-      </div>
+function showError(id, msg) {
+    const el = document.getElementById(id);
+    if (msg) el.textContent = msg;
+    el.classList.add('show');
+    document.getElementById(id.replace('Error','') === id ? id : id.replace('Error','')).classList?.add('error');
+}
+function clearError(id) { document.getElementById(id).classList.remove('show'); }
 
-    </section>
-  </main>
+function showAlert(type, msg) {
+    document.getElementById('alertError').classList.remove('show');
+    document.getElementById('alertSuccess').classList.remove('show');
+    if (type === 'error') {
+        document.getElementById('alertErrorMsg').textContent = msg;
+        document.getElementById('alertError').classList.add('show');
+    } else {
+        document.getElementById('alertSuccessMsg').textContent = msg;
+        document.getElementById('alertSuccess').classList.add('show');
+    }
+}
 
-  <script>
-    /* ─────────────────────────────────────────
-       LUME BANK — Sign Up Logic
-       API: Azure backend
-    ───────────────────────────────────────── */
+document.getElementById('signupForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    ['firstNameError','lastNameError','emailError','passwordError','confirmError'].forEach(clearError);
 
-    const API = "https://lumebank-project.australiaeast.cloudapp.azure.com";
-    async function handleSubmit(e) {
-      e.preventDefault();
-      hideNotice();
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName = document.getElementById('lastName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const terms = document.getElementById('terms').checked;
 
-      const pw      = document.getElementById('password').value;
-      const pwConf  = document.getElementById('confirmPassword').value;
-      const terms   = document.getElementById('terms').checked;
+    let valid = true;
+    if (!firstName) { showError('firstNameError', 'First name is required'); valid = false; }
+    if (!lastName) { showError('lastNameError', 'Last name is required'); valid = false; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('emailError', 'Enter a valid email'); valid = false; }
+    if (password.length < 8) { showError('passwordError', 'Password must be at least 8 characters'); valid = false; }
+    if (password !== confirmPassword) { showError('confirmError', 'Passwords do not match'); valid = false; }
+    if (!terms) { showAlert('error', 'Please accept the terms to continue'); valid = false; }
+    if (!valid) return;
 
-      // Client-side validation
-      if (!document.getElementById('firstName').value.trim()) {
-        return showNotice('error', '⚠️', 'Missing information', 'Please enter your first name.');
-      }
-      if (!document.getElementById('email').value.trim()) {
-        return showNotice('error', '⚠️', 'Missing information', 'Please enter your email address.');
-      }
-      if (pw.length < 8) {
-        return showNotice('error', '⚠️', 'Password too short', 'Your password must be at least 8 characters long.');
-      }
-      if (pw !== pwConf) {
-        return showNotice('error', '⚠️', 'Passwords do not match', 'Please make sure both password fields contain the same password.');
-      }
-      if (!terms) {
-        return showNotice('error', '⚠️', 'Agreement required', 'Please read and agree to our Terms of Service and Privacy Policy to continue.');
-      }
+    const btn = document.getElementById('submitBtn');
+    btn.classList.add('loading');
+    btn.disabled = true;
 
-      const btn     = document.getElementById('submitBtn');
-      btn.disabled  = true;
-      btn.classList.add('loading');
-
-      const payload = {
-        firstName:   document.getElementById('firstName').value.trim(),
-        lastName:    document.getElementById('lastName').value.trim(),
-        email:       document.getElementById('email').value.trim(),
-        password:    pw,
-        phone:       document.getElementById('phone').value.trim(),
-        dob:         document.getElementById('dob').value,
-        address:     document.getElementById('address').value.trim(),
-        accountType: document.querySelector('input[name="accountType"]:checked').value
-      };
-
-      try {
-        const res  = await fetch(`${API}/api/register`, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(payload)
+    try {
+        const res = await fetch(`${API}/auth/signup`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password, firstName, lastName })
         });
         const data = await res.json();
 
-        if (data.success || res.ok) {
-          // Store session
-          const userObj = data.user || {
-            firstName: payload.firstName,
-            lastName:  payload.lastName
-          };
-          localStorage.setItem('lume_token', data.token);
-          localStorage.setItem('lume_user',  JSON.stringify(userObj));
-
-          showNotice('success', '🎉', 'Account created!', 'Welcome to Lume Bank. Redirecting you to your dashboard…');
-          setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
-        } else {
-          showNotice('error', '❌', 'Registration failed', data.message || 'Something went wrong. Please try again or contact support.');
-          btn.disabled = false;
-          btn.classList.remove('loading');
+        if (!res.ok) {
+            showAlert('error', data.error || 'Registration failed');
+            return;
         }
-      } catch (err) {
-        showNotice('error', '⚠️', 'Connection error', 'Could not reach Lume servers. Please check your internet connection and try again.');
-        btn.disabled = false;
+
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        showAlert('success', 'Account created! Redirecting to dashboard...');
+        setTimeout(() => window.location.href = 'dashboard.html', 1500);
+    } catch (err) {
+        showAlert('error', 'Cannot connect to server. Please try again.');
+    } finally {
         btn.classList.remove('loading');
-      }
+        btn.disabled = false;
     }
-
-    function showNotice(type, icon, title, msg) {
-      const el = document.getElementById('notice');
-      el.className = `notice notice--${type} show`;
-      document.getElementById('noticeIcon').textContent  = icon;
-      document.getElementById('noticeTitle').textContent = title;
-      document.getElementById('noticeMsg').textContent   = msg;
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    function hideNotice() {
-      document.getElementById('notice').className = 'notice';
-    }
-
-    function togglePw(fieldId, btn) {
-      const inp  = document.getElementById(fieldId);
-      const show = inp.type === 'password';
-      inp.type   = show ? 'text' : 'password';
-      btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
-      btn.style.color = show ? 'var(--gold-300)' : '';
-    }
-  </script>
-
+});
+</script>
 </body>
 </html>

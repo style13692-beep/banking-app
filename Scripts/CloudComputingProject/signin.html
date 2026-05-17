@@ -1,849 +1,522 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sign In — Lume Bank</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    /* ── Page layout ── */
-    .signin-page {
-      background: var(--navy-900);
-      min-height: 100vh;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Create Account — SecureBank</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    .signin-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 100vh;
-      padding-top: 68px;
-    }
+:root {
+    --navy: #0a1628;
+    --navy2: #0f2044;
+    --blue: #1a56db;
+    --blue2: #1e429f;
+    --gold: #c9a84c;
+    --gold2: #f0c674;
+    --white: #ffffff;
+    --gray: #e8edf5;
+    --gray2: #94a3b8;
+    --text: #1e293b;
+    --danger: #dc2626;
+    --success: #16a34a;
+    --radius: 12px;
+}
 
-    /* ── Left panel ── */
-    .signin-left {
-      background: linear-gradient(160deg, var(--navy-800) 0%, var(--navy-950) 100%);
-      border-right: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 4rem clamp(2rem, 4vw, 4rem);
-      position: relative;
-      overflow: hidden;
-    }
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
 
-    .signin-left::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold-400), transparent);
-      opacity: 0.5;
-    }
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 80% 50% at 20% 20%, rgba(26,86,219,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(201,168,76,0.08) 0%, transparent 50%);
+    pointer-events: none;
+}
 
-    .signin-left__orb {
-      position: absolute;
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(200,146,42,0.07) 0%, transparent 65%);
-      top: -100px; left: -100px;
-      border-radius: 50%;
-      pointer-events: none;
-    }
+.grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+}
 
-    .signin-brand {
-      position: relative;
-      z-index: 1;
-      max-width: 360px;
-      width: 100%;
-    }
+.container {
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    z-index: 1;
+}
 
-    .brand-lockup {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 2.5rem;
-    }
+.logo {
+    text-align: center;
+    margin-bottom: 2rem;
+}
 
-    .brand-lockup .nav__emblem {
-      width: 44px; height: 44px;
-      font-size: 1.2rem;
-    }
+.logo-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
 
-    .brand-lockup-text {}
+.logo-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
 
-    .brand-lockup-text .brand-name {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--cream);
-      line-height: 1;
-    }
+.logo-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    color: var(--white);
+    letter-spacing: -0.02em;
+}
 
-    .brand-lockup-text .brand-sub {
-      font-size: 0.74rem;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-      margin-top: 2px;
-    }
+.logo-name span { color: var(--gold2); }
 
-    .brand-headline {
-      font-family: var(--font-display);
-      font-size: clamp(2.5rem, 4vw, 3.4rem);
-      font-weight: 400;
-      line-height: 1.1;
-      color: var(--cream);
-      margin-bottom: 1rem;
-    }
+.card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 2.5rem;
+    backdrop-filter: blur(20px);
+}
 
-    .brand-headline em {
-      font-style: italic;
-      color: var(--gold-300);
-    }
+.card-header {
+    margin-bottom: 2rem;
+}
 
-    .brand-desc {
-      font-size: 0.95rem;
-      color: var(--muted-lt);
-      line-height: 1.65;
-      font-weight: 300;
-      margin-bottom: 2.5rem;
-    }
+.card-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+}
 
-    /* Floating card */
-    .brand-card {
-      width: 100%;
-      max-width: 300px;
-      height: 180px;
-      background: linear-gradient(135deg, #162240 0%, #0e1a30 100%);
-      border: 1px solid rgba(200,146,42,0.25);
-      border-radius: 16px;
-      padding: 1.5rem 1.6rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(200,146,42,0.12);
-      position: relative;
-      overflow: hidden;
-      animation: card-float 6s ease-in-out infinite;
-      margin-bottom: 1.5rem;
-    }
+.card-header p {
+    color: var(--gray2);
+    font-size: 0.9rem;
+}
 
-    .brand-card::before {
-      content: '';
-      position: absolute;
-      top: -50px; right: -50px;
-      width: 150px; height: 150px;
-      background: radial-gradient(circle, rgba(200,146,42,0.1) 0%, transparent 65%);
-    }
+.card-header p a {
+    color: var(--gold2);
+    text-decoration: none;
+    font-weight: 500;
+}
 
-    @keyframes card-float {
-      0%, 100% { transform: translateY(0) rotate(-1deg); }
-      50%       { transform: translateY(-8px) rotate(-1deg); }
-    }
+.card-header p a:hover { text-decoration: underline; }
 
-    .bc-chip {
-      width: 34px; height: 25px;
-      background: linear-gradient(135deg, var(--gold-300), var(--gold-500));
-      border-radius: 4px;
-    }
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
 
-    .bc-label {
-      position: absolute;
-      top: 1.5rem; right: 1.6rem;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--gold-300);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
+.form-group {
+    margin-bottom: 1.25rem;
+}
 
-    .bc-number {
-      font-size: 0.88rem;
-      letter-spacing: 0.2em;
-      color: rgba(244,239,230,0.5);
-      font-weight: 300;
-    }
+.form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gray2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+}
 
-    .bc-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.75rem;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
+.input-wrap {
+    position: relative;
+}
 
-    .brand-trust {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 0.9rem 1.1rem;
-      background: rgba(46,139,87,0.08);
-      border: 1px solid rgba(46,139,87,0.2);
-      border-radius: var(--radius);
-      font-size: 0.8rem;
-      color: rgba(100,200,130,0.85);
-    }
+.input-wrap input {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius);
+    padding: 0.8rem 1rem;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+}
 
-    /* ── Right panel (form) ── */
-    .signin-right {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 3rem clamp(2rem, 5vw, 5rem);
-      overflow-y: auto;
-    }
+.input-wrap input::placeholder { color: rgba(255,255,255,0.25); }
 
-    .signin-form-wrap {
-      width: 100%;
-      max-width: 420px;
-      animation: fade-up 0.5s ease forwards;
-    }
+.input-wrap input:focus {
+    border-color: var(--gold);
+    background: rgba(255,255,255,0.09);
+}
 
-    .signin-form-wrap h1 {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 3vw, 2.6rem);
-      font-weight: 500;
-      color: var(--cream);
-      line-height: 1.15;
-      margin-bottom: 0.5rem;
-    }
+.input-wrap input.error { border-color: var(--danger); }
+.input-wrap input.valid { border-color: var(--success); }
 
-    .signin-form-wrap .form-sub {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-bottom: 2rem;
-    }
+.field-error {
+    font-size: 0.78rem;
+    color: #f87171;
+    margin-top: 0.35rem;
+    display: none;
+}
 
-    .signin-form-wrap .form-sub a {
-      color: var(--gold-300);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
+.field-error.show { display: block; }
 
-    /* Tab switcher */
-    .tab-switcher {
-      display: flex;
-      background: var(--navy-700);
-      border: 1px solid var(--border);
-      border-radius: 50px;
-      padding: 4px;
-      margin-bottom: 1.8rem;
-      width: 100%;
-    }
+.password-strength {
+    margin-top: 0.5rem;
+    display: none;
+}
 
-    .tab-btn {
-      flex: 1;
-      padding: 10px 16px;
-      border-radius: 50px;
-      font-family: var(--font-body);
-      font-size: 0.88rem;
-      font-weight: 500;
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      min-height: 44px;
-    }
+.password-strength.show { display: block; }
 
-    .tab-btn--active {
-      background: var(--navy-900);
-      color: var(--gold-300);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
+.strength-bars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 4px;
+}
 
-    .tab-btn:hover:not(.tab-btn--active) { color: var(--cream); }
+.strength-bar {
+    height: 3px;
+    flex: 1;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.1);
+    transition: background 0.3s;
+}
 
-    .tab-panel { display: block; }
-    .tab-panel--hidden { display: none; }
+.strength-label {
+    font-size: 0.75rem;
+    color: var(--gray2);
+}
 
-    /* Form fields */
-    .auth-form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-    }
+.requirements {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-top: 0.5rem;
+    display: none;
+}
 
-    .field-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
+.requirements.show { display: block; }
 
-    /* Password toggle */
-    .input-wrap { position: relative; }
-    .input-wrap input { padding-right: 50px; }
+.req-item {
+    font-size: 0.78rem;
+    color: var(--gray2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+}
 
-    .pw-toggle {
-      position: absolute;
-      right: 0; top: 0; bottom: 0;
-      width: 48px;
-      background: transparent;
-      border: none;
-      color: var(--muted);
-      font-size: 1rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: color 0.2s;
-    }
+.req-item:last-child { margin-bottom: 0; }
+.req-item .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: background 0.2s; }
+.req-item.met { color: #4ade80; }
+.req-item.met .dot { background: #4ade80; }
 
-    .pw-toggle:hover { color: var(--cream); }
+.terms {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+    font-size: 0.82rem;
+    color: var(--gray2);
+    line-height: 1.5;
+}
 
-    /* Field extras */
-    .field-extras {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 4px;
-    }
+.terms input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    accent-color: var(--gold);
+    flex-shrink: 0;
+    cursor: pointer;
+}
 
-    .field-extras label {
-      font-size: 0.82rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--muted-lt);
-    }
+.terms a { color: var(--gold2); text-decoration: none; }
+.terms a:hover { text-decoration: underline; }
 
-    .field-extras a {
-      font-size: 0.8rem;
-      color: var(--gold-300);
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
+.btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    border: none;
+    border-radius: var(--radius);
+    padding: 0.9rem;
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    letter-spacing: 0.02em;
+}
 
-    /* Remember me */
-    .remember-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.9rem;
-      color: var(--muted-lt);
-      cursor: pointer;
-    }
+.btn-primary:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+.btn-primary:active:not(:disabled) { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    .remember-row input[type="checkbox"] { display: none; }
+.btn-primary.loading {
+    position: relative;
+    color: transparent;
+}
 
-    .checkmark {
-      width: 20px; height: 20px;
-      border: 1.5px solid rgba(255,255,255,0.15);
-      border-radius: 4px;
-      background: var(--navy-700);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: all 0.2s;
-    }
+.btn-primary.loading::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--navy);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
 
-    .remember-row input:checked ~ .checkmark {
-      background: var(--gold-400);
-      border-color: var(--gold-400);
-    }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-    .remember-row input:checked ~ .checkmark::after {
-      content: '✓';
-      font-size: 0.72rem;
-      color: var(--navy-900);
-      font-weight: 700;
-    }
+.alert {
+    padding: 0.9rem 1rem;
+    border-radius: var(--radius);
+    font-size: 0.88rem;
+    margin-bottom: 1.25rem;
+    display: none;
+    align-items: center;
+    gap: 8px;
+}
 
-    /* Submit */
-    .submit-btn {
-      width: 100%;
-      justify-content: center;
-      padding: 15px;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: var(--radius);
-      min-height: 52px;
-      letter-spacing: 0.01em;
-      position: relative;
-    }
+.alert.show { display: flex; }
+.alert.error { background: rgba(220,38,38,0.15); border: 1px solid rgba(220,38,38,0.3); color: #fca5a5; }
+.alert.success { background: rgba(22,163,74,0.15); border: 1px solid rgba(22,163,74,0.3); color: #86efac; }
 
-    .submit-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none !important;
-    }
+.security-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.3);
+}
 
-    .submit-btn .btn-spinner {
-      display: none;
-      width: 18px; height: 18px;
-      border: 2px solid rgba(0,0,0,0.3);
-      border-top-color: var(--navy-900);
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .submit-btn.loading .btn-label { display: none; }
-    .submit-btn.loading .btn-spinner { display: block; }
-
-    /* Divider */
-    .or-divider {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      color: var(--muted);
-      font-size: 0.78rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .or-divider::before,
-    .or-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    /* Microsoft btn */
-    .ms-btn {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      padding: 14px 18px;
-      background: var(--navy-700);
-      border: 1.5px solid rgba(255,255,255,0.1);
-      border-radius: var(--radius);
-      color: var(--cream);
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      min-height: 52px;
-    }
-
-    .ms-btn:hover {
-      border-color: var(--border-gold);
-      background: rgba(200,146,42,0.06);
-    }
-
-    /* Status messages */
-    .status-msg {
-      display: none;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 13px 16px;
-      border-radius: var(--radius);
-      font-size: 0.88rem;
-      margin-top: 1rem;
-      line-height: 1.5;
-    }
-
-    .status-msg--error {
-      background: rgba(192,57,43,0.1);
-      border: 1px solid rgba(192,57,43,0.3);
-      color: #ff9090;
-    }
-
-    .status-msg--success {
-      background: rgba(200,146,42,0.08);
-      border: 1px solid rgba(200,146,42,0.25);
-      color: var(--gold-200);
-    }
-
-    .status-msg.show { display: flex; animation: fade-up 0.3s ease; }
-
-    /* Microsoft info box */
-    .ms-info {
-      padding: 1.2rem 1.4rem;
-      background: rgba(24,40,68,0.6);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      font-size: 0.88rem;
-      color: var(--muted-lt);
-      line-height: 1.6;
-    }
-
-    .ms-info strong { color: var(--cream); display: block; margin-bottom: 4px; }
-
-    /* Footer note */
-    .form-footer-note {
-      margin-top: 2rem;
-      text-align: center;
-      font-size: 0.76rem;
-      color: var(--muted);
-      opacity: 0.6;
-      line-height: 1.5;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 900px) {
-      .signin-layout { grid-template-columns: 1fr; }
-      .signin-left {
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-        padding: 3rem 2rem;
-      }
-      .brand-card { display: none; }
-    }
-
-    @media (max-width: 480px) {
-      .signin-right { padding: 2rem 1.2rem; }
-    }
-  </style>
+.security-badge svg { width: 14px; height: 14px; }
+</style>
 </head>
-<body class="signin-page">
-
-  <div class="page-bg" aria-hidden="true">
-    <div class="page-bg__grid"></div>
-    <div class="page-bg__orb" style="width:500px;height:500px;background:radial-gradient(circle, rgba(200,146,42,0.07) 0%, transparent 65%);top:-100px;right:-100px;"></div>
-  </div>
-
-  <!-- Navigation -->
-  <nav class="nav">
-    <a href="index.html" class="nav__logo" aria-label="Lume Bank home">
-      <div class="nav__emblem">L</div>
-      <span class="nav__wordmark">Lume Bank</span>
-    </a>
-    <span style="font-size:0.82rem;color:var(--muted);letter-spacing:0.05em;">Private Banking &amp; Wealth</span>
-    <a href="signup.html" class="btn btn--ghost">Open Account</a>
-  </nav>
-
-  <main class="signin-layout">
-
-    <!-- Left Brand Panel -->
-    <div class="signin-left" aria-hidden="true">
-      <div class="signin-left__orb"></div>
-      <div class="signin-brand">
-        <div class="brand-lockup">
-          <div class="nav__emblem" style="width:44px;height:44px;font-size:1.2rem;">L</div>
-          <div class="brand-lockup-text">
-            <div class="brand-name">Lume Bank</div>
-            <div class="brand-sub">Private Banking &amp; Wealth Management</div>
-          </div>
-        </div>
-
-        <h2 class="brand-headline">Welcome<br/>back.</h2>
-        <p class="brand-desc">Secure access to your accounts, cards, and financial tools — all in one place.</p>
-
-        <div class="brand-card">
-          <div class="bc-chip"></div>
-          <span class="bc-label">Lume Black</span>
-          <div class="bc-number">•••• •••• •••• 4291</div>
-          <div class="bc-footer">
-            <span>Private Client</span>
-            <span style="font-family:var(--font-display);font-size:1.1rem;color:var(--gold-400);">L</span>
-          </div>
-        </div>
-
-        <div class="brand-trust">
-          <span>🔒</span>
-          <span>256-bit encrypted · APRA regulated · FDIC insured</span>
-        </div>
-      </div>
+<body>
+<div class="grid-bg"></div>
+<div class="container">
+    <div class="logo">
+        <a href="index.html" class="logo-mark">
+            <div class="logo-icon">🏦</div>
+            <span class="logo-name">Secure<span>Bank</span></span>
+        </a>
     </div>
 
-    <!-- Right Form Panel -->
-    <div class="signin-right">
-      <div class="signin-form-wrap">
-
-        <h1>Sign in to<br/>your account</h1>
-        <p class="form-sub">
-          New to Lume? <a href="signup.html">Open a free account</a>
-        </p>
-
-        <!-- Tab switcher -->
-        <div class="tab-switcher" role="tablist" aria-label="Sign in method">
-          <button
-            class="tab-btn tab-btn--active"
-            role="tab"
-            aria-selected="true"
-            aria-controls="panel-email"
-            id="tab-email"
-            onclick="switchTab('email')">
-            Email &amp; Password
-          </button>
-          <button
-            class="tab-btn"
-            role="tab"
-            aria-selected="false"
-            aria-controls="panel-ms"
-            id="tab-ms"
-            onclick="switchTab('microsoft')">
-            Microsoft
-          </button>
+    <div class="card">
+        <div class="card-header">
+            <h1>Create account</h1>
+            <p>Already have an account? <a href="signin.html">Sign in</a></p>
         </div>
 
-        <!-- Email tab -->
-        <div id="panel-email" class="tab-panel" role="tabpanel" aria-labelledby="tab-email">
-          <form class="auth-form" id="emailForm" onsubmit="handleEmailSignIn(event)" novalidate>
+        <div class="alert error" id="alertError">
+            <span>⚠</span><span id="alertErrorMsg"></span>
+        </div>
+        <div class="alert success" id="alertSuccess">
+            <span>✓</span><span id="alertSuccessMsg"></span>
+        </div>
 
-            <div class="field">
-              <label for="email">Email Address</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="you@example.com"
-                autocomplete="email"
-                required
-              />
+        <form id="signupForm" novalidate>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>First name</label>
+                    <div class="input-wrap">
+                        <input type="text" id="firstName" placeholder="John" autocomplete="given-name"/>
+                    </div>
+                    <div class="field-error" id="firstNameError">Required</div>
+                </div>
+                <div class="form-group">
+                    <label>Last name</label>
+                    <div class="input-wrap">
+                        <input type="text" id="lastName" placeholder="Smith" autocomplete="family-name"/>
+                    </div>
+                    <div class="field-error" id="lastNameError">Required</div>
+                </div>
             </div>
 
-            <div class="field">
-              <div class="field-extras">
-                <label for="password">Password</label>
-                <a href="#" tabindex="-1">Forgot password?</a>
-              </div>
-              <div class="input-wrap">
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  placeholder="Enter your password"
-                  autocomplete="current-password"
-                  required
-                />
-                <button type="button" class="pw-toggle" onclick="togglePw('password', this)" aria-label="Show or hide password">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                </button>
-              </div>
+            <div class="form-group">
+                <label>Email address</label>
+                <div class="input-wrap">
+                    <input type="email" id="email" placeholder="john@example.com" autocomplete="email"/>
+                </div>
+                <div class="field-error" id="emailError">Enter a valid email</div>
             </div>
 
-            <label class="remember-row">
-              <input type="checkbox" id="rememberMe" />
-              <span class="checkmark"></span>
-              Keep me signed in for 30 days
-            </label>
-
-            <button type="submit" class="btn btn--primary submit-btn" id="emailSubmitBtn">
-              <span class="btn-label">Access My Account →</span>
-              <span class="btn-spinner"></span>
-            </button>
-
-          </form>
-        </div>
-
-        <!-- Microsoft tab -->
-        <div id="panel-ms" class="tab-panel tab-panel--hidden" role="tabpanel" aria-labelledby="tab-ms">
-          <div class="auth-form">
-            <div class="ms-info">
-              <strong>Sign in with Microsoft</strong>
-              Use your <strong>stud.mit.edu.au</strong> university account or any Microsoft / Outlook account. You will be redirected to Microsoft's secure login page.
+            <div class="form-group">
+                <label>Password</label>
+                <div class="input-wrap">
+                    <input type="password" id="password" placeholder="Min. 8 characters" autocomplete="new-password"/>
+                </div>
+                <div class="password-strength" id="strengthWrap">
+                    <div class="strength-bars">
+                        <div class="strength-bar" id="bar1"></div>
+                        <div class="strength-bar" id="bar2"></div>
+                        <div class="strength-bar" id="bar3"></div>
+                        <div class="strength-bar" id="bar4"></div>
+                    </div>
+                    <div class="strength-label" id="strengthLabel">Too weak</div>
+                </div>
+                <div class="requirements show" id="requirements">
+                    <div class="req-item" id="req-length"><span class="dot"></span>At least 8 characters</div>
+                    <div class="req-item" id="req-upper"><span class="dot"></span>One uppercase letter</div>
+                    <div class="req-item" id="req-number"><span class="dot"></span>One number</div>
+                    <div class="req-item" id="req-special"><span class="dot"></span>One special character</div>
+                </div>
+                <div class="field-error" id="passwordError">Password is too weak</div>
             </div>
 
-            <button type="button" class="ms-btn" onclick="signInWithMicrosoft()">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 21 21">
-                <rect x="1"  y="1"  width="9" height="9" fill="#f25022"/>
-                <rect x="11" y="1"  width="9" height="9" fill="#7fba00"/>
-                <rect x="1"  y="11" width="9" height="9" fill="#00a4ef"/>
-                <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
-              </svg>
-              Continue with Microsoft
-            </button>
+            <div class="form-group">
+                <label>Confirm password</label>
+                <div class="input-wrap">
+                    <input type="password" id="confirmPassword" placeholder="Repeat password" autocomplete="new-password"/>
+                </div>
+                <div class="field-error" id="confirmError">Passwords do not match</div>
+            </div>
 
-            <p style="font-size:0.76rem;color:var(--muted);text-align:center;">
-              Powered by Microsoft Entra ID (Azure Active Directory)
-            </p>
-          </div>
+            <div class="terms">
+                <input type="checkbox" id="terms"/>
+                <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand this is a university demonstration project.</label>
+            </div>
+
+            <button type="submit" class="btn-primary" id="submitBtn">Create account</button>
+        </form>
+
+        <div class="security-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Secured with Azure Key Vault & JWT
         </div>
-
-        <!-- Status messages -->
-        <div id="errorMsg" class="status-msg status-msg--error" role="alert" aria-live="assertive">
-          <span style="flex-shrink:0;margin-top:1px;">⚠</span>
-          <span id="errorText"></span>
-        </div>
-        <div id="successMsg" class="status-msg status-msg--success" role="status" aria-live="polite">
-          <span style="flex-shrink:0;margin-top:1px;">✓</span>
-          <span id="successText"></span>
-        </div>
-
-        <p class="form-footer-note">
-          Protected by 256-bit encryption · Microsoft Entra ID<br/>
-          Your data is never sold or shared with third parties.
-        </p>
-
-      </div>
     </div>
-  </main>
+</div>
 
-  <script>
-    /* ─────────────────────────────────────────
-       LUME BANK — Sign In Logic
-       Config is fetched from the backend — no secrets hardcoded here.
-    ───────────────────────────────────────── */
+<script>
+const API = 'http:/20.5.49.64:3000/api';
 
-    const API = 'https://lumebank-project.australiaeast.cloudapp.azure.com';
+// Password strength
+const pwInput = document.getElementById('password');
+pwInput.addEventListener('input', () => {
+    const val = pwInput.value;
+    document.getElementById('strengthWrap').classList.toggle('show', val.length > 0);
 
-    // These are populated from /api/config on load
-    let TENANT_ID   = null;
-    let CLIENT_ID   = null;
-    let REDIRECT_URI = null;
+    const checks = {
+        length: val.length >= 8,
+        upper: /[A-Z]/.test(val),
+        number: /[0-9]/.test(val),
+        special: /[^A-Za-z0-9]/.test(val)
+    };
 
-    async function loadConfig() {
-      try {
-        const res  = await fetch(`${API}/api/config`);
-        const data = await res.json();
-        TENANT_ID    = data.tenantId;
-        CLIENT_ID    = data.clientId;
-        REDIRECT_URI = data.redirectUri;
-      } catch {
-        console.error('Could not load config from server.');
-      }
-    }
+    document.getElementById('req-length').classList.toggle('met', checks.length);
+    document.getElementById('req-upper').classList.toggle('met', checks.upper);
+    document.getElementById('req-number').classList.toggle('met', checks.number);
+    document.getElementById('req-special').classList.toggle('met', checks.special);
 
-    window.addEventListener('load', async () => {
-      await loadConfig();
-
-      const params = new URLSearchParams(window.location.search);
-      const code   = params.get('code');
-
-      if (code) {
-        window.history.replaceState({}, document.title, window.location.pathname);
-        localStorage.removeItem('lume_token');
-        localStorage.removeItem('lume_user');
-        switchTab('microsoft');
-        handleAzureCallback(code);
-        return;
-      }
-
-      if (localStorage.getItem('lume_token')) {
-        window.location.href = 'dashboard.html';
-      }
+    const score = Object.values(checks).filter(Boolean).length;
+    const colors = ['', '#ef4444', '#f97316', '#eab308', '#22c55e'];
+    const labels = ['', 'Too weak', 'Weak', 'Good', 'Strong'];
+    const bars = ['bar1','bar2','bar3','bar4'];
+    bars.forEach((id, i) => {
+        document.getElementById(id).style.background = i < score ? colors[score] : 'rgba(255,255,255,0.1)';
     });
+    document.getElementById('strengthLabel').textContent = labels[score] || '';
+    document.getElementById('strengthLabel').style.color = colors[score] || '';
+});
 
-    /* Tab switching */
-    function switchTab(tab) {
-      const isEmail = tab === 'email';
-      document.getElementById('panel-email').classList.toggle('tab-panel--hidden', !isEmail);
-      document.getElementById('panel-ms').classList.toggle('tab-panel--hidden',  isEmail);
-      document.getElementById('tab-email').classList.toggle('tab-btn--active', isEmail);
-      document.getElementById('tab-ms').classList.toggle('tab-btn--active', !isEmail);
-      document.getElementById('tab-email').setAttribute('aria-selected', isEmail);
-      document.getElementById('tab-ms').setAttribute('aria-selected', !isEmail);
-      hideMessages();
+function showError(id, msg) {
+    const el = document.getElementById(id);
+    if (msg) el.textContent = msg;
+    el.classList.add('show');
+    document.getElementById(id.replace('Error','') === id ? id : id.replace('Error','')).classList?.add('error');
+}
+function clearError(id) { document.getElementById(id).classList.remove('show'); }
+
+function showAlert(type, msg) {
+    document.getElementById('alertError').classList.remove('show');
+    document.getElementById('alertSuccess').classList.remove('show');
+    if (type === 'error') {
+        document.getElementById('alertErrorMsg').textContent = msg;
+        document.getElementById('alertError').classList.add('show');
+    } else {
+        document.getElementById('alertSuccessMsg').textContent = msg;
+        document.getElementById('alertSuccess').classList.add('show');
     }
+}
 
-    /* Microsoft: redirect to Azure AD */
-    function signInWithMicrosoft() {
-      if (!TENANT_ID || !CLIENT_ID || !REDIRECT_URI) {
-        showError('Configuration not loaded yet. Please wait a moment and try again.');
-        return;
-      }
-      const url = new URL(`https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/authorize`);
-      url.searchParams.set('client_id',     CLIENT_ID);
-      url.searchParams.set('response_type', 'code');
-      url.searchParams.set('redirect_uri',  REDIRECT_URI);
-      url.searchParams.set('scope',         'openid profile email User.Read');
-      url.searchParams.set('response_mode', 'query');
-      window.location.href = url.toString();
-    }
+document.getElementById('signupForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    ['firstNameError','lastNameError','emailError','passwordError','confirmError'].forEach(clearError);
 
-    /* Microsoft: exchange code for token via our backend */
-    async function handleAzureCallback(code) {
-      showSuccess('Completing Microsoft sign-in — please wait…');
-      try {
-        const res  = await fetch(`${API}/api/auth/azure`, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify({ code })
-        });
-        const data = await res.json();
-        if (!res.ok) { showError(data.error || 'Microsoft sign-in failed. Please try again.'); return; }
-        storeAndRedirect(data);
-      } catch {
-        showError('Could not connect to Lume servers. Please check your connection and try again.');
-      }
-    }
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName = document.getElementById('lastName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const terms = document.getElementById('terms').checked;
 
-    /* Email/password sign-in */
-    async function handleEmailSignIn(e) {
-      e.preventDefault();
-      hideMessages();
+    let valid = true;
+    if (!firstName) { showError('firstNameError', 'First name is required'); valid = false; }
+    if (!lastName) { showError('lastNameError', 'Last name is required'); valid = false; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('emailError', 'Enter a valid email'); valid = false; }
+    if (password.length < 8) { showError('passwordError', 'Password must be at least 8 characters'); valid = false; }
+    if (password !== confirmPassword) { showError('confirmError', 'Passwords do not match'); valid = false; }
+    if (!terms) { showAlert('error', 'Please accept the terms to continue'); valid = false; }
+    if (!valid) return;
 
-      const emailVal = document.getElementById('email').value.trim();
-      const pwVal    = document.getElementById('password').value;
+    const btn = document.getElementById('submitBtn');
+    btn.classList.add('loading');
+    btn.disabled = true;
 
-      if (!emailVal || !pwVal) {
-        showError('Please enter your email address and password.');
-        return;
-      }
-
-      const btn = document.getElementById('emailSubmitBtn');
-      btn.disabled = true;
-      btn.classList.add('loading');
-
-      try {
-        const res  = await fetch(`${API}/api/login`, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify({ username: emailVal, password: pwVal })
+    try {
+        const res = await fetch(`${API}/auth/signup`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password, firstName, lastName })
         });
         const data = await res.json();
 
         if (!res.ok) {
-          showError(data.error || 'Incorrect email or password. Please try again.');
-          btn.disabled = false;
-          btn.classList.remove('loading');
-          return;
+            showAlert('error', data.error || 'Registration failed');
+            return;
         }
 
-        storeAndRedirect(data, emailVal);
-      } catch {
-        showError('Could not connect to Lume servers. Please check your internet connection.');
-        btn.disabled = false;
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        showAlert('success', 'Account created! Redirecting to dashboard...');
+        setTimeout(() => window.location.href = 'dashboard.html', 1500);
+    } catch (err) {
+        showAlert('error', 'Cannot connect to server. Please try again.');
+    } finally {
         btn.classList.remove('loading');
-      }
+        btn.disabled = false;
     }
-
-    /* Store session and navigate */
-    function storeAndRedirect(data, fallbackEmail) {
-      let firstName = 'Account';
-      let lastName  = '';
-
-      if (data.username) {
-        const parts = data.username.split(' ');
-        firstName   = parts[0] || firstName;
-        lastName    = parts.slice(1).join(' ') || '';
-      } else if (fallbackEmail) {
-        firstName = fallbackEmail.split('@')[0];
-      }
-
-      localStorage.setItem('lume_token', data.token);
-      localStorage.setItem('lume_user', JSON.stringify({ firstName, lastName }));
-      window.location.href = 'dashboard.html';
-    }
-
-    /* Password visibility toggle */
-    function togglePw(fieldId, btn) {
-      const inp = document.getElementById(fieldId);
-      const show = inp.type === 'password';
-      inp.type = show ? 'text' : 'password';
-      btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
-      btn.style.color = show ? 'var(--gold-300)' : '';
-    }
-
-    /* Message helpers */
-    function showError(msg) {
-      document.getElementById('errorText').textContent = msg;
-      document.getElementById('errorMsg').classList.add('show');
-      document.getElementById('successMsg').classList.remove('show');
-    }
-
-    function showSuccess(msg) {
-      document.getElementById('successText').textContent = msg;
-      document.getElementById('successMsg').classList.add('show');
-      document.getElementById('errorMsg').classList.remove('show');
-    }
-
-    function hideMessages() {
-      document.getElementById('errorMsg').classList.remove('show');
-      document.getElementById('successMsg').classList.remove('show');
-    }
-  </script>
-
+});
+</script>
 </body>
 </html>
