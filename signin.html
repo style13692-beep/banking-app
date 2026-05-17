@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sign In — SecureBank</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --navy: #0a1628;
+    --navy2: #0f2044;
+    --blue: #1a56db;
+    --blue2: #1e429f;
+    --gold: #c9a84c;
+    --gold2: #f0c674;
+    --white: #ffffff;
+    --gray: #e8edf5;
+    --gray2: #94a3b8;
+    --text: #1e293b;
+    --danger: #dc2626;
+    --success: #16a34a;
+    --radius: 12px;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 80% 50% at 20% 20%, rgba(26,86,219,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(201,168,76,0.08) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+}
+
+.container {
+    width: 100%;
+    max-width: 440px;
+    position: relative;
+    z-index: 1;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.logo-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.logo-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.logo-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    color: var(--white);
+    letter-spacing: -0.02em;
+}
+
+.logo-name span { color: var(--gold2); }
+
+.card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 2.5rem;
+    backdrop-filter: blur(20px);
+}
+
+.card-header {
+    margin-bottom: 2rem;
+}
+
+.card-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+}
+
+.card-header p {
+    color: var(--gray2);
+    font-size: 0.9rem;
+}
+
+.card-header p a {
+    color: var(--gold2);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.card-header p a:hover { text-decoration: underline; }
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gray2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+}
+
+.input-wrap {
+    position: relative;
+}
+
+.input-wrap input {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius);
+    padding: 0.8rem 1rem;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.input-wrap input::placeholder { color: rgba(255,255,255,0.25); }
+
+.input-wrap input:focus {
+    border-color: var(--gold);
+    background: rgba(255,255,255,0.09);
+}
+
+.input-wrap input.error { border-color: var(--danger); }
+
+.field-error {
+    font-size: 0.78rem;
+    color: #f87171;
+    margin-top: 0.35rem;
+    display: none;
+}
+
+.field-error.show { display: block; }
+
+.forgot {
+    text-align: right;
+    margin-top: 0.4rem;
+}
+
+.forgot a {
+    font-size: 0.8rem;
+    color: var(--gray2);
+    text-decoration: none;
+}
+
+.forgot a:hover { color: var(--gold2); }
+
+.btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    border: none;
+    border-radius: var(--radius);
+    padding: 0.9rem;
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    letter-spacing: 0.02em;
+    margin-top: 0.5rem;
+}
+
+.btn-primary:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+.btn-primary:active:not(:disabled) { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-primary.loading {
+    position: relative;
+    color: transparent;
+}
+
+.btn-primary.loading::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--navy);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.alert {
+    padding: 0.9rem 1rem;
+    border-radius: var(--radius);
+    font-size: 0.88rem;
+    margin-bottom: 1.25rem;
+    display: none;
+    align-items: center;
+    gap: 8px;
+}
+
+.alert.show { display: flex; }
+.alert.error { background: rgba(220,38,38,0.15); border: 1px solid rgba(220,38,38,0.3); color: #fca5a5; }
+.alert.success { background: rgba(22,163,74,0.15); border: 1px solid rgba(22,163,74,0.3); color: #86efac; }
+
+.security-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.3);
+}
+
+.security-badge svg { width: 14px; height: 14px; }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="container">
+    <div class="logo">
+        <a href="index.html" class="logo-mark">
+            <div class="logo-icon">🏦</div>
+            <span class="logo-name">Secure<span>Bank</span></span>
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h1>Welcome back</h1>
+            <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+        </div>
+
+        <div class="alert error" id="alertError">
+            <span>⚠</span><span id="alertErrorMsg"></span>
+        </div>
+        <div class="alert success" id="alertSuccess">
+            <span>✓</span><span id="alertSuccessMsg"></span>
+        </div>
+
+        <form id="signinForm" novalidate>
+            <div class="form-group">
+                <label>Email address</label>
+                <div class="input-wrap">
+                    <input type="email" id="email" placeholder="john@example.com" autocomplete="email"/>
+                </div>
+                <div class="field-error" id="emailError">Enter a valid email</div>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <div class="input-wrap">
+                    <input type="password" id="password" placeholder="Your password" autocomplete="current-password"/>
+                </div>
+                <div class="field-error" id="passwordError">Password is required</div>
+                <div class="forgot"><a href="#">Forgot password?</a></div>
+            </div>
+
+            <button type="submit" class="btn-primary" id="submitBtn">Sign in</button>
+        </form>
+
+        <div class="security-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Secured with Azure Key Vault & JWT
+        </div>
+    </div>
+</div>
+
+<script>
+const API = 'https://20.5.49.64/api';
+
+function showError(id, msg) {
+    const el = document.getElementById(id);
+    if (msg) el.textContent = msg;
+    el.classList.add('show');
+}
+
+function clearError(id) {
+    document.getElementById(id).classList.remove('show');
+}
+
+function showAlert(type, msg) {
+    document.getElementById('alertError').classList.remove('show');
+    document.getElementById('alertSuccess').classList.remove('show');
+    if (type === 'error') {
+        document.getElementById('alertErrorMsg').textContent = msg;
+        document.getElementById('alertError').classList.add('show');
+    } else {
+        document.getElementById('alertSuccessMsg').textContent = msg;
+        document.getElementById('alertSuccess').classList.add('show');
+    }
+}
+
+document.getElementById('signinForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    ['emailError', 'passwordError'].forEach(clearError);
+
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    let valid = true;
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showError('emailError', 'Enter a valid email');
+        valid = false;
+    }
+    if (!password) {
+        showError('passwordError', 'Password is required');
+        valid = false;
+    }
+    if (!valid) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    try {
+        const res = await fetch(`${API}/auth/signin`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+            showAlert('error', data.error || 'Invalid email or password');
+            return;
+        }
+
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        showAlert('success', 'Signed in! Redirecting to dashboard...');
+        setTimeout(() => window.location.href = 'dashboard.html', 1000);
+    } catch (err) {
+        showAlert('error', 'Cannot connect to server. Please try again.');
+    } finally {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+    }
+});
+</script>
+</body>
+</html>
