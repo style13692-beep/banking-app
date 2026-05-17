@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Create Account — SecureBank</title>
+<title>Sign In — SecureBank</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -58,7 +58,7 @@ body::before {
 
 .container {
     width: 100%;
-    max-width: 480px;
+    max-width: 440px;
     position: relative;
     z-index: 1;
 }
@@ -127,12 +127,6 @@ body::before {
 
 .card-header p a:hover { text-decoration: underline; }
 
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
-
 .form-group {
     margin-bottom: 1.25rem;
 }
@@ -172,7 +166,6 @@ body::before {
 }
 
 .input-wrap input.error { border-color: var(--danger); }
-.input-wrap input.valid { border-color: var(--success); }
 
 .field-error {
     font-size: 0.78rem;
@@ -183,78 +176,18 @@ body::before {
 
 .field-error.show { display: block; }
 
-.password-strength {
-    margin-top: 0.5rem;
-    display: none;
+.forgot {
+    text-align: right;
+    margin-top: 0.4rem;
 }
 
-.password-strength.show { display: block; }
-
-.strength-bars {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 4px;
-}
-
-.strength-bar {
-    height: 3px;
-    flex: 1;
-    border-radius: 2px;
-    background: rgba(255,255,255,0.1);
-    transition: background 0.3s;
-}
-
-.strength-label {
-    font-size: 0.75rem;
+.forgot a {
+    font-size: 0.8rem;
     color: var(--gray2);
+    text-decoration: none;
 }
 
-.requirements {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    margin-top: 0.5rem;
-    display: none;
-}
-
-.requirements.show { display: block; }
-
-.req-item {
-    font-size: 0.78rem;
-    color: var(--gray2);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 4px;
-}
-
-.req-item:last-child { margin-bottom: 0; }
-.req-item .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: background 0.2s; }
-.req-item.met { color: #4ade80; }
-.req-item.met .dot { background: #4ade80; }
-
-.terms {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 1.5rem;
-    font-size: 0.82rem;
-    color: var(--gray2);
-    line-height: 1.5;
-}
-
-.terms input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    margin-top: 2px;
-    accent-color: var(--gold);
-    flex-shrink: 0;
-    cursor: pointer;
-}
-
-.terms a { color: var(--gold2); text-decoration: none; }
-.terms a:hover { text-decoration: underline; }
+.forgot a:hover { color: var(--gold2); }
 
 .btn-primary {
     width: 100%;
@@ -269,6 +202,7 @@ body::before {
     cursor: pointer;
     transition: opacity 0.2s, transform 0.1s;
     letter-spacing: 0.02em;
+    margin-top: 0.5rem;
 }
 
 .btn-primary:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
@@ -334,8 +268,8 @@ body::before {
 
     <div class="card">
         <div class="card-header">
-            <h1>Create account</h1>
-            <p>Already have an account? <a href="signin.html">Sign in</a></p>
+            <h1>Welcome back</h1>
+            <p>Don't have an account? <a href="signup.html">Sign up</a></p>
         </div>
 
         <div class="alert error" id="alertError">
@@ -345,24 +279,7 @@ body::before {
             <span>✓</span><span id="alertSuccessMsg"></span>
         </div>
 
-        <form id="signupForm" novalidate>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>First name</label>
-                    <div class="input-wrap">
-                        <input type="text" id="firstName" placeholder="John" autocomplete="given-name"/>
-                    </div>
-                    <div class="field-error" id="firstNameError">Required</div>
-                </div>
-                <div class="form-group">
-                    <label>Last name</label>
-                    <div class="input-wrap">
-                        <input type="text" id="lastName" placeholder="Smith" autocomplete="family-name"/>
-                    </div>
-                    <div class="field-error" id="lastNameError">Required</div>
-                </div>
-            </div>
-
+        <form id="signinForm" novalidate>
             <div class="form-group">
                 <label>Email address</label>
                 <div class="input-wrap">
@@ -374,40 +291,13 @@ body::before {
             <div class="form-group">
                 <label>Password</label>
                 <div class="input-wrap">
-                    <input type="password" id="password" placeholder="Min. 8 characters" autocomplete="new-password"/>
+                    <input type="password" id="password" placeholder="Your password" autocomplete="current-password"/>
                 </div>
-                <div class="password-strength" id="strengthWrap">
-                    <div class="strength-bars">
-                        <div class="strength-bar" id="bar1"></div>
-                        <div class="strength-bar" id="bar2"></div>
-                        <div class="strength-bar" id="bar3"></div>
-                        <div class="strength-bar" id="bar4"></div>
-                    </div>
-                    <div class="strength-label" id="strengthLabel">Too weak</div>
-                </div>
-                <div class="requirements show" id="requirements">
-                    <div class="req-item" id="req-length"><span class="dot"></span>At least 8 characters</div>
-                    <div class="req-item" id="req-upper"><span class="dot"></span>One uppercase letter</div>
-                    <div class="req-item" id="req-number"><span class="dot"></span>One number</div>
-                    <div class="req-item" id="req-special"><span class="dot"></span>One special character</div>
-                </div>
-                <div class="field-error" id="passwordError">Password is too weak</div>
+                <div class="field-error" id="passwordError">Password is required</div>
+                <div class="forgot"><a href="#">Forgot password?</a></div>
             </div>
 
-            <div class="form-group">
-                <label>Confirm password</label>
-                <div class="input-wrap">
-                    <input type="password" id="confirmPassword" placeholder="Repeat password" autocomplete="new-password"/>
-                </div>
-                <div class="field-error" id="confirmError">Passwords do not match</div>
-            </div>
-
-            <div class="terms">
-                <input type="checkbox" id="terms"/>
-                <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand this is a university demonstration project.</label>
-            </div>
-
-            <button type="submit" class="btn-primary" id="submitBtn">Create account</button>
+            <button type="submit" class="btn-primary" id="submitBtn">Sign in</button>
         </form>
 
         <div class="security-badge">
@@ -420,42 +310,15 @@ body::before {
 <script>
 const API = 'https://20.5.49.64/api';
 
-// Password strength
-const pwInput = document.getElementById('password');
-pwInput.addEventListener('input', () => {
-    const val = pwInput.value;
-    document.getElementById('strengthWrap').classList.toggle('show', val.length > 0);
-
-    const checks = {
-        length: val.length >= 8,
-        upper: /[A-Z]/.test(val),
-        number: /[0-9]/.test(val),
-        special: /[^A-Za-z0-9]/.test(val)
-    };
-
-    document.getElementById('req-length').classList.toggle('met', checks.length);
-    document.getElementById('req-upper').classList.toggle('met', checks.upper);
-    document.getElementById('req-number').classList.toggle('met', checks.number);
-    document.getElementById('req-special').classList.toggle('met', checks.special);
-
-    const score = Object.values(checks).filter(Boolean).length;
-    const colors = ['', '#ef4444', '#f97316', '#eab308', '#22c55e'];
-    const labels = ['', 'Too weak', 'Weak', 'Good', 'Strong'];
-    const bars = ['bar1','bar2','bar3','bar4'];
-    bars.forEach((id, i) => {
-        document.getElementById(id).style.background = i < score ? colors[score] : 'rgba(255,255,255,0.1)';
-    });
-    document.getElementById('strengthLabel').textContent = labels[score] || '';
-    document.getElementById('strengthLabel').style.color = colors[score] || '';
-});
-
 function showError(id, msg) {
     const el = document.getElementById(id);
     if (msg) el.textContent = msg;
     el.classList.add('show');
-    document.getElementById(id.replace('Error','') === id ? id : id.replace('Error','')).classList?.add('error');
 }
-function clearError(id) { document.getElementById(id).classList.remove('show'); }
+
+function clearError(id) {
+    document.getElementById(id).classList.remove('show');
+}
 
 function showAlert(type, msg) {
     document.getElementById('alertError').classList.remove('show');
@@ -469,24 +332,22 @@ function showAlert(type, msg) {
     }
 }
 
-document.getElementById('signupForm').addEventListener('submit', async (e) => {
+document.getElementById('signinForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    ['firstNameError','lastNameError','emailError','passwordError','confirmError'].forEach(clearError);
+    ['emailError', 'passwordError'].forEach(clearError);
 
-    const firstName = document.getElementById('firstName').value.trim();
-    const lastName = document.getElementById('lastName').value.trim();
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    const terms = document.getElementById('terms').checked;
 
     let valid = true;
-    if (!firstName) { showError('firstNameError', 'First name is required'); valid = false; }
-    if (!lastName) { showError('lastNameError', 'Last name is required'); valid = false; }
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('emailError', 'Enter a valid email'); valid = false; }
-    if (password.length < 8) { showError('passwordError', 'Password must be at least 8 characters'); valid = false; }
-    if (password !== confirmPassword) { showError('confirmError', 'Passwords do not match'); valid = false; }
-    if (!terms) { showAlert('error', 'Please accept the terms to continue'); valid = false; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showError('emailError', 'Enter a valid email');
+        valid = false;
+    }
+    if (!password) {
+        showError('passwordError', 'Password is required');
+        valid = false;
+    }
     if (!valid) return;
 
     const btn = document.getElementById('submitBtn');
@@ -494,22 +355,22 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
     btn.disabled = true;
 
     try {
-        const res = await fetch(`${API}/auth/signup`, {
+        const res = await fetch(`${API}/auth/signin`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password, firstName, lastName })
+            body: JSON.stringify({ email, password })
         });
         const data = await res.json();
 
         if (!res.ok) {
-            showAlert('error', data.error || 'Registration failed');
+            showAlert('error', data.error || 'Invalid email or password');
             return;
         }
 
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        showAlert('success', 'Account created! Redirecting to dashboard...');
-        setTimeout(() => window.location.href = 'dashboard.html', 1500);
+        showAlert('success', 'Signed in! Redirecting to dashboard...');
+        setTimeout(() => window.location.href = 'dashboard.html', 1000);
     } catch (err) {
         showAlert('error', 'Cannot connect to server. Please try again.');
     } finally {
