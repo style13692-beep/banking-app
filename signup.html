@@ -3,519 +3,540 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Create Account — SecureBank</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<title>Create Account — LumeBank</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-    --navy: #0a1628;
-    --navy2: #0f2044;
-    --blue: #1a56db;
-    --blue2: #1e429f;
-    --gold: #c9a84c;
-    --gold2: #f0c674;
-    --white: #ffffff;
-    --gray: #e8edf5;
-    --gray2: #94a3b8;
-    --text: #1e293b;
-    --danger: #dc2626;
-    --success: #16a34a;
-    --radius: 12px;
+  --g900: #0f1f0f;
+  --g800: #1a3018;
+  --g700: #243f22;
+  --g600: #2f5c2c;
+  --g500: #3d7a39;
+  --g50:  #f0f8ef;
+  --gold:      #c9a84c;
+  --gold-light:#e8c96a;
+  --cream:     #f8f5ee;
+  --ink:       #0e1a0e;
+  --ink-mid:   #2d3d2d;
+  --ink-soft:  #5a6e5a;
+  --white:     #ffffff;
+  --border:    rgba(15,31,15,0.12);
+  --danger:    #c0392b;
+  --danger-bg: #fdf2f2;
+  --success:   #2d6a2d;
+  --success-bg:#f0f8ef;
+  --radius:    12px;
 }
 
 body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--navy);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    position: relative;
-    overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  min-height: 100vh;
+  display: flex;
+  color: var(--ink);
 }
 
-body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-        radial-gradient(ellipse 80% 50% at 20% 20%, rgba(26,86,219,0.15) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(201,168,76,0.08) 0%, transparent 50%);
-    pointer-events: none;
+/* ─── LEFT PANEL ─── */
+.brand-panel {
+  width: 40%;
+  background: var(--g800);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  padding: 3rem;
+}
+.bp-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 80% 30%, rgba(61,122,57,0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 5% 85%, rgba(201,168,76,0.08) 0%, transparent 50%),
+    linear-gradient(160deg, #0f1f0f 0%, #1a3018 100%);
+}
+.bp-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+}
+.bp-orb {
+  position: absolute; border-radius: 50%; filter: blur(70px);
+  animation: floatOrb 8s ease-in-out infinite;
+}
+.bp-orb-1 { width: 350px; height: 350px; background: rgba(61,122,57,0.18); top: -80px; right: -80px; }
+.bp-orb-2 { width: 200px; height: 200px; background: rgba(201,168,76,0.08); bottom: 40px; left: -40px; animation-delay:-4s; }
+@keyframes floatOrb {
+  0%,100% { transform: translate(0,0); }
+  50% { transform: translate(15px,-15px); }
 }
 
-.grid-bg {
-    position: fixed;
-    inset: 0;
-    background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
+.bp-top { position: relative; z-index: 2; }
+.brand-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; margin-bottom: 4rem;
+}
+.brand-icon {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; box-shadow: 0 4px 16px rgba(201,168,76,0.4);
+}
+.logo-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.55rem; font-weight: 600; color: var(--white);
+}
+.logo-text em { color: var(--gold-light); font-style: normal; }
+
+.bp-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 3.5vw, 3rem);
+  font-weight: 300; color: var(--white);
+  line-height: 1.1; letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+.bp-headline em { font-style: italic; color: var(--gold-light); display: block; }
+.bp-sub {
+  color: rgba(255,255,255,0.45); font-size: 0.9rem;
+  line-height: 1.75; max-width: 300px;
 }
 
-.container {
-    width: 100%;
-    max-width: 480px;
-    position: relative;
-    z-index: 1;
+.bp-steps { position: relative; z-index: 2; }
+.bp-step {
+  display: flex; gap: 14px;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.bp-step:last-child { border-bottom: none; }
+.step-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700; color: var(--gold-light);
+  flex-shrink: 0; margin-top: 1px;
+}
+.step-body { }
+.step-title { font-size: 0.88rem; font-weight: 600; color: rgba(255,255,255,0.8); margin-bottom: 2px; }
+.step-desc  { font-size: 0.78rem; color: rgba(255,255,255,0.4); line-height: 1.4; }
+
+/* ─── FORM PANEL ─── */
+.form-panel {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  padding: 3rem 2.5rem;
+  background: var(--cream);
+  position: relative; overflow-y: auto;
+}
+.form-panel::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(15,31,15,0.03) 1px, transparent 1px);
+  background-size: 24px 24px; pointer-events: none;
 }
 
-.logo {
-    text-align: center;
-    margin-bottom: 2rem;
+.form-box {
+  width: 100%; max-width: 440px;
+  position: relative; z-index: 1;
+  animation: fadeUp 0.6s ease both;
+  padding: 2rem 0;
 }
 
-.logo-mark {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
+.form-eyebrow {
+  font-size: 0.72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--g500); margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 8px;
 }
+.form-eyebrow::before { content: ''; width: 20px; height: 2px; background: var(--g500); }
 
-.logo-icon {
-    width: 44px;
-    height: 44px;
-    background: linear-gradient(135deg, var(--gold), var(--gold2));
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
+.form-box h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.5rem; font-weight: 400;
+  color: var(--ink); margin-bottom: 0.4rem;
+  letter-spacing: -0.02em; line-height: 1.1;
 }
+.form-box h1 em { font-style: italic; color: var(--g600); }
 
-.logo-name {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.6rem;
-    color: var(--white);
-    letter-spacing: -0.02em;
+.form-subtitle {
+  color: var(--ink-soft); font-size: 0.9rem; margin-bottom: 2.25rem;
 }
-
-.logo-name span { color: var(--gold2); }
-
-.card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 20px;
-    padding: 2.5rem;
-    backdrop-filter: blur(20px);
+.form-subtitle a {
+  color: var(--g600); font-weight: 600; text-decoration: none;
+  border-bottom: 1px solid transparent; transition: border-color 0.2s;
 }
+.form-subtitle a:hover { border-color: var(--g600); }
 
-.card-header {
-    margin-bottom: 2rem;
+.rule { height: 1px; background: var(--border); margin-bottom: 2rem; }
+
+/* Alert */
+.alert {
+  padding: 0.9rem 1.1rem; border-radius: var(--radius);
+  font-size: 0.875rem; margin-bottom: 1.5rem;
+  display: none; align-items: center; gap: 10px;
+  line-height: 1.45; font-weight: 500;
 }
+.alert.show { display: flex; }
+.alert.error  { background: var(--danger-bg); border: 1.5px solid rgba(192,57,43,0.2); color: var(--danger); }
+.alert.success{ background: var(--success-bg); border: 1.5px solid rgba(45,106,45,0.2); color: var(--success); }
 
-.card-header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.8rem;
-    color: var(--white);
-    margin-bottom: 0.4rem;
-}
-
-.card-header p {
-    color: var(--gray2);
-    font-size: 0.9rem;
-}
-
-.card-header p a {
-    color: var(--gold2);
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.card-header p a:hover { text-decoration: underline; }
-
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
-
-.form-group {
-    margin-bottom: 1.25rem;
-}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-group { margin-bottom: 1.2rem; }
 
 .form-group label {
-    display: block;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--gray2);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 0.5rem;
+  display: block; font-size: 0.8rem; font-weight: 600;
+  color: var(--ink-mid); margin-bottom: 0.55rem; letter-spacing: 0.03em;
 }
 
-.input-wrap {
-    position: relative;
+.input-wrap { position: relative; }
+.input-icon {
+  position: absolute; left: 1rem; top: 50%;
+  transform: translateY(-50%); font-size: 14px;
+  pointer-events: none; opacity: 0.4;
 }
 
-.input-wrap input {
-    width: 100%;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: var(--radius);
-    padding: 0.8rem 1rem;
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    outline: none;
-    transition: border-color 0.2s, background 0.2s;
+.form-group input {
+  width: 100%;
+  background: var(--white);
+  border: 1.5px solid rgba(15,31,15,0.14);
+  border-radius: var(--radius);
+  padding: 0.82rem 1rem 0.82rem 2.7rem;
+  color: var(--ink); font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
-
-.input-wrap input::placeholder { color: rgba(255,255,255,0.25); }
-
-.input-wrap input:focus {
-    border-color: var(--gold);
-    background: rgba(255,255,255,0.09);
+.form-group input.no-icon { padding-left: 1rem; }
+.form-group input::placeholder { color: rgba(15,31,15,0.3); }
+.form-group input:focus {
+  border-color: var(--g500);
+  box-shadow: 0 0 0 3px rgba(61,122,57,0.1);
 }
-
-.input-wrap input.error { border-color: var(--danger); }
-.input-wrap input.valid { border-color: var(--success); }
+.form-group input.error {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.08);
+}
 
 .field-error {
-    font-size: 0.78rem;
-    color: #f87171;
-    margin-top: 0.35rem;
-    display: none;
+  font-size: 0.77rem; color: var(--danger);
+  margin-top: 0.4rem; display: none;
 }
-
 .field-error.show { display: block; }
 
-.password-strength {
-    margin-top: 0.5rem;
-    display: none;
-}
-
-.password-strength.show { display: block; }
-
-.strength-bars {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 4px;
-}
-
+/* Password strength */
+.strength-wrap { margin-top: 0.6rem; display: none; }
+.strength-wrap.show { display: block; }
+.strength-bars { display: flex; gap: 5px; margin-bottom: 5px; }
 .strength-bar {
-    height: 3px;
-    flex: 1;
-    border-radius: 2px;
-    background: rgba(255,255,255,0.1);
-    transition: background 0.3s;
+  height: 3px; flex: 1; border-radius: 2px;
+  background: rgba(15,31,15,0.1); transition: background 0.3s;
 }
+.strength-label { font-size: 0.74rem; color: var(--ink-soft); }
 
-.strength-label {
-    font-size: 0.75rem;
-    color: var(--gray2);
+.req-list {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 0.85rem 1rem;
+  margin-top: 0.6rem; display: grid;
+  grid-template-columns: 1fr 1fr; gap: 0.35rem;
 }
-
-.requirements {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    margin-top: 0.5rem;
-    display: none;
+.req {
+  font-size: 0.77rem; color: var(--ink-soft);
+  display: flex; align-items: center; gap: 7px; line-height: 1.3;
+  transition: color 0.2s;
 }
-
-.requirements.show { display: block; }
-
-.req-item {
-    font-size: 0.78rem;
-    color: var(--gray2);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 4px;
+.req-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(15,31,15,0.15); flex-shrink: 0; transition: background 0.2s;
 }
+.req.met { color: var(--success); }
+.req.met .req-dot { background: var(--g500); }
 
-.req-item:last-child { margin-bottom: 0; }
-.req-item .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: background 0.2s; }
-.req-item.met { color: #4ade80; }
-.req-item.met .dot { background: #4ade80; }
-
-.terms {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 1.5rem;
-    font-size: 0.82rem;
-    color: var(--gray2);
-    line-height: 1.5;
+/* Checkbox / terms */
+.terms-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-bottom: 1.5rem; font-size: 0.83rem;
+  color: var(--ink-soft); line-height: 1.55;
 }
-
-.terms input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    margin-top: 2px;
-    accent-color: var(--gold);
-    flex-shrink: 0;
-    cursor: pointer;
+.terms-row input[type="checkbox"] {
+  width: 16px; height: 16px; margin-top: 2px;
+  accent-color: var(--g600); flex-shrink: 0; cursor: pointer;
 }
+.terms-row a { color: var(--g600); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+.terms-row a:hover { border-color: var(--g600); }
 
-.terms a { color: var(--gold2); text-decoration: none; }
-.terms a:hover { text-decoration: underline; }
-
-.btn-primary {
-    width: 100%;
-    background: linear-gradient(135deg, var(--gold), var(--gold2));
-    border: none;
-    border-radius: var(--radius);
-    padding: 0.9rem;
-    color: var(--navy);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: opacity 0.2s, transform 0.1s;
-    letter-spacing: 0.02em;
+.btn-submit {
+  width: 100%;
+  background: linear-gradient(135deg, var(--g700), var(--g600));
+  border: none; border-radius: var(--radius);
+  padding: 0.95rem; color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.97rem; font-weight: 600;
+  cursor: pointer; letter-spacing: 0.02em;
+  box-shadow: 0 8px 24px rgba(36,63,34,0.3);
+  transition: all 0.25s; position: relative; overflow: hidden;
 }
-
-.btn-primary:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
-.btn-primary:active:not(:disabled) { transform: translateY(0); }
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-
-.btn-primary.loading {
-    position: relative;
-    color: transparent;
+.btn-submit::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(255,255,255,0.08));
+  opacity: 0; transition: opacity 0.2s;
 }
-
-.btn-primary.loading::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--navy);
-    border-top-color: transparent;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
+.btn-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(36,63,34,0.4); }
+.btn-submit:hover:not(:disabled)::after { opacity: 1; }
+.btn-submit:active:not(:disabled) { transform: translateY(0); }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-submit.loading { color: transparent; }
+.btn-submit.loading::before {
+  content: ''; position: absolute; inset: 0; margin: auto;
+  width: 20px; height: 20px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: var(--white); border-radius: 50%;
+  animation: spin 0.7s linear infinite;
 }
-
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.alert {
-    padding: 0.9rem 1rem;
-    border-radius: var(--radius);
-    font-size: 0.88rem;
-    margin-bottom: 1.25rem;
-    display: none;
-    align-items: center;
-    gap: 8px;
+.security-note {
+  margin-top: 1.5rem;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-size: 0.75rem; color: var(--ink-soft);
+  padding: 0.75rem; background: rgba(15,31,15,0.04);
+  border-radius: 8px; border: 1px solid var(--border);
 }
 
-.alert.show { display: flex; }
-.alert.error { background: rgba(220,38,38,0.15); border: 1px solid rgba(220,38,38,0.3); color: #fca5a5; }
-.alert.success { background: rgba(22,163,74,0.15); border: 1px solid rgba(22,163,74,0.3); color: #86efac; }
-
-.security-badge {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    margin-top: 1.5rem;
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.3);
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.security-badge svg { width: 14px; height: 14px; }
+@media (max-width: 900px) {
+  .brand-panel { display: none; }
+  .form-panel { padding: 2.5rem 1.5rem; }
+  .form-row { grid-template-columns: 1fr; gap: 0; }
+  .req-list { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
-<div class="grid-bg"></div>
-<div class="container">
-    <div class="logo">
-        <a href="index.html" class="logo-mark">
-            <div class="logo-icon">🏦</div>
-            <span class="logo-name">Secure<span>Bank</span></span>
-        </a>
+
+<div class="brand-panel">
+  <div class="bp-bg"></div>
+  <div class="bp-grid"></div>
+  <div class="bp-orb bp-orb-1"></div>
+  <div class="bp-orb bp-orb-2"></div>
+
+  <div class="bp-top">
+    <a href="index.html" class="brand-logo">
+      <div class="brand-icon">🏦</div>
+      <span class="logo-text">Lume<em>Bank</em></span>
+    </a>
+    <h2 class="bp-headline">
+      Your account,<br><em>in minutes.</em>
+    </h2>
+    <p class="bp-sub">Join LumeBank and get instant access to a secure, fully featured banking dashboard.</p>
+  </div>
+
+  <div class="bp-steps">
+    <div class="bp-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Enter your details</div>
+        <div class="step-desc">Fill in your name, email and a strong password</div>
+      </div>
     </div>
-
-    <div class="card">
-        <div class="card-header">
-            <h1>Create account</h1>
-            <p>Already have an account? <a href="signin.html">Sign in</a></p>
-        </div>
-
-        <div class="alert error" id="alertError">
-            <span>⚠</span><span id="alertErrorMsg"></span>
-        </div>
-        <div class="alert success" id="alertSuccess">
-            <span>✓</span><span id="alertSuccessMsg"></span>
-        </div>
-
-        <form id="signupForm" novalidate>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>First name</label>
-                    <div class="input-wrap">
-                        <input type="text" id="firstName" placeholder="John" autocomplete="given-name"/>
-                    </div>
-                    <div class="field-error" id="firstNameError">Required</div>
-                </div>
-                <div class="form-group">
-                    <label>Last name</label>
-                    <div class="input-wrap">
-                        <input type="text" id="lastName" placeholder="Smith" autocomplete="family-name"/>
-                    </div>
-                    <div class="field-error" id="lastNameError">Required</div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Email address</label>
-                <div class="input-wrap">
-                    <input type="email" id="email" placeholder="john@example.com" autocomplete="email"/>
-                </div>
-                <div class="field-error" id="emailError">Enter a valid email</div>
-            </div>
-
-            <div class="form-group">
-                <label>Password</label>
-                <div class="input-wrap">
-                    <input type="password" id="password" placeholder="Min. 8 characters" autocomplete="new-password"/>
-                </div>
-                <div class="password-strength" id="strengthWrap">
-                    <div class="strength-bars">
-                        <div class="strength-bar" id="bar1"></div>
-                        <div class="strength-bar" id="bar2"></div>
-                        <div class="strength-bar" id="bar3"></div>
-                        <div class="strength-bar" id="bar4"></div>
-                    </div>
-                    <div class="strength-label" id="strengthLabel">Too weak</div>
-                </div>
-                <div class="requirements show" id="requirements">
-                    <div class="req-item" id="req-length"><span class="dot"></span>At least 8 characters</div>
-                    <div class="req-item" id="req-upper"><span class="dot"></span>One uppercase letter</div>
-                    <div class="req-item" id="req-number"><span class="dot"></span>One number</div>
-                    <div class="req-item" id="req-special"><span class="dot"></span>One special character</div>
-                </div>
-                <div class="field-error" id="passwordError">Password is too weak</div>
-            </div>
-
-            <div class="form-group">
-                <label>Confirm password</label>
-                <div class="input-wrap">
-                    <input type="password" id="confirmPassword" placeholder="Repeat password" autocomplete="new-password"/>
-                </div>
-                <div class="field-error" id="confirmError">Passwords do not match</div>
-            </div>
-
-            <div class="terms">
-                <input type="checkbox" id="terms"/>
-                <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand this is a university demonstration project.</label>
-            </div>
-
-            <button type="submit" class="btn-primary" id="submitBtn">Create account</button>
-        </form>
-
-        <div class="security-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Secured with Azure Key Vault & JWT
-        </div>
+    <div class="bp-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Instant verification</div>
+        <div class="step-desc">Your account is secured and confirmed immediately</div>
+      </div>
     </div>
+    <div class="bp-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Access your dashboard</div>
+        <div class="step-desc">Start tracking balances and transactions right away</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="form-panel">
+  <div class="form-box">
+    <div class="form-eyebrow">New account</div>
+    <h1>Create your<br><em>account.</em></h1>
+    <p class="form-subtitle">Already a member? <a href="signin.html">Sign in →</a></p>
+    <div class="rule"></div>
+
+    <div class="alert error" id="alertError"><span>⚠</span><span id="alertErrorMsg"></span></div>
+    <div class="alert success" id="alertSuccess"><span>✓</span><span id="alertSuccessMsg"></span></div>
+
+    <form id="signupForm" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">First name</label>
+          <div class="input-wrap">
+            <span class="input-icon">👤</span>
+            <input type="text" id="firstName" placeholder="John" autocomplete="given-name"/>
+          </div>
+          <div class="field-error" id="firstNameError">First name is required</div>
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last name</label>
+          <div class="input-wrap">
+            <span class="input-icon">👤</span>
+            <input type="text" id="lastName" placeholder="Smith" autocomplete="family-name"/>
+          </div>
+          <div class="field-error" id="lastNameError">Last name is required</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <div class="input-wrap">
+          <span class="input-icon">✉</span>
+          <input type="email" id="email" placeholder="john@example.com" autocomplete="email"/>
+        </div>
+        <div class="field-error" id="emailError">Please enter a valid email address</div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="password" placeholder="Minimum 8 characters" autocomplete="new-password" style="padding-right:3rem"/>
+          <button type="button" id="togglePw" style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;opacity:0.4;transition:opacity 0.2s;" title="Show/hide">👁</button>
+        </div>
+        <div class="strength-wrap" id="strengthWrap">
+          <div class="strength-bars">
+            <div class="strength-bar" id="bar1"></div>
+            <div class="strength-bar" id="bar2"></div>
+            <div class="strength-bar" id="bar3"></div>
+            <div class="strength-bar" id="bar4"></div>
+          </div>
+          <div class="strength-label" id="strengthLabel"></div>
+        </div>
+        <div class="req-list" id="reqList">
+          <div class="req" id="req-length"><span class="req-dot"></span>8+ characters</div>
+          <div class="req" id="req-upper"><span class="req-dot"></span>Uppercase letter</div>
+          <div class="req" id="req-number"><span class="req-dot"></span>One number</div>
+          <div class="req" id="req-special"><span class="req-dot"></span>Special character</div>
+        </div>
+        <div class="field-error" id="passwordError">Password does not meet requirements</div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm password</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="confirmPassword" placeholder="Repeat your password" autocomplete="new-password"/>
+        </div>
+        <div class="field-error" id="confirmError">Passwords do not match</div>
+      </div>
+
+      <div class="terms-row">
+        <input type="checkbox" id="terms"/>
+        <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand this is a university demonstration project.</label>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">Create my account</button>
+    </form>
+
+    <div class="security-note">
+      🔒 Secured with Azure Key Vault &amp; JWT encryption
+    </div>
+  </div>
 </div>
 
 <script>
 const API = 'https://20.5.49.64/api';
 
-// Password strength
-const pwInput = document.getElementById('password');
-pwInput.addEventListener('input', () => {
-    const val = pwInput.value;
-    document.getElementById('strengthWrap').classList.toggle('show', val.length > 0);
-
-    const checks = {
-        length: val.length >= 8,
-        upper: /[A-Z]/.test(val),
-        number: /[0-9]/.test(val),
-        special: /[^A-Za-z0-9]/.test(val)
-    };
-
-    document.getElementById('req-length').classList.toggle('met', checks.length);
-    document.getElementById('req-upper').classList.toggle('met', checks.upper);
-    document.getElementById('req-number').classList.toggle('met', checks.number);
-    document.getElementById('req-special').classList.toggle('met', checks.special);
-
-    const score = Object.values(checks).filter(Boolean).length;
-    const colors = ['', '#ef4444', '#f97316', '#eab308', '#22c55e'];
-    const labels = ['', 'Too weak', 'Weak', 'Good', 'Strong'];
-    const bars = ['bar1','bar2','bar3','bar4'];
-    bars.forEach((id, i) => {
-        document.getElementById(id).style.background = i < score ? colors[score] : 'rgba(255,255,255,0.1)';
-    });
-    document.getElementById('strengthLabel').textContent = labels[score] || '';
-    document.getElementById('strengthLabel').style.color = colors[score] || '';
+/* Toggle password */
+document.getElementById('togglePw').addEventListener('click', () => {
+  const pw = document.getElementById('password');
+  const btn = document.getElementById('togglePw');
+  pw.type = pw.type === 'password' ? 'text' : 'password';
+  btn.style.opacity = pw.type === 'text' ? '0.9' : '0.4';
 });
 
-function showError(id, msg) {
-    const el = document.getElementById(id);
-    if (msg) el.textContent = msg;
-    el.classList.add('show');
-    document.getElementById(id.replace('Error','') === id ? id : id.replace('Error','')).classList?.add('error');
-}
+/* Strength meter */
+document.getElementById('password').addEventListener('input', () => {
+  const v = document.getElementById('password').value;
+  document.getElementById('strengthWrap').classList.toggle('show', v.length > 0);
+
+  const checks = {
+    length:  v.length >= 8,
+    upper:   /[A-Z]/.test(v),
+    number:  /[0-9]/.test(v),
+    special: /[^A-Za-z0-9]/.test(v)
+  };
+  document.getElementById('req-length').classList.toggle('met', checks.length);
+  document.getElementById('req-upper').classList.toggle('met', checks.upper);
+  document.getElementById('req-number').classList.toggle('met', checks.number);
+  document.getElementById('req-special').classList.toggle('met', checks.special);
+
+  const score = Object.values(checks).filter(Boolean).length;
+  const colors = ['', '#c0392b', '#e67e22', '#c9a84c', '#2d6a2d'];
+  const labels = ['', 'Too weak', 'Weak', 'Good', 'Strong'];
+  ['bar1','bar2','bar3','bar4'].forEach((id, i) => {
+    document.getElementById(id).style.background = i < score ? colors[score] : 'rgba(15,31,15,0.1)';
+  });
+  const lbl = document.getElementById('strengthLabel');
+  lbl.textContent = labels[score] || '';
+  lbl.style.color = colors[score] || '';
+});
+
+function showError(id) { document.getElementById(id).classList.add('show'); }
 function clearError(id) { document.getElementById(id).classList.remove('show'); }
 
 function showAlert(type, msg) {
-    document.getElementById('alertError').classList.remove('show');
-    document.getElementById('alertSuccess').classList.remove('show');
-    if (type === 'error') {
-        document.getElementById('alertErrorMsg').textContent = msg;
-        document.getElementById('alertError').classList.add('show');
-    } else {
-        document.getElementById('alertSuccessMsg').textContent = msg;
-        document.getElementById('alertSuccess').classList.add('show');
-    }
+  document.getElementById('alertError').classList.remove('show');
+  document.getElementById('alertSuccess').classList.remove('show');
+  if (type === 'error') { document.getElementById('alertErrorMsg').textContent = msg; document.getElementById('alertError').classList.add('show'); }
+  else { document.getElementById('alertSuccessMsg').textContent = msg; document.getElementById('alertSuccess').classList.add('show'); }
 }
 
 document.getElementById('signupForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    ['firstNameError','lastNameError','emailError','passwordError','confirmError'].forEach(clearError);
+  e.preventDefault();
+  ['firstNameError','lastNameError','emailError','passwordError','confirmError'].forEach(clearError);
 
-    const firstName = document.getElementById('firstName').value.trim();
-    const lastName = document.getElementById('lastName').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    const terms = document.getElementById('terms').checked;
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName  = document.getElementById('lastName').value.trim();
+  const email     = document.getElementById('email').value.trim();
+  const password  = document.getElementById('password').value;
+  const confirm   = document.getElementById('confirmPassword').value;
+  const terms     = document.getElementById('terms').checked;
 
-    let valid = true;
-    if (!firstName) { showError('firstNameError', 'First name is required'); valid = false; }
-    if (!lastName) { showError('lastNameError', 'Last name is required'); valid = false; }
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('emailError', 'Enter a valid email'); valid = false; }
-    if (password.length < 8) { showError('passwordError', 'Password must be at least 8 characters'); valid = false; }
-    if (password !== confirmPassword) { showError('confirmError', 'Passwords do not match'); valid = false; }
-    if (!terms) { showAlert('error', 'Please accept the terms to continue'); valid = false; }
-    if (!valid) return;
+  let valid = true;
+  if (!firstName) { showError('firstNameError'); valid = false; }
+  if (!lastName)  { showError('lastNameError');  valid = false; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('emailError'); valid = false; }
+  if (password.length < 8) { showError('passwordError'); valid = false; }
+  if (password !== confirm) { showError('confirmError'); valid = false; }
+  if (!terms) { showAlert('error', 'Please accept the terms and conditions to continue.'); valid = false; }
+  if (!valid) return;
 
-    const btn = document.getElementById('submitBtn');
-    btn.classList.add('loading');
-    btn.disabled = true;
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('loading'); btn.disabled = true;
 
-    try {
-        const res = await fetch(`${API}/auth/signup`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password, firstName, lastName })
-        });
-        const data = await res.json();
-
-        if (!res.ok) {
-            showAlert('error', data.error || 'Registration failed');
-            return;
-        }
-
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        showAlert('success', 'Account created! Redirecting to dashboard...');
-        setTimeout(() => window.location.href = 'dashboard.html', 1500);
-    } catch (err) {
-        showAlert('error', 'Cannot connect to server. Please try again.');
-    } finally {
-        btn.classList.remove('loading');
-        btn.disabled = false;
-    }
+  try {
+    const res = await fetch(`${API}/auth/signup`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, firstName, lastName })
+    });
+    const data = await res.json();
+    if (!res.ok) { showAlert('error', data.error || 'Registration failed. Please try again.'); return; }
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    showAlert('success', 'Account created! Taking you to your dashboard…');
+    setTimeout(() => window.location.href = 'dashboard.html', 1500);
+  } catch {
+    showAlert('error', 'Unable to connect to the server. Please try again shortly.');
+  } finally {
+    btn.classList.remove('loading'); btn.disabled = false;
+  }
 });
 </script>
 </body>
