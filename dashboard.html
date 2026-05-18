@@ -6,14 +6,16 @@
 <title>Dashboard — LumeBank</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 
-<!-- ─── AUTH GUARD ─── -->
+<!-- ─── AUTH GUARD: hide body immediately, redirect if no token ─── -->
 <style>body { visibility: hidden; }</style>
 <script>
   (function () {
     const token = localStorage.getItem('token');
     if (!token) {
-      window.location.replace('signup.html');
+      // Hard redirect before the browser paints a single pixel of the dashboard
+      window.location.replace('signin.html');
     } else {
+      // Token present — reveal the page once DOM is ready
       document.addEventListener('DOMContentLoaded', function () {
         document.body.style.visibility = 'visible';
       });
@@ -25,40 +27,52 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --g900: #0f1f0f; --g800: #1a3018; --g700: #243f22;
-  --g600: #2f5c2c; --g500: #3d7a39; --g50:  #f0f8ef;
-  --gold: #c9a84c; --gold-light: #e8c96a;
-  --cream: #f8f5ee; --ink: #0e1a0e; --ink-soft: #5a6e5a;
-  --white: #ffffff; --border: rgba(15,31,15,0.12);
-  --danger: #c0392b; --danger-bg: #fdf2f2;
-  --success: #2d6a2d; --success-bg: #f0f8ef;
-  --radius: 12px; --sidebar-w: 260px;
+  --g900: #0f1f0f;
+  --g800: #1a3018;
+  --g700: #243f22;
+  --g600: #2f5c2c;
+  --g500: #3d7a39;
+  --g50:  #f0f8ef;
+  --gold:       #c9a84c;
+  --gold-light: #e8c96a;
+  --cream:      #f8f5ee;
+  --ink:        #0e1a0e;
+  --ink-mid:    #2d3d2d;
+  --ink-soft:   #5a6e5a;
+  --white:      #ffffff;
+  --border:     rgba(15,31,15,0.12);
+  --danger:     #c0392b;
+  --danger-bg:  #fdf2f2;
+  --success:    #2d6a2d;
+  --success-bg: #f0f8ef;
+  --radius:     12px;
+  --sidebar-w:  260px;
 }
 
 body {
   font-family: 'DM Sans', sans-serif;
   background: var(--cream);
-  min-height: 100vh; color: var(--ink); display: flex;
+  min-height: 100vh;
+  color: var(--ink);
+  display: flex;
 }
-
-/* ─── OVERLAY ─── */
-.sidebar-overlay {
-  display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,0.45); z-index: 99;
-  backdrop-filter: blur(2px);
-}
-.sidebar-overlay.open { display: block; }
 
 /* ─── SIDEBAR ─── */
 .sidebar {
-  width: var(--sidebar-w); background: var(--g800);
-  min-height: 100vh; display: flex; flex-direction: column;
-  padding: 2rem 1.5rem; position: fixed;
-  left: 0; top: 0; bottom: 0; z-index: 100; overflow: hidden;
-  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  width: var(--sidebar-w);
+  background: var(--g800);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  z-index: 100;
+  overflow: hidden;
 }
 .sidebar::before {
-  content: ''; position: absolute; inset: 0;
+  content: '';
+  position: absolute; inset: 0;
   background:
     radial-gradient(ellipse 80% 50% at 80% 10%, rgba(61,122,57,0.18) 0%, transparent 60%),
     radial-gradient(ellipse 50% 40% at 10% 90%, rgba(201,168,76,0.06) 0%, transparent 50%);
@@ -67,15 +81,20 @@ body {
 
 .brand-logo {
   display: flex; align-items: center; gap: 10px;
-  text-decoration: none; margin-bottom: 2.5rem; position: relative; z-index: 1;
+  text-decoration: none; margin-bottom: 2.5rem;
+  position: relative; z-index: 1;
 }
 .brand-icon {
   width: 38px; height: 38px;
   background: linear-gradient(135deg, var(--gold), var(--gold-light));
-  border-radius: 9px; display: flex; align-items: center; justify-content: center;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
   font-size: 17px; box-shadow: 0 4px 14px rgba(201,168,76,0.35);
 }
-.logo-text { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 600; color: var(--white); }
+.logo-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.45rem; font-weight: 600; color: var(--white);
+}
 .logo-text em { color: var(--gold-light); font-style: normal; }
 
 .nav-section { margin-bottom: 0.4rem; position: relative; z-index: 1; }
@@ -92,22 +111,27 @@ body {
   border: none; background: none; width: 100%; text-align: left;
 }
 .nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
-.nav-item.active { background: rgba(61,122,57,0.2); color: var(--white); border: 1px solid rgba(61,122,57,0.3); }
+.nav-item.active {
+  background: rgba(61,122,57,0.2); color: var(--white);
+  border: 1px solid rgba(61,122,57,0.3);
+}
 .nav-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
 
 .sidebar-footer { margin-top: auto; position: relative; z-index: 1; }
 .user-card {
-  display: flex; align-items: center; gap: 10px; padding: 0.85rem;
-  border-radius: var(--radius); background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08); margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 10px;
+  padding: 0.85rem; border-radius: var(--radius);
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 0.75rem;
 }
 .user-avatar {
   width: 36px; height: 36px; border-radius: 50%;
   background: linear-gradient(135deg, var(--g500), var(--g600));
   display: flex; align-items: center; justify-content: center;
-  font-size: 0.8rem; font-weight: 700; color: var(--white); flex-shrink: 0;
+  font-size: 0.8rem; font-weight: 700; color: var(--white);
+  flex-shrink: 0;
 }
-.user-info { min-width: 0; flex: 1; }
+.user-info { min-width: 0; }
 .user-name { font-size: 0.82rem; font-weight: 600; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .user-role { font-size: 0.7rem; color: rgba(255,255,255,0.35); }
 
@@ -116,176 +140,221 @@ body {
   background: rgba(192,57,43,0.12); border: 1px solid rgba(192,57,43,0.2);
   border-radius: 9px; color: #e07060; font-size: 0.82rem; font-weight: 600;
   cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
-  display: flex; align-items: center; justify-content: center; gap: 6px;
 }
-.btn-signout:hover { background: rgba(192,57,43,0.22); }
+.btn-signout:hover { background: rgba(192,57,43,0.2); }
 
 /* ─── MAIN ─── */
-.main { margin-left: var(--sidebar-w); flex: 1; min-height: 100vh; display: flex; flex-direction: column; }
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1; min-height: 100vh;
+  display: flex; flex-direction: column;
+}
 
-/* ─── TOPBAR ─── */
 .topbar {
-  padding: 1.25rem 2rem;
+  padding: 1.5rem 2.5rem;
   display: flex; align-items: center; justify-content: space-between;
-  border-bottom: 1px solid var(--border); background: var(--cream);
-  position: sticky; top: 0; z-index: 50; gap: 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--cream);
+  position: sticky; top: 0; z-index: 50;
 }
-.topbar-left { display: flex; align-items: center; gap: 0.75rem; min-width: 0; }
-
-.hamburger {
-  display: none; flex-direction: column; justify-content: center; align-items: center;
-  gap: 5px; width: 38px; height: 38px; border-radius: 9px;
-  background: none; border: 1.5px solid var(--border);
-  cursor: pointer; flex-shrink: 0; transition: background 0.2s;
-}
-.hamburger:hover { background: rgba(15,31,15,0.05); }
-.hamburger span { display: block; width: 18px; height: 2px; background: var(--ink); border-radius: 2px; transition: all 0.25s; }
-.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-.topbar-title-wrap { min-width: 0; }
 .topbar-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.5rem; font-weight: 400; color: var(--ink);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 1.6rem; font-weight: 400; color: var(--ink);
 }
-.topbar-date { font-size: 0.78rem; color: var(--ink-soft); }
+.topbar-date { font-size: 0.8rem; color: var(--ink-soft); }
 
-.topbar-right { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
+.content { padding: 2rem 2.5rem; flex: 1; }
 
+/* ─── STAT CARDS ─── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem; margin-bottom: 2rem;
+}
+.stat-card {
+  background: var(--white); border-radius: 16px;
+  border: 1.5px solid var(--border);
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: fadeUp 0.5s ease both;
+}
+.stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+.stat-card:nth-child(2) { animation-delay: 0.1s; }
+.stat-card:nth-child(3) { animation-delay: 0.2s; }
+
+.stat-card.featured {
+  background: linear-gradient(135deg, var(--g700), var(--g600));
+  border-color: transparent;
+  color: var(--white);
+}
+.stat-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.stat-label {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-soft);
+}
+.stat-card.featured .stat-label { color: rgba(255,255,255,0.6); }
+.stat-icon {
+  width: 36px; height: 36px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.stat-icon.green { background: var(--g50); }
+.stat-icon.gold  { background: rgba(201,168,76,0.12); }
+.stat-icon.white { background: rgba(255,255,255,0.15); }
+
+.stat-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem; font-weight: 500; color: var(--ink);
+  line-height: 1; margin-bottom: 0.4rem;
+}
+.stat-card.featured .stat-value { color: var(--white); }
+.stat-sub { font-size: 0.75rem; color: var(--ink-soft); }
+.stat-card.featured .stat-sub { color: rgba(255,255,255,0.5); }
+
+/* ─── BOTTOM GRID ─── */
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 1.25rem;
+}
+
+.panel {
+  background: var(--white); border-radius: 16px;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  animation: fadeUp 0.5s ease 0.3s both;
+}
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.panel-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem; font-weight: 500; color: var(--ink);
+}
+.panel-body { padding: 0.5rem 0; }
+
+/* Transactions */
+.tx-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0.85rem 1.5rem;
+  border-bottom: 1px solid rgba(15,31,15,0.06);
+  transition: background 0.15s;
+}
+.tx-item:last-child { border-bottom: none; }
+.tx-item:hover { background: rgba(15,31,15,0.02); }
+.tx-icon {
+  width: 38px; height: 38px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.tx-icon.credit { background: var(--success-bg); }
+.tx-icon.debit  { background: var(--danger-bg); }
+.tx-icon.neutral{ background: var(--g50); }
+.tx-body { flex: 1; min-width: 0; }
+.tx-desc { font-size: 0.87rem; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tx-date { font-size: 0.75rem; color: var(--ink-soft); margin-top: 1px; }
+.tx-amount { font-size: 0.92rem; font-weight: 700; flex-shrink: 0; }
+.tx-amount.credit { color: var(--success); }
+.tx-amount.debit  { color: var(--danger); }
+
+.empty-state {
+  padding: 2.5rem 1.5rem; text-align: center;
+  color: var(--ink-soft); font-size: 0.87rem; line-height: 1.6;
+}
+.empty-state .empty-icon { font-size: 2rem; margin-bottom: 0.75rem; opacity: 0.4; }
+
+/* Account info panel */
+.info-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.9rem 1.5rem;
+  border-bottom: 1px solid rgba(15,31,15,0.06);
+}
+.info-row:last-child { border-bottom: none; }
+.info-key { font-size: 0.78rem; color: var(--ink-soft); font-weight: 500; }
+.info-val { font-size: 0.87rem; font-weight: 600; color: var(--ink); }
+
+/* Skeleton loader */
+.skeleton {
+  background: linear-gradient(90deg, rgba(15,31,15,0.06) 25%, rgba(15,31,15,0.1) 50%, rgba(15,31,15,0.06) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite; border-radius: 6px;
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* Alert banner */
+.alert-banner {
+  display: none; align-items: center; gap: 10px;
+  padding: 0.85rem 1.1rem; border-radius: var(--radius);
+  font-size: 0.875rem; font-weight: 500; margin-bottom: 1.5rem;
+}
+.alert-banner.show { display: flex; }
+.alert-banner.error { background: var(--danger-bg); border: 1.5px solid rgba(192,57,43,0.2); color: var(--danger); }
+
+/* Badge */
 .badge {
-  display: inline-block; padding: 0.2rem 0.65rem;
+  display: inline-block; padding: 0.2rem 0.6rem;
   border-radius: 20px; font-size: 0.7rem; font-weight: 700;
   letter-spacing: 0.05em; text-transform: uppercase;
 }
 .badge.customer { background: var(--g50); color: var(--g600); }
 .badge.admin    { background: rgba(201,168,76,0.15); color: #8a6820; }
 
-.topbar-logout {
-  display: none; padding: 0.45rem 0.9rem;
-  background: rgba(192,57,43,0.1); border: 1.5px solid rgba(192,57,43,0.2);
-  border-radius: 9px; color: var(--danger); font-size: 0.78rem; font-weight: 600;
-  cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; white-space: nowrap;
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.topbar-logout:hover { background: rgba(192,57,43,0.18); }
 
-/* ─── CONTENT ─── */
-.content { padding: 1.75rem 2rem; flex: 1; }
-
-/* ─── STATS ─── */
-.stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; margin-bottom: 1.5rem; }
-.stat-card {
-  background: var(--white); border-radius: 16px; border: 1.5px solid var(--border);
-  padding: 1.4rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  transition: transform 0.2s, box-shadow 0.2s; animation: fadeUp 0.5s ease both;
-}
-.stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
-.stat-card:nth-child(2) { animation-delay: 0.1s; }
-.stat-card:nth-child(3) { animation-delay: 0.2s; }
-.stat-card.featured { background: linear-gradient(135deg, var(--g700), var(--g600)); border-color: transparent; color: var(--white); }
-.stat-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-.stat-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
-.stat-card.featured .stat-label { color: rgba(255,255,255,0.6); }
-.stat-icon { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 15px; }
-.stat-icon.green { background: var(--g50); }
-.stat-icon.gold  { background: rgba(201,168,76,0.12); }
-.stat-icon.white { background: rgba(255,255,255,0.15); }
-.stat-value { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 500; color: var(--ink); line-height: 1; margin-bottom: 0.35rem; }
-.stat-card.featured .stat-value { color: var(--white); }
-.stat-sub { font-size: 0.72rem; color: var(--ink-soft); }
-.stat-card.featured .stat-sub { color: rgba(255,255,255,0.5); }
-
-/* ─── BOTTOM ─── */
-.bottom-grid { display: grid; grid-template-columns: 1fr 320px; gap: 1.25rem; }
-.panel {
-  background: var(--white); border-radius: 16px; border: 1.5px solid var(--border);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04); animation: fadeUp 0.5s ease 0.3s both;
-}
-.panel-header { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 1.4rem; border-bottom: 1px solid var(--border); }
-.panel-title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 500; color: var(--ink); }
-.panel-body { padding: 0.5rem 0; }
-
-.tx-item { display: flex; align-items: center; gap: 11px; padding: 0.8rem 1.4rem; border-bottom: 1px solid rgba(15,31,15,0.06); transition: background 0.15s; }
-.tx-item:last-child { border-bottom: none; }
-.tx-item:hover { background: rgba(15,31,15,0.02); }
-.tx-icon { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
-.tx-icon.credit { background: var(--success-bg); }
-.tx-icon.debit  { background: var(--danger-bg); }
-.tx-icon.neutral{ background: var(--g50); }
-.tx-body { flex: 1; min-width: 0; }
-.tx-desc { font-size: 0.85rem; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tx-date { font-size: 0.72rem; color: var(--ink-soft); margin-top: 1px; }
-.tx-amount { font-size: 0.9rem; font-weight: 700; flex-shrink: 0; }
-.tx-amount.credit { color: var(--success); }
-.tx-amount.debit  { color: var(--danger); }
-
-.empty-state { padding: 2.5rem 1.4rem; text-align: center; color: var(--ink-soft); font-size: 0.85rem; line-height: 1.6; }
-.empty-state .empty-icon { font-size: 2rem; margin-bottom: 0.75rem; opacity: 0.4; }
-
-.info-row { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.4rem; border-bottom: 1px solid rgba(15,31,15,0.06); }
-.info-row:last-child { border-bottom: none; }
-.info-key { font-size: 0.75rem; color: var(--ink-soft); font-weight: 500; }
-.info-val { font-size: 0.84rem; font-weight: 600; color: var(--ink); }
-
-.skeleton {
-  background: linear-gradient(90deg, rgba(15,31,15,0.06) 25%, rgba(15,31,15,0.1) 50%, rgba(15,31,15,0.06) 75%);
-  background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 6px;
-}
-@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
-.alert-banner { display: none; align-items: center; gap: 10px; padding: 0.85rem 1.1rem; border-radius: var(--radius); font-size: 0.875rem; font-weight: 500; margin-bottom: 1.5rem; }
-.alert-banner.show { display: flex; }
-.alert-banner.error { background: var(--danger-bg); border: 1.5px solid rgba(192,57,43,0.2); color: var(--danger); }
-
-@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-
-/* ─── RESPONSIVE ─── */
-@media (max-width: 1024px) {
-  .stats-grid { grid-template-columns: repeat(2,1fr); }
+@media (max-width: 1100px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; }
   .bottom-grid { grid-template-columns: 1fr; }
 }
-
 @media (max-width: 768px) {
-  .sidebar { transform: translateX(-100%); box-shadow: none; }
-  .sidebar.open { transform: translateX(0); box-shadow: 4px 0 32px rgba(0,0,0,0.3); }
+  .sidebar { transform: translateX(-100%); }
   .main { margin-left: 0; }
-  .hamburger { display: flex; }
-  .topbar-logout { display: block; }
-  .topbar { padding: 0.9rem 1rem; }
-  .topbar-title { font-size: 1.2rem; }
-  .content { padding: 1.25rem 1rem; }
-  .stats-grid { grid-template-columns: 1fr; gap: 0.9rem; }
-  .stat-value { font-size: 1.7rem; }
-}
-
-@media (max-width: 480px) {
-  .topbar-date { display: none; }
-  .badge { display: none; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .content { padding: 1.5rem 1rem; }
+  .topbar { padding: 1rem 1.25rem; }
 }
 </style>
 </head>
 <body>
 
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-<aside class="sidebar" id="sidebar">
+<!-- ─── SIDEBAR ─── -->
+<aside class="sidebar">
   <a href="#" class="brand-logo">
     <div class="brand-icon">🏦</div>
     <span class="logo-text">Lume<em>Bank</em></span>
   </a>
+
   <nav class="nav-section">
     <div class="nav-label">Menu</div>
-    <a class="nav-item active" href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a>
-    <a class="nav-item" href="#"><span class="nav-icon">💳</span> Accounts</a>
-    <a class="nav-item" href="#"><span class="nav-icon">↕️</span> Transactions</a>
-    <a class="nav-item" href="#"><span class="nav-icon">📤</span> Transfer</a>
+    <a class="nav-item active" href="dashboard.html">
+      <span class="nav-icon">📊</span> Dashboard
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">💳</span> Accounts
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">↕️</span> Transactions
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">📤</span> Transfer
+    </a>
   </nav>
+
   <nav class="nav-section">
     <div class="nav-label">Settings</div>
-    <a class="nav-item" href="#"><span class="nav-icon">👤</span> Profile</a>
-    <a class="nav-item" href="#"><span class="nav-icon">🔒</span> Security</a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">👤</span> Profile
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">🔒</span> Security
+    </a>
   </nav>
+
   <div class="sidebar-footer">
     <div class="user-card">
       <div class="user-avatar" id="sidebarAvatar">?</div>
@@ -294,133 +363,179 @@ body {
         <div class="user-role" id="sidebarRole">—</div>
       </div>
     </div>
-    <button class="btn-signout" id="signOutBtn">↩ Sign out</button>
+    <button class="btn-signout" id="signOutBtn">Sign out</button>
   </div>
 </aside>
 
+<!-- ─── MAIN ─── -->
 <main class="main">
   <div class="topbar">
-    <div class="topbar-left">
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </button>
-      <div class="topbar-title-wrap">
-        <div class="topbar-title">Good <span id="greeting">day</span>, <span id="topbarName">—</span> 👋</div>
-        <div class="topbar-date" id="topbarDate"></div>
-      </div>
+    <div>
+      <div class="topbar-title">Good <span id="greeting">day</span>, <span id="topbarName">—</span> 👋</div>
+      <div class="topbar-date" id="topbarDate"></div>
     </div>
-    <div class="topbar-right">
-      <div class="badge customer" id="roleBadge">Customer</div>
-      <button class="topbar-logout" id="topbarLogoutBtn">↩ Log out</button>
-    </div>
+    <div class="badge customer" id="roleBadge">Customer</div>
   </div>
 
   <div class="content">
+
     <div class="alert-banner error" id="alertBanner">
       <span>⚠</span><span id="alertMsg">Something went wrong loading your data.</span>
     </div>
 
+    <!-- Stats -->
     <div class="stats-grid">
       <div class="stat-card featured">
-        <div class="stat-header"><div class="stat-label">Current Balance</div><div class="stat-icon white">💰</div></div>
+        <div class="stat-header">
+          <div class="stat-label">Current Balance</div>
+          <div class="stat-icon white">💰</div>
+        </div>
         <div class="stat-value" id="statBalance">—</div>
         <div class="stat-sub" id="statAccount">Loading…</div>
       </div>
       <div class="stat-card">
-        <div class="stat-header"><div class="stat-label">Transactions</div><div class="stat-icon green">📋</div></div>
+        <div class="stat-header">
+          <div class="stat-label">Transactions</div>
+          <div class="stat-icon green">📋</div>
+        </div>
         <div class="stat-value" id="statTxCount">—</div>
         <div class="stat-sub">Recent activity</div>
       </div>
       <div class="stat-card">
-        <div class="stat-header"><div class="stat-label">Member Since</div><div class="stat-icon gold">📅</div></div>
+        <div class="stat-header">
+          <div class="stat-label">Member Since</div>
+          <div class="stat-icon gold">📅</div>
+        </div>
         <div class="stat-value" id="statSince">—</div>
         <div class="stat-sub">Account created</div>
       </div>
     </div>
 
+    <!-- Bottom grid -->
     <div class="bottom-grid">
+
+      <!-- Transactions panel -->
       <div class="panel">
-        <div class="panel-header"><div class="panel-title">Recent Transactions</div></div>
+        <div class="panel-header">
+          <div class="panel-title">Recent Transactions</div>
+        </div>
         <div class="panel-body" id="txList">
+          <!-- Skeleton rows while loading -->
           <div class="tx-item">
-            <div class="skeleton" style="width:36px;height:36px;border-radius:9px;flex-shrink:0"></div>
-            <div style="flex:1"><div class="skeleton" style="height:12px;width:60%;margin-bottom:6px"></div><div class="skeleton" style="height:10px;width:35%"></div></div>
-            <div class="skeleton" style="height:13px;width:58px"></div>
+            <div class="skeleton" style="width:38px;height:38px;border-radius:10px;flex-shrink:0"></div>
+            <div style="flex:1">
+              <div class="skeleton" style="height:13px;width:60%;margin-bottom:6px"></div>
+              <div class="skeleton" style="height:11px;width:35%"></div>
+            </div>
+            <div class="skeleton" style="height:14px;width:60px"></div>
           </div>
           <div class="tx-item">
-            <div class="skeleton" style="width:36px;height:36px;border-radius:9px;flex-shrink:0"></div>
-            <div style="flex:1"><div class="skeleton" style="height:12px;width:50%;margin-bottom:6px"></div><div class="skeleton" style="height:10px;width:30%"></div></div>
-            <div class="skeleton" style="height:13px;width:58px"></div>
+            <div class="skeleton" style="width:38px;height:38px;border-radius:10px;flex-shrink:0"></div>
+            <div style="flex:1">
+              <div class="skeleton" style="height:13px;width:50%;margin-bottom:6px"></div>
+              <div class="skeleton" style="height:11px;width:30%"></div>
+            </div>
+            <div class="skeleton" style="height:14px;width:60px"></div>
           </div>
         </div>
       </div>
+
+      <!-- Account info panel -->
       <div class="panel" style="animation-delay:0.4s">
-        <div class="panel-header"><div class="panel-title">Account Details</div></div>
+        <div class="panel-header">
+          <div class="panel-title">Account Details</div>
+        </div>
         <div class="panel-body">
-          <div class="info-row"><span class="info-key">Full name</span><span class="info-val" id="infoName">—</span></div>
-          <div class="info-row"><span class="info-key">Email</span><span class="info-val" id="infoEmail" style="font-size:0.78rem">—</span></div>
-          <div class="info-row"><span class="info-key">Account No.</span><span class="info-val" id="infoAccNum">—</span></div>
-          <div class="info-row"><span class="info-key">Role</span><span class="info-val" id="infoRole">—</span></div>
-          <div class="info-row"><span class="info-key">Last login</span><span class="info-val" id="infoLastLogin">—</span></div>
-          <div class="info-row"><span class="info-key">Status</span><span class="info-val" style="color:var(--success)">✓ Active</span></div>
+          <div class="info-row">
+            <span class="info-key">Full name</span>
+            <span class="info-val" id="infoName">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">Email</span>
+            <span class="info-val" id="infoEmail" style="font-size:0.8rem">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">Account No.</span>
+            <span class="info-val" id="infoAccNum">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">Role</span>
+            <span class="info-val" id="infoRole">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">Last login</span>
+            <span class="info-val" id="infoLastLogin">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">Status</span>
+            <span class="info-val" style="color:var(--success)">✓ Active</span>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </main>
 
 <script>
-const API        = 'https://apim-banking-app.azure-api.net/api';
+const API = 'https://apim-banking-app.azure-api.net/api';
+
+// Token was already checked in the <head> guard above.
+// Pull both values here for use throughout this script.
 const token      = localStorage.getItem('token');
 const cachedUser = JSON.parse(localStorage.getItem('user') || 'null');
 
-// ─── Sidebar toggle ───────────────────────────────────────────────────────────
-const hamburger      = document.getElementById('hamburger');
-const sidebar        = document.getElementById('sidebar');
-const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-function openSidebar()  { sidebar.classList.add('open'); sidebarOverlay.classList.add('open'); hamburger.classList.add('open'); document.body.style.overflow = 'hidden'; }
-function closeSidebar() { sidebar.classList.remove('open'); sidebarOverlay.classList.remove('open'); hamburger.classList.remove('open'); document.body.style.overflow = ''; }
-
-hamburger.addEventListener('click', () => sidebar.classList.contains('open') ? closeSidebar() : openSidebar());
-sidebarOverlay.addEventListener('click', closeSidebar);
-document.querySelectorAll('.nav-item').forEach(el => el.addEventListener('click', closeSidebar));
-
-// ─── Sign out ─────────────────────────────────────────────────────────────────
-function signOut() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  window.location.replace('signup.html');
-}
-document.getElementById('signOutBtn').addEventListener('click', signOut);
-document.getElementById('topbarLogoutBtn').addEventListener('click', signOut);
-
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-function showAlert(msg) { document.getElementById('alertMsg').textContent = msg; document.getElementById('alertBanner').classList.add('show'); }
-function fmt(amount) { return new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' }).format(amount ?? 0); }
-function fmtDateTime(dateStr) { if (!dateStr) return 'N/A'; return new Date(dateStr).toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); }
-function initials(first, last) { return ((first?.[0] || '') + (last?.[0] || '')).toUpperCase() || '?'; }
+function showAlert(msg) {
+  document.getElementById('alertMsg').textContent = msg;
+  document.getElementById('alertBanner').classList.add('show');
+}
+
+function fmt(amount) {
+  return new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' }).format(amount ?? 0);
+}
+
+function fmtDate(dateStr) {
+  if (!dateStr) return 'N/A';
+  return new Date(dateStr).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function fmtDateTime(dateStr) {
+  if (!dateStr) return 'N/A';
+  return new Date(dateStr).toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+}
+
+function initials(first, last) {
+  return ((first?.[0] || '') + (last?.[0] || '')).toUpperCase() || '?';
+}
 
 // ─── Greeting ─────────────────────────────────────────────────────────────────
 const hour = new Date().getHours();
-document.getElementById('greeting').textContent = hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening';
-document.getElementById('topbarDate').textContent = new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+document.getElementById('greeting').textContent =
+  hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening';
+document.getElementById('topbarDate').textContent =
+  new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
-if (cachedUser) populateUser(cachedUser);
+// ─── Populate from cache immediately (fast paint) ─────────────────────────────
+if (cachedUser) {
+  populateUser(cachedUser);
+}
 
 function populateUser(user) {
   const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim();
-  document.getElementById('topbarName').textContent    = user.firstName || 'there';
-  document.getElementById('sidebarName').textContent   = fullName || 'User';
-  document.getElementById('sidebarRole').textContent   = user.role || 'Customer';
+  document.getElementById('topbarName').textContent = user.firstName || 'there';
+  document.getElementById('sidebarName').textContent = fullName || 'User';
+  document.getElementById('sidebarRole').textContent = user.role || 'Customer';
   document.getElementById('sidebarAvatar').textContent = initials(user.firstName, user.lastName);
-  document.getElementById('statBalance').textContent   = fmt(user.balance);
-  document.getElementById('statAccount').textContent   = user.accountNumber || '—';
-  document.getElementById('statSince').textContent     = user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-AU', { month: 'short', year: 'numeric' }) : '—';
-  document.getElementById('infoName').textContent      = fullName || '—';
-  document.getElementById('infoEmail').textContent     = user.email || '—';
-  document.getElementById('infoAccNum').textContent    = user.accountNumber || '—';
-  document.getElementById('infoRole').textContent      = user.role || '—';
+  document.getElementById('statBalance').textContent = fmt(user.balance);
+  document.getElementById('statAccount').textContent = user.accountNumber || '—';
+  document.getElementById('statSince').textContent = user.createdAt
+    ? new Date(user.createdAt).toLocaleDateString('en-AU', { month: 'short', year: 'numeric' })
+    : '—';
+  document.getElementById('infoName').textContent = fullName || '—';
+  document.getElementById('infoEmail').textContent = user.email || '—';
+  document.getElementById('infoAccNum').textContent = user.accountNumber || '—';
+  document.getElementById('infoRole').textContent = user.role || '—';
   document.getElementById('infoLastLogin').textContent = fmtDateTime(user.lastLogin);
   const badge = document.getElementById('roleBadge');
   badge.textContent = user.role || 'Customer';
@@ -430,32 +545,47 @@ function populateUser(user) {
 function populateTransactions(transactions) {
   const list = document.getElementById('txList');
   if (!transactions || transactions.length === 0) {
-    list.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div>No transactions yet.<br>Your activity will appear here.</div>`;
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📭</div>
+        No transactions yet.<br>Your activity will appear here.
+      </div>`;
     document.getElementById('statTxCount').textContent = '0';
     return;
   }
   document.getElementById('statTxCount').textContent = transactions.length;
   list.innerHTML = transactions.map(tx => {
-    const isCredit  = tx.type?.toLowerCase().includes('credit') || tx.type?.toLowerCase().includes('deposit');
-    const isDebit   = tx.type?.toLowerCase().includes('debit')  || tx.type?.toLowerCase().includes('withdrawal');
+    const isCredit = tx.type?.toLowerCase().includes('credit') || tx.type?.toLowerCase().includes('deposit');
+    const isDebit  = tx.type?.toLowerCase().includes('debit')  || tx.type?.toLowerCase().includes('withdrawal');
     const iconClass = isCredit ? 'credit' : isDebit ? 'debit' : 'neutral';
     const icon      = isCredit ? '⬆️' : isDebit ? '⬇️' : '↔️';
-    return `<div class="tx-item">
-      <div class="tx-icon ${iconClass}">${icon}</div>
-      <div class="tx-body">
-        <div class="tx-desc">${tx.description || tx.type || 'Transaction'}</div>
-        <div class="tx-date">${fmtDateTime(tx.createdAt)}</div>
-      </div>
-      <div class="tx-amount ${isCredit ? 'credit' : 'debit'}">${isCredit ? '+' : '−'}${fmt(tx.amount)}</div>
-    </div>`;
+    const amtClass  = isCredit ? 'credit' : 'debit';
+    const amtPrefix = isCredit ? '+' : '−';
+    return `
+      <div class="tx-item">
+        <div class="tx-icon ${iconClass}">${icon}</div>
+        <div class="tx-body">
+          <div class="tx-desc">${tx.description || tx.type || 'Transaction'}</div>
+          <div class="tx-date">${fmtDateTime(tx.createdAt)}</div>
+        </div>
+        <div class="tx-amount ${amtClass}">${amtPrefix}${fmt(tx.amount)}</div>
+      </div>`;
   }).join('');
 }
 
+// ─── Fetch live profile ───────────────────────────────────────────────────────
 async function loadProfile() {
   try {
-    const res = await fetch(`${API}/user/profile`, { headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } });
-    if (res.status === 401 || res.status === 403) { signOut(); return; }
-    if (!res.ok) throw new Error(`${res.status}`);
+    const res = await fetch(`${API}/user/profile`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+    });
+    if (res.status === 401 || res.status === 403) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.replace('signin.html');
+      return;
+    }
+    if (!res.ok) throw new Error(`Profile fetch failed: ${res.status}`);
     const user = await res.json();
     localStorage.setItem('user', JSON.stringify(user));
     populateUser(user);
@@ -465,10 +595,13 @@ async function loadProfile() {
   }
 }
 
+// ─── Fetch transactions ───────────────────────────────────────────────────────
 async function loadTransactions() {
   try {
-    const res = await fetch(`${API}/user/transactions`, { headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } });
-    if (!res.ok) throw new Error(`${res.status}`);
+    const res = await fetch(`${API}/user/transactions`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+    });
+    if (!res.ok) throw new Error(`Transactions fetch failed: ${res.status}`);
     const data = await res.json();
     populateTransactions(data.transactions || []);
   } catch (err) {
@@ -477,6 +610,14 @@ async function loadTransactions() {
   }
 }
 
+// ─── Sign out ─────────────────────────────────────────────────────────────────
+document.getElementById('signOutBtn').addEventListener('click', () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  window.location.replace('signin.html');
+});
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
 loadProfile();
 loadTransactions();
 </script>
