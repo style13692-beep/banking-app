@@ -41,7 +41,6 @@ body {
   color: var(--ink);
 }
 
-/* ─── LEFT PANEL ─── */
 .brand-panel {
   width: 46%;
   background: var(--g800);
@@ -137,7 +136,6 @@ body {
   font-size: 14px; flex-shrink: 0;
 }
 
-/* ─── RIGHT PANEL (form) ─── */
 .form-panel {
   flex: 1;
   display: flex; align-items: center; justify-content: center;
@@ -146,7 +144,6 @@ body {
   position: relative;
 }
 
-/* Subtle background texture */
 .form-panel::before {
   content: '';
   position: absolute; inset: 0;
@@ -188,7 +185,6 @@ body {
 
 .rule { height: 1px; background: var(--border); margin-bottom: 2.25rem; }
 
-/* Alert */
 .alert {
   padding: 0.9rem 1.1rem;
   border-radius: var(--radius);
@@ -202,7 +198,6 @@ body {
 .alert.success { background: var(--success-bg); border: 1.5px solid rgba(45,106,45,0.2); color: var(--success); }
 .alert-icon { font-size: 1rem; flex-shrink: 0; }
 
-/* Form groups */
 .form-group { margin-bottom: 1.35rem; }
 
 .form-group label {
@@ -257,7 +252,6 @@ body {
 }
 .forgot-row a:hover { color: var(--g600); }
 
-/* Submit button */
 .btn-submit {
   width: 100%;
   background: linear-gradient(135deg, var(--g700) 0%, var(--g600) 100%);
@@ -296,6 +290,23 @@ body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* Debug panel — remove in production */
+.debug-panel {
+  margin-top: 1.5rem;
+  background: #1a1a2e;
+  border-radius: var(--radius);
+  padding: 1rem;
+  font-family: monospace;
+  font-size: 0.72rem;
+  color: #a8ff78;
+  display: none;
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid rgba(168,255,120,0.2);
+}
+.debug-panel.show { display: block; }
+.debug-title { color: rgba(168,255,120,0.5); margin-bottom: 0.5rem; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
 .security-note {
   margin-top: 1.75rem;
   display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -309,7 +320,6 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── RESPONSIVE ─── */
 @media (max-width: 900px) {
   .brand-panel { display: none; }
   .form-panel { padding: 2.5rem 1.5rem; }
@@ -318,7 +328,6 @@ body {
 </head>
 <body>
 
-<!-- Left brand panel -->
 <div class="brand-panel">
   <div class="bp-bg"></div>
   <div class="bp-grid"></div>
@@ -344,7 +353,6 @@ body {
   </div>
 </div>
 
-<!-- Right form panel -->
 <div class="form-panel">
   <div class="form-box">
     <div class="form-eyebrow">Sign in</div>
@@ -385,6 +393,12 @@ body {
       <button type="submit" class="btn-submit" id="submitBtn">Sign in to my account</button>
     </form>
 
+    <!-- Debug panel: shows raw API response so you can see the exact field names -->
+    <div class="debug-panel" id="debugPanel">
+      <div class="debug-title">🛠 API Response (remove in production)</div>
+      <pre id="debugOutput"></pre>
+    </div>
+
     <div class="security-note">
       🔒 Secured with Azure Key Vault &amp; JWT encryption
     </div>
@@ -392,64 +406,157 @@ body {
 </div>
 
 <script>
-const API = 'https://apim-banking-app.azure-api.net/api';
+  // ─── CONFIG ────────────────────────────────────────────────────────────────
+  // If your Azure APIM requires a subscription key, add it here.
+  // Find it in Azure Portal → API Management → Subscriptions.
+  // Leave as empty string '' if not required.
+  const APIM_SUBSCRIPTION_KEY = '';
 
-/* Toggle password visibility */
-document.getElementById('togglePw').addEventListener('click', () => {
-  const pw = document.getElementById('password');
-  const btn = document.getElementById('togglePw');
-  if (pw.type === 'password') { pw.type = 'text'; btn.style.opacity = '0.9'; }
-  else { pw.type = 'password'; btn.style.opacity = '0.45'; }
-});
+  const API = 'https://apim-banking-app.azure-api.net/api';
 
-function showError(id) { document.getElementById(id).classList.add('show'); document.getElementById(id.replace('Error',''))?.classList.add('error'); }
-function clearError(id) { document.getElementById(id).classList.remove('show'); document.getElementById(id.replace('Error',''))?.classList.remove('error'); }
-
-function showAlert(type, msg) {
-  document.getElementById('alertError').classList.remove('show');
-  document.getElementById('alertSuccess').classList.remove('show');
-  if (type === 'error') {
-    document.getElementById('alertErrorMsg').textContent = msg;
-    document.getElementById('alertError').classList.add('show');
-  } else {
-    document.getElementById('alertSuccessMsg').textContent = msg;
-    document.getElementById('alertSuccess').classList.add('show');
+  // ─── Helpers ───────────────────────────────────────────────────────────────
+  function buildHeaders(includeAuth = false) {
+    const headers = { 'Content-Type': 'application/json' };
+    if (APIM_SUBSCRIPTION_KEY) {
+      headers['Ocp-Apim-Subscription-Key'] = APIM_SUBSCRIPTION_KEY;
+    }
+    if (includeAuth) {
+      const token = localStorage.getItem('token');
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+    }
+    return headers;
   }
-}
 
-document.getElementById('signinForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  ['emailError','passwordError'].forEach(clearError);
-
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
-
-  let valid = true;
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('emailError'); valid = false; }
-  if (!password) { showError('passwordError'); valid = false; }
-  if (!valid) return;
-
-  const btn = document.getElementById('submitBtn');
-  btn.classList.add('loading'); btn.disabled = true;
-
-  try {
-    const res = await fetch(`${API}/auth/signin`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
-    const data = await res.json();
-    if (!res.ok) { showAlert('error', data.error || 'Invalid email or password. Please try again.'); return; }
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
-    showAlert('success', 'Signed in — taking you to your dashboard…');
-    setTimeout(() => window.location.href = 'dashboard.html', 1200);
-  } catch {
-    showAlert('error', 'Unable to connect to the server. Please try again shortly.');
-  } finally {
-    btn.classList.remove('loading'); btn.disabled = false;
+  // Safely extracts the token from various API response shapes:
+  // data.token | data.accessToken | data.access_token | data.jwt | data.idToken
+  function extractToken(data) {
+    return data.token
+      || data.accessToken
+      || data.access_token
+      || data.jwt
+      || data.idToken
+      || null;
   }
-});
+
+  // Safely extracts the user object from various response shapes:
+  // data.user | data.data | data.profile | data (flat)
+  function extractUser(data) {
+    if (data.user && typeof data.user === 'object') return data.user;
+    if (data.data && typeof data.data === 'object') return data.data;
+    if (data.profile && typeof data.profile === 'object') return data.profile;
+    // If the root object looks like a user (has email or firstName), use it directly
+    if (data.email || data.firstName) return data;
+    return null;
+  }
+
+  // ─── Toggle password ───────────────────────────────────────────────────────
+  document.getElementById('togglePw').addEventListener('click', () => {
+    const pw  = document.getElementById('password');
+    const btn = document.getElementById('togglePw');
+    if (pw.type === 'password') { pw.type = 'text'; btn.style.opacity = '0.9'; }
+    else { pw.type = 'password'; btn.style.opacity = '0.45'; }
+  });
+
+  // ─── Field error helpers ───────────────────────────────────────────────────
+  function showError(id) {
+    document.getElementById(id).classList.add('show');
+    const inputId = id.replace('Error', '');
+    const input = document.getElementById(inputId);
+    if (input) input.classList.add('error');
+  }
+  function clearError(id) {
+    document.getElementById(id).classList.remove('show');
+    const inputId = id.replace('Error', '');
+    const input = document.getElementById(inputId);
+    if (input) input.classList.remove('error');
+  }
+
+  function showAlert(type, msg) {
+    document.getElementById('alertError').classList.remove('show');
+    document.getElementById('alertSuccess').classList.remove('show');
+    if (type === 'error') {
+      document.getElementById('alertErrorMsg').textContent = msg;
+      document.getElementById('alertError').classList.add('show');
+    } else {
+      document.getElementById('alertSuccessMsg').textContent = msg;
+      document.getElementById('alertSuccess').classList.add('show');
+    }
+  }
+
+  // ─── Redirect if already logged in ────────────────────────────────────────
+  // Done here (not in a blocking script) so body is already visible
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('token')) {
+      window.location.replace('dashboard.html');
+    }
+  });
+
+  // ─── Sign-in form ──────────────────────────────────────────────────────────
+  document.getElementById('signinForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    ['emailError', 'passwordError'].forEach(clearError);
+
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    let valid = true;
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('emailError'); valid = false; }
+    if (!password) { showError('passwordError'); valid = false; }
+    if (!valid) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(`${API}/auth/signin`, {
+        method: 'POST',
+        headers: buildHeaders(),
+        body: JSON.stringify({ email, password })
+      });
+
+      let data = {};
+      try { data = await res.json(); } catch { /* non-JSON body */ }
+
+      // ── Show raw response in debug panel so you can see exact field names ──
+      const debugPanel  = document.getElementById('debugPanel');
+      const debugOutput = document.getElementById('debugOutput');
+      debugPanel.classList.add('show');
+      debugOutput.textContent = JSON.stringify({
+        status: res.status,
+        ok: res.ok,
+        body: data
+      }, null, 2);
+
+      if (!res.ok) {
+        const msg = data.error || data.message || data.detail
+          || `Sign-in failed (HTTP ${res.status}). Check the debug panel below.`;
+        showAlert('error', msg);
+        return;
+      }
+
+      const token = extractToken(data);
+      const user  = extractUser(data);
+
+      if (!token) {
+        showAlert('error', 'Signed in but no token was returned. Check the debug panel for the exact response shape.');
+        return;
+      }
+
+      localStorage.setItem('token', token);
+      if (user) localStorage.setItem('user', JSON.stringify(user));
+
+      showAlert('success', 'Signed in — taking you to your dashboard…');
+      setTimeout(() => window.location.href = 'dashboard.html', 1200);
+
+    } catch (err) {
+      console.error('[Signin]', err);
+      showAlert('error', 'Unable to reach the server. Check your network or CORS settings.');
+    } finally {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    }
+  });
 </script>
 </body>
 </html>

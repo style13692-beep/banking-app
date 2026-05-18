@@ -5,14 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Sign Up — LumeBank</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-
-<!-- Already logged in? Go straight to dashboard -->
-<script>
-  if (localStorage.getItem('token')) {
-    window.location.replace('dashboard.html');
-  }
-</script>
-
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -36,7 +28,6 @@ body {
   color: var(--ink);
 }
 
-/* ─── LEFT PANEL ─── */
 .left-panel {
   background: var(--g800);
   display: flex; flex-direction: column;
@@ -89,7 +80,6 @@ body {
   font-size: 0.72rem; color: rgba(255,255,255,0.2);
 }
 
-/* ─── RIGHT PANEL ─── */
 .right-panel {
   display: flex; align-items: center; justify-content: center;
   padding: 2.5rem 2rem; min-height: 100vh; overflow-y: auto;
@@ -109,7 +99,6 @@ body {
 .form-sub a { color: var(--g500); text-decoration: none; font-weight: 600; }
 .form-sub a:hover { text-decoration: underline; }
 
-/* Two-column name row */
 .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
 
 .field { margin-bottom: 1rem; }
@@ -125,11 +114,9 @@ body {
 .field input:focus { border-color: var(--g500); box-shadow: 0 0 0 3px rgba(61,122,57,0.12); }
 .field input.error-field { border-color: var(--danger); }
 
-.field-hint { font-size: 0.72rem; color: var(--ink-soft); margin-top: 0.35rem; }
 .field-error { font-size: 0.72rem; color: var(--danger); margin-top: 0.35rem; display: none; }
 .field-error.show { display: block; }
 
-/* Password strength */
 .strength-bar { display: flex; gap: 4px; margin-top: 0.5rem; }
 .strength-seg { flex: 1; height: 3px; border-radius: 3px; background: var(--border); transition: background 0.3s; }
 .strength-seg.weak   { background: #e74c3c; }
@@ -138,7 +125,6 @@ body {
 .strength-seg.strong { background: var(--success); }
 .strength-label { font-size: 0.7rem; color: var(--ink-soft); margin-top: 0.3rem; }
 
-/* Alert */
 .alert-banner {
   display: none; align-items: center; gap: 10px; padding: 0.85rem 1rem;
   border-radius: var(--radius); font-size: 0.85rem; font-weight: 500; margin-bottom: 1.25rem;
@@ -147,7 +133,6 @@ body {
 .alert-banner.error   { background: var(--danger-bg); border: 1.5px solid rgba(192,57,43,0.2); color: var(--danger); }
 .alert-banner.success { background: var(--success-bg); border: 1.5px solid rgba(45,106,45,0.2); color: var(--success); }
 
-/* Submit button */
 .btn-submit {
   width: 100%; padding: 0.9rem;
   background: linear-gradient(135deg, var(--g700), var(--g500));
@@ -171,8 +156,22 @@ body {
 .btn-submit.loading .btn-text { display: none; }
 .btn-submit.loading .spinner { display: block; }
 
-.divider { display: flex; align-items: center; gap: 0.75rem; margin: 1.25rem 0; color: var(--ink-soft); font-size: 0.75rem; }
-.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+/* Debug panel — remove in production */
+.debug-panel {
+  margin-top: 1.5rem;
+  background: #1a1a2e;
+  border-radius: var(--radius);
+  padding: 1rem;
+  font-family: monospace;
+  font-size: 0.72rem;
+  color: #a8ff78;
+  display: none;
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid rgba(168,255,120,0.2);
+}
+.debug-panel.show { display: block; }
+.debug-title { color: rgba(168,255,120,0.5); margin-bottom: 0.5rem; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; }
 
 .terms { font-size: 0.73rem; color: var(--ink-soft); text-align: center; margin-top: 1rem; line-height: 1.5; }
 .terms a { color: var(--g500); text-decoration: none; }
@@ -181,13 +180,9 @@ body {
 @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ─── RESPONSIVE ─── */
 @media (max-width: 900px) {
   body { grid-template-columns: 1fr; }
-  .left-panel {
-    min-height: auto; padding: 2rem 1.5rem 2.5rem;
-    display: block;
-  }
+  .left-panel { min-height: auto; padding: 2rem 1.5rem 2.5rem; display: block; }
   .left-panel .features { display: none; }
   .left-panel .left-bottom { display: none; }
   .left-headline { font-size: 1.6rem; margin-bottom: 0.6rem; }
@@ -204,7 +199,6 @@ body {
 </head>
 <body>
 
-<!-- ─── LEFT ─── -->
 <div class="left-panel">
   <div class="left-top">
     <a href="#" class="brand-logo">
@@ -216,59 +210,46 @@ body {
   </div>
 
   <div class="features">
-    <div class="feature-item">
-      <div class="feature-icon">🔒</div>
-      <span class="feature-text">Bank-grade 256-bit encryption on every transaction</span>
-    </div>
-    <div class="feature-item">
-      <div class="feature-icon">⚡</div>
-      <span class="feature-text">Instant transfers with real-time balance updates</span>
-    </div>
-    <div class="feature-item">
-      <div class="feature-icon">📱</div>
-      <span class="feature-text">Manage everything from your phone, anytime</span>
-    </div>
-    <div class="feature-item">
-      <div class="feature-icon">💳</div>
-      <span class="feature-text">Zero monthly fees — your money stays yours</span>
-    </div>
+    <div class="feature-item"><div class="feature-icon">🔒</div><span class="feature-text">Bank-grade 256-bit encryption on every transaction</span></div>
+    <div class="feature-item"><div class="feature-icon">⚡</div><span class="feature-text">Instant transfers with real-time balance updates</span></div>
+    <div class="feature-item"><div class="feature-icon">📱</div><span class="feature-text">Manage everything from your phone, anytime</span></div>
+    <div class="feature-item"><div class="feature-icon">💳</div><span class="feature-text">Zero monthly fees — your money stays yours</span></div>
   </div>
 
   <div class="left-bottom">© 2025 LumeBank. All rights reserved.</div>
 </div>
 
-<!-- ─── RIGHT ─── -->
 <div class="right-panel">
   <div class="form-card">
     <div class="form-title">Create account</div>
     <div class="form-sub">Already have an account? <a href="signin.html">Sign in</a></div>
 
-    <div class="alert-banner error" id="alertError"><span>⚠</span><span id="alertErrorMsg">Something went wrong.</span></div>
+    <div class="alert-banner error"   id="alertError">  <span>⚠</span><span id="alertErrorMsg">Something went wrong.</span></div>
     <div class="alert-banner success" id="alertSuccess"><span>✓</span><span id="alertSuccessMsg">Account created! Redirecting…</span></div>
 
     <form id="signupForm" novalidate>
       <div class="row-2">
         <div class="field">
           <label for="firstName">First name</label>
-          <input type="text" id="firstName" name="firstName" placeholder="Alex" autocomplete="given-name"/>
+          <input type="text" id="firstName" placeholder="Alex" autocomplete="given-name"/>
           <div class="field-error" id="errFirstName">Required</div>
         </div>
         <div class="field">
           <label for="lastName">Last name</label>
-          <input type="text" id="lastName" name="lastName" placeholder="Morgan" autocomplete="family-name"/>
+          <input type="text" id="lastName" placeholder="Morgan" autocomplete="family-name"/>
           <div class="field-error" id="errLastName">Required</div>
         </div>
       </div>
 
       <div class="field">
         <label for="email">Email address</label>
-        <input type="email" id="email" name="email" placeholder="alex@example.com" autocomplete="email"/>
+        <input type="email" id="email" placeholder="alex@example.com" autocomplete="email"/>
         <div class="field-error" id="errEmail">Enter a valid email address</div>
       </div>
 
       <div class="field">
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="At least 8 characters" autocomplete="new-password"/>
+        <input type="password" id="password" placeholder="At least 8 characters" autocomplete="new-password"/>
         <div class="strength-bar">
           <div class="strength-seg" id="seg1"></div>
           <div class="strength-seg" id="seg2"></div>
@@ -281,7 +262,7 @@ body {
 
       <div class="field">
         <label for="confirmPassword">Confirm password</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repeat your password" autocomplete="new-password"/>
+        <input type="password" id="confirmPassword" placeholder="Repeat your password" autocomplete="new-password"/>
         <div class="field-error" id="errConfirm">Passwords do not match</div>
       </div>
 
@@ -291,105 +272,146 @@ body {
       </button>
     </form>
 
+    <!-- Debug panel — shows raw API response so you can verify field names -->
+    <div class="debug-panel" id="debugPanel">
+      <div class="debug-title">🛠 API Response (remove in production)</div>
+      <pre id="debugOutput"></pre>
+    </div>
+
     <p class="terms">By creating an account you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
   </div>
 </div>
 
 <script>
-const API = 'https://apim-banking-app.azure-api.net/api';
+  // ─── CONFIG ────────────────────────────────────────────────────────────────
+  const APIM_SUBSCRIPTION_KEY = ''; // Add your Azure APIM subscription key here if required
+  const API = 'https://apim-banking-app.azure-api.net/api';
 
-// ─── Password strength ────────────────────────────────────────────────────────
-document.getElementById('password').addEventListener('input', function () {
-  const v = this.value;
-  let score = 0;
-  if (v.length >= 8)  score++;
-  if (/[A-Z]/.test(v)) score++;
-  if (/[0-9]/.test(v)) score++;
-  if (/[^A-Za-z0-9]/.test(v)) score++;
-
-  const segs   = ['seg1','seg2','seg3','seg4'];
-  const labels = ['','Weak','Fair','Good','Strong'];
-  const cls    = ['','weak','fair','good','strong'];
-
-  segs.forEach((id, i) => {
-    const el = document.getElementById(id);
-    el.className = 'strength-seg';
-    if (i < score) el.classList.add(cls[score]);
-  });
-  document.getElementById('strengthLabel').textContent = v.length ? labels[score] : '';
-});
-
-// ─── Form validation & submit ─────────────────────────────────────────────────
-function showFieldError(errId, inputId, show) {
-  document.getElementById(errId).classList.toggle('show', show);
-  document.getElementById(inputId).classList.toggle('error-field', show);
-}
-
-function hideAllErrors() {
-  [['errFirstName','firstName'],['errLastName','lastName'],['errEmail','email'],['errPassword','password'],['errConfirm','confirmPassword']]
-    .forEach(([e, i]) => showFieldError(e, i, false));
-  document.getElementById('alertError').classList.remove('show');
-  document.getElementById('alertSuccess').classList.remove('show');
-}
-
-document.getElementById('signupForm').addEventListener('submit', async function (e) {
-  e.preventDefault();
-  hideAllErrors();
-
-  const firstName       = document.getElementById('firstName').value.trim();
-  const lastName        = document.getElementById('lastName').value.trim();
-  const email           = document.getElementById('email').value.trim();
-  const password        = document.getElementById('password').value;
-  const confirmPassword = document.getElementById('confirmPassword').value;
-
-  let valid = true;
-  if (!firstName)                        { showFieldError('errFirstName','firstName',true); valid = false; }
-  if (!lastName)                         { showFieldError('errLastName','lastName',true); valid = false; }
-  if (!email || !/\S+@\S+\.\S+/.test(email)) { showFieldError('errEmail','email',true); valid = false; }
-  if (password.length < 8)              { showFieldError('errPassword','password',true); valid = false; }
-  if (password !== confirmPassword)     { showFieldError('errConfirm','confirmPassword',true); valid = false; }
-  if (!valid) return;
-
-  const btn = document.getElementById('submitBtn');
-  btn.classList.add('loading');
-  btn.disabled = true;
-
-  try {
-    const res = await fetch(`${API}/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ firstName, lastName, email, password })
-    });
-
-    const data = await res.json().catch(() => ({}));
-
-    if (!res.ok) {
-      const msg = data.message || data.error || `Registration failed (${res.status})`;
-      document.getElementById('alertErrorMsg').textContent = msg;
-      document.getElementById('alertError').classList.add('show');
-      return;
-    }
-
-    // Store token if the API returns one on register
-    if (data.token) {
-      localStorage.setItem('token', data.token);
-      if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
-    }
-
-    document.getElementById('alertSuccessMsg').textContent = 'Account created! Taking you to your dashboard…';
-    document.getElementById('alertSuccess').classList.add('show');
-
-    setTimeout(() => window.location.replace('dashboard.html'), 1400);
-
-  } catch (err) {
-    console.error('[Signup]', err);
-    document.getElementById('alertErrorMsg').textContent = 'Connection error. Please try again.';
-    document.getElementById('alertError').classList.add('show');
-  } finally {
-    btn.classList.remove('loading');
-    btn.disabled = false;
+  // ─── Helpers ───────────────────────────────────────────────────────────────
+  function buildHeaders() {
+    const headers = { 'Content-Type': 'application/json' };
+    if (APIM_SUBSCRIPTION_KEY) headers['Ocp-Apim-Subscription-Key'] = APIM_SUBSCRIPTION_KEY;
+    return headers;
   }
-});
+
+  function extractToken(data) {
+    return data.token || data.accessToken || data.access_token || data.jwt || data.idToken || null;
+  }
+
+  function extractUser(data) {
+    if (data.user && typeof data.user === 'object') return data.user;
+    if (data.data && typeof data.data === 'object') return data.data;
+    if (data.profile && typeof data.profile === 'object') return data.profile;
+    if (data.email || data.firstName) return data;
+    return null;
+  }
+
+  // ─── Redirect if already logged in ────────────────────────────────────────
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('token')) window.location.replace('dashboard.html');
+  });
+
+  // ─── Password strength ────────────────────────────────────────────────────
+  document.getElementById('password').addEventListener('input', function () {
+    const v = this.value;
+    let score = 0;
+    if (v.length >= 8)           score++;
+    if (/[A-Z]/.test(v))         score++;
+    if (/[0-9]/.test(v))         score++;
+    if (/[^A-Za-z0-9]/.test(v))  score++;
+
+    const segs   = ['seg1','seg2','seg3','seg4'];
+    const labels = ['','Weak','Fair','Good','Strong'];
+    const cls    = ['','weak','fair','good','strong'];
+
+    segs.forEach((id, i) => {
+      const el = document.getElementById(id);
+      el.className = 'strength-seg';
+      if (i < score) el.classList.add(cls[score]);
+    });
+    document.getElementById('strengthLabel').textContent = v.length ? labels[score] : '';
+  });
+
+  // ─── Form validation & submit ─────────────────────────────────────────────
+  function showFieldError(errId, inputId, show) {
+    document.getElementById(errId).classList.toggle('show', show);
+    document.getElementById(inputId).classList.toggle('error-field', show);
+  }
+
+  function hideAllErrors() {
+    [['errFirstName','firstName'],['errLastName','lastName'],['errEmail','email'],['errPassword','password'],['errConfirm','confirmPassword']]
+      .forEach(([e, i]) => showFieldError(e, i, false));
+    document.getElementById('alertError').classList.remove('show');
+    document.getElementById('alertSuccess').classList.remove('show');
+  }
+
+  document.getElementById('signupForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    hideAllErrors();
+
+    const firstName       = document.getElementById('firstName').value.trim();
+    const lastName        = document.getElementById('lastName').value.trim();
+    const email           = document.getElementById('email').value.trim();
+    const password        = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    let valid = true;
+    if (!firstName)                             { showFieldError('errFirstName','firstName',true); valid = false; }
+    if (!lastName)                              { showFieldError('errLastName','lastName',true); valid = false; }
+    if (!email || !/\S+@\S+\.\S+/.test(email)) { showFieldError('errEmail','email',true); valid = false; }
+    if (password.length < 8)                   { showFieldError('errPassword','password',true); valid = false; }
+    if (password !== confirmPassword)           { showFieldError('errConfirm','confirmPassword',true); valid = false; }
+    if (!valid) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(`${API}/auth/register`, {
+        method: 'POST',
+        headers: buildHeaders(),
+        body: JSON.stringify({ firstName, lastName, email, password })
+      });
+
+      let data = {};
+      try { data = await res.json(); } catch { /* non-JSON body */ }
+
+      // Show raw response in debug panel
+      const debugPanel  = document.getElementById('debugPanel');
+      const debugOutput = document.getElementById('debugOutput');
+      debugPanel.classList.add('show');
+      debugOutput.textContent = JSON.stringify({ status: res.status, ok: res.ok, body: data }, null, 2);
+
+      if (!res.ok) {
+        const msg = data.message || data.error || data.detail
+          || `Registration failed (HTTP ${res.status}). Check the debug panel below.`;
+        document.getElementById('alertErrorMsg').textContent = msg;
+        document.getElementById('alertError').classList.add('show');
+        return;
+      }
+
+      const token = extractToken(data);
+      const user  = extractUser(data);
+
+      if (token) {
+        localStorage.setItem('token', token);
+        if (user) localStorage.setItem('user', JSON.stringify(user));
+      }
+
+      document.getElementById('alertSuccessMsg').textContent = 'Account created! Taking you to your dashboard…';
+      document.getElementById('alertSuccess').classList.add('show');
+      setTimeout(() => window.location.replace('dashboard.html'), 1400);
+
+    } catch (err) {
+      console.error('[Signup]', err);
+      document.getElementById('alertErrorMsg').textContent = 'Connection error. Please check your network or CORS settings.';
+      document.getElementById('alertError').classList.add('show');
+    } finally {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    }
+  });
 </script>
 </body>
 </html>
