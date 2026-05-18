@@ -305,6 +305,21 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ─── MOBILE LOGOUT BUTTON ─── */
+.btn-signout-mobile {
+  display: none; /* Hidden on desktop */
+  background: rgba(192,57,43,0.12); 
+  border: 1px solid rgba(192,57,43,0.2);
+  border-radius: 9px; 
+  padding: 0.4rem 0.6rem;
+  font-size: 1.2rem;
+  cursor: pointer; 
+  transition: all 0.2s;
+}
+.btn-signout-mobile:hover { 
+  background: rgba(192,57,43,0.2); 
+}
+
 @media (max-width: 1100px) {
   .stats-grid { grid-template-columns: 1fr 1fr; }
   .bottom-grid { grid-template-columns: 1fr; }
@@ -315,6 +330,10 @@ body {
   .stats-grid { grid-template-columns: 1fr; }
   .content { padding: 1.5rem 1rem; }
   .topbar { padding: 1rem 1.25rem; }
+
+  /* Mobile logout styles */
+  .btn-signout-mobile { display: block; }
+  #roleBadge { display: none; } /* Hide badge on mobile to save space */
 }
 </style>
 </head>
@@ -322,7 +341,6 @@ body {
 
 <!-- ─── SIDEBAR ─── -->
 <aside class="sidebar">
-  <!-- ✅ Logo now links to index.html -->
   <a href="index.html" class="brand-logo">
     <div class="brand-icon">🏦</div>
     <span class="logo-text">Lume<em>Bank</em></span>
@@ -361,7 +379,11 @@ body {
       <div class="topbar-title">Good <span id="greeting">day</span>, <span id="topbarName">—</span> 👋</div>
       <div class="topbar-date" id="topbarDate"></div>
     </div>
-    <div class="badge customer" id="roleBadge">Customer</div>
+    <!-- Wrapped Role Badge and new Mobile Log Out Button -->
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div class="badge customer" id="roleBadge">Customer</div>
+      <button class="btn-signout-mobile" id="signOutBtnMobile" title="Sign out">🚪</button>
+    </div>
   </div>
 
   <div class="content">
@@ -581,12 +603,15 @@ async function loadTransactions() {
   }
 }
 
-// ─── Sign out ─────────────────────────────────────────────────────────────────
-document.getElementById('signOutBtn').addEventListener('click', () => {
+// ─── Sign out (Desktop & Mobile) ──────────────────────────────────────────────
+function handleSignOut() {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
   window.location.replace('signin.html');
-});
+}
+
+document.getElementById('signOutBtn').addEventListener('click', handleSignOut);
+document.getElementById('signOutBtnMobile').addEventListener('click', handleSignOut);
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 loadProfile();

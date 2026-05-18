@@ -145,7 +145,7 @@ body {
 .btn-submit.loading .btn-text { display: none; }
 .btn-submit.loading .spinner { display: block; }
 
-/* Debug panel — remove before going live */
+/* Debug panel */
 .debug-panel {
   margin-top: 1rem; background: #0d1117; border-radius: 10px;
   padding: 0.9rem 1rem; font-family: monospace; font-size: 0.72rem;
@@ -180,7 +180,6 @@ body {
 
 <div class="left-panel">
   <div class="left-top">
-    <!-- ✅ Logo now links to index.html -->
     <a href="index.html" class="brand-logo">
       <div class="brand-icon">🏦</div>
       <span class="logo-text">Lume<em>Bank</em></span>
@@ -244,7 +243,6 @@ body {
       </button>
     </form>
 
-    <!-- Debug panel: shows the exact URL tried + raw API response -->
     <div class="debug-panel" id="debugPanel">
       <div class="debug-title">🛠 Debug — remove before going live</div>
       <pre id="debugOutput"></pre>
@@ -255,10 +253,10 @@ body {
 </div>
 
 <script>
-// ─── ⚙️  CONFIGURATION — edit these if your API paths differ ─────────────────
+// ─── ⚙️  CONFIGURATION ────────────────────────────────────────────────────────
 const API_BASE      = 'https://apim-banking-app.azure-api.net/api';
-const REGISTER_PATH = 'auth/register';   // ← change this if 404 persists (e.g. 'auth/signup')
-const APIM_KEY      = '';                // ← paste your Ocp-Apim-Subscription-Key here if needed
+const REGISTER_PATH = 'auth/signup';   // ← UPDATED to match your backend
+const APIM_KEY      = '';              // ← paste your Ocp-Apim-Subscription-Key here if needed
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 function buildHeaders() {
@@ -328,8 +326,8 @@ document.getElementById('signupForm').addEventListener('submit', async function 
   const confirmPassword = document.getElementById('confirmPassword').value;
 
   let valid = true;
-  if (!firstName)                             { setFieldError('errFirstName','firstName',true); valid = false; }
-  if (!lastName)                              { setFieldError('errLastName','lastName',true);   valid = false; }
+  if (!firstName)                                { setFieldError('errFirstName','firstName',true); valid = false; }
+  if (!lastName)                                 { setFieldError('errLastName','lastName',true);   valid = false; }
   if (!email || !/\S+@\S+\.\S+/.test(email)) { setFieldError('errEmail','email',true);         valid = false; }
   if (password.length < 8)                   { setFieldError('errPassword','password',true);   valid = false; }
   if (password !== confirmPassword)           { setFieldError('errConfirm','confirmPassword',true); valid = false; }
