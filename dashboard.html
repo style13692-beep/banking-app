@@ -305,19 +305,77 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── MOBILE LOGOUT BUTTON ─── */
-.btn-signout-mobile {
+/* ─── MOBILE DROPDOWN ─── */
+.mobile-dropdown-container {
   display: none; /* Hidden on desktop */
-  background: rgba(192,57,43,0.12); 
-  border: 1px solid rgba(192,57,43,0.2);
-  border-radius: 9px; 
-  padding: 0.4rem 0.6rem;
-  font-size: 1.2rem;
-  cursor: pointer; 
-  transition: all 0.2s;
+  position: relative;
 }
-.btn-signout-mobile:hover { 
-  background: rgba(192,57,43,0.2); 
+
+.mobile-profile-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.mobile-profile-btn:active {
+  transform: scale(0.95);
+}
+
+.user-avatar-mobile {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--g500), var(--g600));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 700; color: var(--white);
+  box-shadow: 0 2px 8px rgba(61,122,57,0.25);
+  border: 2px solid var(--cream);
+}
+
+.mobile-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  min-width: 170px;
+  z-index: 1000;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeUp 0.2s ease both;
+}
+.mobile-dropdown-menu.show {
+  display: flex;
+}
+
+.dropdown-item {
+  padding: 0.85rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dropdown-item:hover {
+  background: rgba(15,31,15,0.03);
+}
+.dropdown-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0;
+}
+.dropdown-item.text-danger {
+  color: var(--danger);
 }
 
 @media (max-width: 1100px) {
@@ -332,7 +390,7 @@ body {
   .topbar { padding: 1rem 1.25rem; }
 
   /* Mobile logout styles */
-  .btn-signout-mobile { display: block; }
+  .mobile-dropdown-container { display: block; }
   #roleBadge { display: none; } /* Hide badge on mobile to save space */
 }
 </style>
@@ -379,10 +437,25 @@ body {
       <div class="topbar-title">Good <span id="greeting">day</span>, <span id="topbarName">—</span> 👋</div>
       <div class="topbar-date" id="topbarDate"></div>
     </div>
-    <!-- Wrapped Role Badge and new Mobile Log Out Button -->
+    
+    <!-- Wrapped Role Badge and new Mobile Dropdown Container -->
     <div style="display: flex; align-items: center; gap: 10px;">
       <div class="badge customer" id="roleBadge">Customer</div>
-      <button class="btn-signout-mobile" id="signOutBtnMobile" title="Sign out">🚪</button>
+      
+      <!-- MOBILE PROFILE DROPDOWN -->
+      <div class="mobile-dropdown-container">
+        <button class="mobile-profile-btn" id="mobileProfileBtn" title="Profile Menu">
+          <div class="user-avatar-mobile" id="mobileAvatar">?</div>
+        </button>
+        
+        <div class="mobile-dropdown-menu" id="mobileDropdownMenu">
+          <a href="#" class="dropdown-item">👤 My Profile</a>
+          <a href="#" class="dropdown-item">⚙️ Settings</a>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item text-danger" id="signOutBtnMobile">🚪 Sign out</button>
+        </div>
+      </div>
+      
     </div>
   </div>
 
@@ -518,10 +591,17 @@ if (cachedUser) populateUser(cachedUser);
 
 function populateUser(user) {
   const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim();
+  const userInitials = initials(user.firstName, user.lastName);
+  
   document.getElementById('topbarName').textContent    = user.firstName || 'there';
   document.getElementById('sidebarName').textContent   = fullName || 'User';
   document.getElementById('sidebarRole').textContent   = user.role || 'Customer';
-  document.getElementById('sidebarAvatar').textContent = initials(user.firstName, user.lastName);
+  
+  // Set initials in both sidebar and the new mobile avatar button
+  document.getElementById('sidebarAvatar').textContent = userInitials;
+  const mobileAvatar = document.getElementById('mobileAvatar');
+  if(mobileAvatar) mobileAvatar.textContent = userInitials;
+  
   document.getElementById('statBalance').textContent   = fmt(user.balance);
   document.getElementById('statAccount').textContent   = user.accountNumber || '—';
   document.getElementById('statSince').textContent     = user.createdAt
@@ -601,6 +681,25 @@ async function loadTransactions() {
     console.error('[Transactions]', err);
     populateTransactions([]);
   }
+}
+
+// ─── Mobile Dropdown Logic ────────────────────────────────────────────────────
+const mobileProfileBtn = document.getElementById('mobileProfileBtn');
+const mobileDropdownMenu = document.getElementById('mobileDropdownMenu');
+
+if (mobileProfileBtn && mobileDropdownMenu) {
+  // Toggle menu when clicking the avatar
+  mobileProfileBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); // Prevents the document click event from instantly firing
+    mobileDropdownMenu.classList.toggle('show');
+  });
+
+  // Close the menu if you click anywhere else on the page
+  document.addEventListener('click', (e) => {
+    if (!mobileDropdownMenu.contains(e.target) && !mobileProfileBtn.contains(e.target)) {
+      mobileDropdownMenu.classList.remove('show');
+    }
+  });
 }
 
 // ─── Sign out (Desktop & Mobile) ──────────────────────────────────────────────
