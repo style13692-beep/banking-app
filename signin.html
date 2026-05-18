@@ -5,558 +5,198 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Sign In — LumeBank</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<!-- Already logged in? Go straight to dashboard -->
+<script>
+  if (localStorage.getItem('token')) {
+    window.location.replace('dashboard.html');
+  }
+</script>
+
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --g900: #0f1f0f;
-  --g800: #1a3018;
-  --g700: #243f22;
-  --g600: #2f5c2c;
-  --g500: #3d7a39;
-  --g400: #5a9e55;
-  --g100: #d6edd4;
-  --g50:  #f0f8ef;
-  --gold:      #c9a84c;
-  --gold-light:#e8c96a;
-  --gold-pale: #faf3e0;
-  --cream:     #f8f5ee;
-  --ink:       #0e1a0e;
-  --ink-mid:   #2d3d2d;
-  --ink-soft:  #5a6e5a;
-  --white:     #ffffff;
-  --border:    rgba(15,31,15,0.12);
-  --danger:    #c0392b;
-  --danger-bg: #fdf2f2;
-  --success:   #2d6a2d;
-  --success-bg:#f0f8ef;
-  --radius:    12px;
+  --g900: #0f1f0f; --g800: #1a3018; --g700: #243f22;
+  --g600: #2f5c2c; --g500: #3d7a39; --g50:  #f0f8ef;
+  --gold: #c9a84c; --gold-light: #e8c96a;
+  --cream: #f8f5ee; --ink: #0e1a0e; --ink-soft: #5a6e5a;
+  --white: #ffffff; --border: rgba(15,31,15,0.14);
+  --danger: #c0392b; --danger-bg: #fdf2f2;
+  --success: #2d6a2d; --success-bg: #f0f8ef;
+  --radius: 14px;
 }
 
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--cream);
-  min-height: 100vh;
-  display: flex;
-  color: var(--ink);
-}
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; color: var(--ink); }
 
-.brand-panel {
-  width: 46%;
-  background: var(--g800);
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 3rem;
-}
-
-.bp-bg {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 80% 70% at 80% 40%, rgba(61,122,57,0.25) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 50% at 10% 80%, rgba(201,168,76,0.08) 0%, transparent 50%),
-    linear-gradient(160deg, #0f1f0f 0%, #1a3018 100%);
-}
-
-.bp-grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
-}
-
-.bp-orb {
-  position: absolute; border-radius: 50%; filter: blur(70px);
-  animation: floatOrb 8s ease-in-out infinite;
-}
-.bp-orb-1 { width: 400px; height: 400px; background: rgba(61,122,57,0.18); top: -100px; right: -100px; }
-.bp-orb-2 { width: 250px; height: 250px; background: rgba(201,168,76,0.08); bottom: 0; left: -60px; animation-delay: -4s; }
-@keyframes floatOrb {
-  0%,100% { transform: translate(0,0); }
-  50% { transform: translate(20px,-20px); }
-}
-
-.bp-content { position: relative; z-index: 2; }
-
-.brand-logo {
-  display: flex; align-items: center; gap: 10px;
-  text-decoration: none; margin-bottom: 5rem;
-}
-.brand-icon {
-  width: 40px; height: 40px;
-  background: linear-gradient(135deg, var(--gold), var(--gold-light));
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-  box-shadow: 0 4px 16px rgba(201,168,76,0.4);
-}
-.logo-text {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.55rem; font-weight: 600;
-  color: var(--white);
-}
+.left-panel { background: var(--g800); display: flex; flex-direction: column; justify-content: space-between; padding: 3rem; position: relative; overflow: hidden; min-height: 100vh; }
+.left-panel::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 80% 20%, rgba(61,122,57,0.22) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 10% 80%, rgba(201,168,76,0.08) 0%, transparent 55%), radial-gradient(ellipse 40% 40% at 50% 50%, rgba(36,63,34,0.4) 0%, transparent 70%); pointer-events: none; }
+.left-top { position: relative; z-index: 1; }
+.brand-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-bottom: 3.5rem; }
+.brand-icon { width: 42px; height: 42px; background: linear-gradient(135deg, var(--gold), var(--gold-light)); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 19px; box-shadow: 0 4px 18px rgba(201,168,76,0.4); }
+.logo-text { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 600; color: var(--white); }
 .logo-text em { color: var(--gold-light); font-style: normal; }
+.left-headline { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 400; color: var(--white); line-height: 1.2; margin-bottom: 1.25rem; }
+.left-headline em { color: var(--gold-light); font-style: italic; }
+.left-bottom { position: relative; z-index: 1; font-size: 0.72rem; color: rgba(255,255,255,0.2); }
 
-.bp-headline {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2.5rem, 4vw, 3.5rem);
-  font-weight: 300;
-  color: var(--white);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  margin-bottom: 1.25rem;
-}
-.bp-headline em { font-style: italic; color: var(--gold-light); display: block; }
+.right-panel { display: flex; align-items: center; justify-content: center; padding: 2.5rem 2rem; min-height: 100vh; overflow-y: auto; }
+.form-card { width: 100%; max-width: 400px; animation: fadeUp 0.5s ease both; }
+.form-title { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 500; color: var(--ink); margin-bottom: 0.4rem; }
+.form-sub { font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 2rem; }
+.form-sub a { color: var(--g500); text-decoration: none; font-weight: 600; }
 
-.bp-sub {
-  color: rgba(255,255,255,0.5);
-  font-size: 0.95rem; line-height: 1.75;
-  max-width: 340px; margin-bottom: 3rem;
-}
+.field { margin-bottom: 1.25rem; }
+.field label { display: block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.45rem; }
+.field input { width: 100%; padding: 0.9rem 1rem; border: 1.5px solid var(--border); border-radius: 10px; background: var(--white); font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--ink); outline: none; transition: all 0.2s; }
+.field input:focus { border-color: var(--g500); box-shadow: 0 0 0 3px rgba(61,122,57,0.12); }
+.field input.token-input { text-align: center; font-size: 1.5rem; letter-spacing: 0.3em; font-family: monospace; }
 
-.bp-features { position: relative; z-index: 2; }
-.bp-feat {
-  display: flex; align-items: center; gap: 12px;
-  padding: 0.85rem 0;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  font-size: 0.85rem; color: rgba(255,255,255,0.6);
-  transition: color 0.2s;
-}
-.bp-feat:last-child { border-bottom: none; }
-.bp-feat:hover { color: rgba(255,255,255,0.85); }
-.feat-icon {
-  width: 34px; height: 34px;
-  background: rgba(255,255,255,0.06);
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; flex-shrink: 0;
-}
+.alert-banner { display: none; align-items: center; gap: 10px; padding: 0.85rem 1rem; border-radius: var(--radius); font-size: 0.85rem; font-weight: 500; margin-bottom: 1.25rem; }
+.alert-banner.show { display: flex; }
+.alert-banner.error { background: var(--danger-bg); border: 1.5px solid rgba(192,57,43,0.2); color: var(--danger); }
+.alert-banner.success { background: var(--success-bg); border: 1.5px solid rgba(45,106,45,0.2); color: var(--success); }
 
-.form-panel {
-  flex: 1;
-  display: flex; align-items: center; justify-content: center;
-  padding: 3rem 2.5rem;
-  background: var(--cream);
-  position: relative;
-}
+.btn-submit { width: 100%; padding: 0.9rem; background: linear-gradient(135deg, var(--g700), var(--g500)); border: none; border-radius: 11px; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.92rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 0.5rem; }
+.btn-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(36,63,34,0.4); }
+.btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
-.form-panel::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image: radial-gradient(rgba(15,31,15,0.03) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
+#step2 { display: none; animation: fadeUp 0.3s ease both; }
 
-.form-box {
-  width: 100%; max-width: 420px;
-  position: relative; z-index: 1;
-  animation: fadeUp 0.6s ease both;
-}
-
-.form-eyebrow {
-  font-size: 0.72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.14em;
-  color: var(--g500); margin-bottom: 0.75rem;
-  display: flex; align-items: center; gap: 8px;
-}
-.form-eyebrow::before { content: ''; width: 20px; height: 2px; background: var(--g500); }
-
-.form-box h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2.6rem; font-weight: 400;
-  color: var(--ink); margin-bottom: 0.4rem;
-  letter-spacing: -0.02em; line-height: 1.1;
-}
-.form-box h1 em { font-style: italic; color: var(--g600); }
-
-.form-subtitle {
-  color: var(--ink-soft); font-size: 0.9rem;
-  margin-bottom: 2.5rem;
-}
-.form-subtitle a {
-  color: var(--g600); font-weight: 600; text-decoration: none;
-  border-bottom: 1px solid transparent; transition: border-color 0.2s;
-}
-.form-subtitle a:hover { border-color: var(--g600); }
-
-.rule { height: 1px; background: var(--border); margin-bottom: 2.25rem; }
-
-.alert {
-  padding: 0.9rem 1.1rem;
-  border-radius: var(--radius);
-  font-size: 0.875rem;
-  margin-bottom: 1.5rem;
-  display: none; align-items: center; gap: 10px;
-  line-height: 1.45; font-weight: 500;
-}
-.alert.show { display: flex; }
-.alert.error   { background: var(--danger-bg); border: 1.5px solid rgba(192,57,43,0.2); color: var(--danger); }
-.alert.success { background: var(--success-bg); border: 1.5px solid rgba(45,106,45,0.2); color: var(--success); }
-.alert-icon { font-size: 1rem; flex-shrink: 0; }
-
-.form-group { margin-bottom: 1.35rem; }
-
-.form-group label {
-  display: block;
-  font-size: 0.8rem; font-weight: 600;
-  color: var(--ink-mid); margin-bottom: 0.55rem;
-  letter-spacing: 0.03em;
-}
-
-.input-wrap { position: relative; }
-.input-icon {
-  position: absolute; left: 1rem; top: 50%;
-  transform: translateY(-50%); font-size: 15px;
-  pointer-events: none; opacity: 0.45;
-}
-
-.form-group input {
-  width: 100%;
-  background: var(--white);
-  border: 1.5px solid rgba(15,31,15,0.14);
-  border-radius: var(--radius);
-  padding: 0.85rem 1rem 0.85rem 2.85rem;
-  color: var(--ink);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.95rem; outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-}
-.form-group input::placeholder { color: rgba(15,31,15,0.3); }
-.form-group input:focus {
-  border-color: var(--g500);
-  box-shadow: 0 0 0 3px rgba(61,122,57,0.1);
-}
-.form-group input.error {
-  border-color: var(--danger);
-  box-shadow: 0 0 0 3px rgba(192,57,43,0.08);
-}
-
-.field-error {
-  font-size: 0.77rem; color: var(--danger);
-  margin-top: 0.4rem; display: none;
-  align-items: center; gap: 5px;
-}
-.field-error.show { display: flex; }
-
-.forgot-row {
-  text-align: right; margin-top: 0.5rem;
-}
-.forgot-row a {
-  font-size: 0.8rem; color: var(--ink-soft);
-  text-decoration: none; transition: color 0.2s;
-}
-.forgot-row a:hover { color: var(--g600); }
-
-.btn-submit {
-  width: 100%;
-  background: linear-gradient(135deg, var(--g700) 0%, var(--g600) 100%);
-  border: none; border-radius: var(--radius);
-  padding: 0.95rem;
-  color: var(--white);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.97rem; font-weight: 600;
-  cursor: pointer; letter-spacing: 0.02em;
-  box-shadow: 0 8px 24px rgba(36,63,34,0.3);
-  transition: all 0.25s;
-  margin-top: 0.5rem;
-  position: relative; overflow: hidden;
-}
-.btn-submit::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, transparent, rgba(255,255,255,0.08));
-  opacity: 0; transition: opacity 0.2s;
-}
-.btn-submit:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 32px rgba(36,63,34,0.4);
-}
-.btn-submit:hover:not(:disabled)::after { opacity: 1; }
-.btn-submit:active:not(:disabled) { transform: translateY(0); }
-.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-submit.loading { color: transparent; }
-.btn-submit.loading::before {
-  content: '';
-  position: absolute; inset: 0; margin: auto;
-  width: 20px; height: 20px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: var(--white); border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* Debug panel — remove in production */
-.debug-panel {
-  margin-top: 1.5rem;
-  background: #1a1a2e;
-  border-radius: var(--radius);
-  padding: 1rem;
-  font-family: monospace;
-  font-size: 0.72rem;
-  color: #a8ff78;
-  display: none;
-  max-height: 180px;
-  overflow-y: auto;
-  border: 1px solid rgba(168,255,120,0.2);
-}
-.debug-panel.show { display: block; }
-.debug-title { color: rgba(168,255,120,0.5); margin-bottom: 0.5rem; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; }
-
-.security-note {
-  margin-top: 1.75rem;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  font-size: 0.75rem; color: var(--ink-soft);
-  padding: 0.75rem; background: rgba(15,31,15,0.04);
-  border-radius: 8px; border: 1px solid var(--border);
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 900px) {
-  .brand-panel { display: none; }
-  .form-panel { padding: 2.5rem 1.5rem; }
-}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 900px) { body { grid-template-columns: 1fr; } .left-panel { display: none; } }
 </style>
 </head>
 <body>
 
-<div class="brand-panel">
-  <div class="bp-bg"></div>
-  <div class="bp-grid"></div>
-  <div class="bp-orb bp-orb-1"></div>
-  <div class="bp-orb bp-orb-2"></div>
-
-  <div class="bp-content">
+<div class="left-panel">
+  <div class="left-top">
     <a href="index.html" class="brand-logo">
-      <div class="brand-icon">🏦</div>
-      <span class="logo-text">Lume<em>Bank</em></span>
+      <div class="brand-icon">🏦</div><span class="logo-text">Lume<em>Bank</em></span>
     </a>
-    <h2 class="bp-headline">
-      Welcome<br><em>back.</em>
-    </h2>
-    <p class="bp-sub">Your finances, secured and organised — exactly where you left them.</p>
+    <h1 class="left-headline">Welcome back to<br><em>secure banking</em></h1>
   </div>
-
-  <div class="bp-features">
-    <div class="bp-feat"><div class="feat-icon">🔑</div> JWT-secured session tokens</div>
-    <div class="bp-feat"><div class="feat-icon">☁️</div> Azure Key Vault encryption</div>
-    <div class="bp-feat"><div class="feat-icon">🆔</div> Managed Identity verification</div>
-    <div class="bp-feat"><div class="feat-icon">👥</div> Role-based access controls</div>
-  </div>
+  <div class="left-bottom">© 2026 LumeBank. All rights reserved.</div>
 </div>
 
-<div class="form-panel">
-  <div class="form-box">
-    <div class="form-eyebrow">Sign in</div>
-    <h1>Good to see<br><em>you again.</em></h1>
-    <p class="form-subtitle">New here? <a href="signup.html">Create an account →</a></p>
-    <div class="rule"></div>
+<div class="right-panel">
+  <div class="form-card">
+    
+    <div class="alert-banner error" id="alertError"><span>⚠</span><span id="alertErrorMsg"></span></div>
+    <div class="alert-banner success" id="alertSuccess"><span>✓</span><span id="alertSuccessMsg"></span></div>
 
-    <div class="alert error" id="alertError">
-      <span class="alert-icon">⚠</span>
-      <span id="alertErrorMsg"></span>
-    </div>
-    <div class="alert success" id="alertSuccess">
-      <span class="alert-icon">✓</span>
-      <span id="alertSuccessMsg"></span>
-    </div>
+    <!-- STEP 1: PASSWORD LOGIN -->
+    <div id="step1">
+      <div class="form-title">Sign in</div>
+      <div class="form-sub">Don't have an account? <a href="signup.html">Create one</a></div>
 
-    <form id="signinForm" novalidate>
-      <div class="form-group">
-        <label for="email">Email address</label>
-        <div class="input-wrap">
-          <span class="input-icon">✉</span>
-          <input type="email" id="email" placeholder="john@example.com" autocomplete="email"/>
+      <form id="loginForm">
+        <div class="field">
+          <label for="email">Email address</label>
+          <input type="email" id="email" required />
         </div>
-        <div class="field-error" id="emailError">⚠ Please enter a valid email address</div>
-      </div>
-
-      <div class="form-group">
-        <label for="password">Password</label>
-        <div class="input-wrap">
-          <span class="input-icon">🔒</span>
-          <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" style="padding-right:3rem"/>
-          <button type="button" id="togglePw" style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;opacity:0.45;transition:opacity 0.2s;" title="Show password">👁</button>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" required />
         </div>
-        <div class="field-error" id="passwordError">⚠ Password is required</div>
-        <div class="forgot-row"><a href="#">Forgot password?</a></div>
-      </div>
-
-      <button type="submit" class="btn-submit" id="submitBtn">Sign in to my account</button>
-    </form>
-
-    <!-- Debug panel: shows raw API response so you can see the exact field names -->
-    <div class="debug-panel" id="debugPanel">
-      <div class="debug-title">🛠 API Response (remove in production)</div>
-      <pre id="debugOutput"></pre>
+        <button type="submit" class="btn-submit" id="loginBtn">Continue</button>
+      </form>
     </div>
 
-    <div class="security-note">
-      🔒 Secured with Azure Key Vault &amp; JWT encryption
+    <!-- STEP 2: MFA VERIFICATION -->
+    <div id="step2">
+      <div class="form-title">2-Step Verification</div>
+      <div class="form-sub">Enter the 6-digit code from your authenticator app.</div>
+
+      <form id="mfaForm">
+        <div class="field">
+          <label for="mfaToken">Security Code</label>
+          <input type="text" id="mfaToken" class="token-input" maxlength="6" placeholder="000000" autocomplete="one-time-code" required />
+        </div>
+        <button type="submit" class="btn-submit" id="verifyBtn">Verify & Login</button>
+      </form>
     </div>
+
   </div>
 </div>
 
 <script>
-  // ─── CONFIG ────────────────────────────────────────────────────────────────
-  // If your Azure APIM requires a subscription key, add it here.
-  // Find it in Azure Portal → API Management → Subscriptions.
-  // Leave as empty string '' if not required.
-  const APIM_SUBSCRIPTION_KEY = '';
+const API_BASE = 'http://localhost:3000/api'; 
+let userEmail = "";
 
-  const API = 'https://apim-banking-app.azure-api.net/api';
+// STEP 1: Email & Password
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const btn = document.getElementById('loginBtn');
+  
+  btn.disabled = true; btn.textContent = "Checking...";
+  document.getElementById('alertError').classList.remove('show');
 
-  // ─── Helpers ───────────────────────────────────────────────────────────────
-  function buildHeaders(includeAuth = false) {
-    const headers = { 'Content-Type': 'application/json' };
-    if (APIM_SUBSCRIPTION_KEY) {
-      headers['Ocp-Apim-Subscription-Key'] = APIM_SUBSCRIPTION_KEY;
-    }
-    if (includeAuth) {
-      const token = localStorage.getItem('token');
-      if (token) headers['Authorization'] = `Bearer ${token}`;
-    }
-    return headers;
-  }
+  try {
+    const res = await fetch(`${API_BASE}/auth/signin`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
 
-  // Safely extracts the token from various API response shapes:
-  // data.token | data.accessToken | data.access_token | data.jwt | data.idToken
-  function extractToken(data) {
-    return data.token
-      || data.accessToken
-      || data.access_token
-      || data.jwt
-      || data.idToken
-      || null;
-  }
+    if (!res.ok) throw new Error(data.error || 'Login failed');
 
-  // Safely extracts the user object from various response shapes:
-  // data.user | data.data | data.profile | data (flat)
-  function extractUser(data) {
-    if (data.user && typeof data.user === 'object') return data.user;
-    if (data.data && typeof data.data === 'object') return data.data;
-    if (data.profile && typeof data.profile === 'object') return data.profile;
-    // If the root object looks like a user (has email or firstName), use it directly
-    if (data.email || data.firstName) return data;
-    return null;
-  }
-
-  // ─── Toggle password ───────────────────────────────────────────────────────
-  document.getElementById('togglePw').addEventListener('click', () => {
-    const pw  = document.getElementById('password');
-    const btn = document.getElementById('togglePw');
-    if (pw.type === 'password') { pw.type = 'text'; btn.style.opacity = '0.9'; }
-    else { pw.type = 'password'; btn.style.opacity = '0.45'; }
-  });
-
-  // ─── Field error helpers ───────────────────────────────────────────────────
-  function showError(id) {
-    document.getElementById(id).classList.add('show');
-    const inputId = id.replace('Error', '');
-    const input = document.getElementById(inputId);
-    if (input) input.classList.add('error');
-  }
-  function clearError(id) {
-    document.getElementById(id).classList.remove('show');
-    const inputId = id.replace('Error', '');
-    const input = document.getElementById(inputId);
-    if (input) input.classList.remove('error');
-  }
-
-  function showAlert(type, msg) {
-    document.getElementById('alertError').classList.remove('show');
-    document.getElementById('alertSuccess').classList.remove('show');
-    if (type === 'error') {
-      document.getElementById('alertErrorMsg').textContent = msg;
-      document.getElementById('alertError').classList.add('show');
+    if (data.mfaRequired) {
+      // Password correct! Move to Step 2
+      userEmail = data.email;
+      document.getElementById('step1').style.display = 'none';
+      document.getElementById('step2').style.display = 'block';
+      document.getElementById('mfaToken').focus();
     } else {
-      document.getElementById('alertSuccessMsg').textContent = msg;
-      document.getElementById('alertSuccess').classList.add('show');
-    }
-  }
-
-  // ─── Redirect if already logged in ────────────────────────────────────────
-  // Done here (not in a blocking script) so body is already visible
-  window.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('token')) {
+      // Fallback for users without 2FA
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
       window.location.replace('dashboard.html');
     }
-  });
+  } catch (err) {
+    document.getElementById('alertErrorMsg').textContent = err.message;
+    document.getElementById('alertError').classList.add('show');
+    btn.disabled = false; btn.textContent = "Continue";
+  }
+});
 
-  // ─── Sign-in form ──────────────────────────────────────────────────────────
-  document.getElementById('signinForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    ['emailError', 'passwordError'].forEach(clearError);
+// STEP 2: Verify MFA Token
+document.getElementById('mfaForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const token = document.getElementById('mfaToken').value.trim();
+  const btn = document.getElementById('verifyBtn');
+  
+  btn.disabled = true; btn.textContent = "Verifying...";
+  document.getElementById('alertError').classList.remove('show');
 
-    const email    = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
+  try {
+    const res = await fetch(`${API_BASE}/auth/verify-mfa`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: userEmail, token })
+    });
+    const data = await res.json();
 
-    let valid = true;
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('emailError'); valid = false; }
-    if (!password) { showError('passwordError'); valid = false; }
-    if (!valid) return;
+    if (!res.ok) throw new Error(data.error || 'Invalid code');
 
-    const btn = document.getElementById('submitBtn');
-    btn.classList.add('loading');
-    btn.disabled = true;
+    // MFA Passed! Save Token and go to Dashboard
+    document.getElementById('alertSuccessMsg').textContent = "Verified! Redirecting...";
+    document.getElementById('alertSuccess').classList.add('show');
+    
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    
+    setTimeout(() => { window.location.replace('dashboard.html'); }, 1000);
 
-    try {
-      const res = await fetch(`${API}/auth/signin`, {
-        method: 'POST',
-        headers: buildHeaders(),
-        body: JSON.stringify({ email, password })
-      });
-
-      let data = {};
-      try { data = await res.json(); } catch { /* non-JSON body */ }
-
-      // ── Show raw response in debug panel so you can see exact field names ──
-      const debugPanel  = document.getElementById('debugPanel');
-      const debugOutput = document.getElementById('debugOutput');
-      debugPanel.classList.add('show');
-      debugOutput.textContent = JSON.stringify({
-        status: res.status,
-        ok: res.ok,
-        body: data
-      }, null, 2);
-
-      if (!res.ok) {
-        const msg = data.error || data.message || data.detail
-          || `Sign-in failed (HTTP ${res.status}). Check the debug panel below.`;
-        showAlert('error', msg);
-        return;
-      }
-
-      const token = extractToken(data);
-      const user  = extractUser(data);
-
-      if (!token) {
-        showAlert('error', 'Signed in but no token was returned. Check the debug panel for the exact response shape.');
-        return;
-      }
-
-      localStorage.setItem('token', token);
-      if (user) localStorage.setItem('user', JSON.stringify(user));
-
-      showAlert('success', 'Signed in — taking you to your dashboard…');
-      setTimeout(() => window.location.href = 'dashboard.html', 1200);
-
-    } catch (err) {
-      console.error('[Signin]', err);
-      showAlert('error', 'Unable to reach the server. Check your network or CORS settings.');
-    } finally {
-      btn.classList.remove('loading');
-      btn.disabled = false;
-    }
-  });
+  } catch (err) {
+    document.getElementById('alertErrorMsg').textContent = err.message;
+    document.getElementById('alertError').classList.add('show');
+    btn.disabled = false; btn.textContent = "Verify & Login";
+  }
+});
 </script>
 </body>
 </html>
