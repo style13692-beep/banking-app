@@ -157,6 +157,23 @@ body {
   animation: fadeUp 0.6s ease both;
 }
 
+/* --- NAVIGATION LINKS --- */
+.back-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.85rem; font-weight: 600; color: var(--ink-soft);
+  text-decoration: none; margin-bottom: 2rem; transition: color 0.2s;
+}
+.back-link:hover { color: var(--g600); }
+
+.mobile-logo {
+  display: none; align-items: center; gap: 10px;
+  text-decoration: none; margin-bottom: 2rem;
+}
+.mobile-logo .brand-icon { width: 34px; height: 34px; font-size: 15px; }
+.mobile-logo .logo-text { color: var(--ink); font-size: 1.4rem; }
+.mobile-logo .logo-text em { color: var(--g600); font-style: normal; }
+/* ------------------------ */
+
 .form-eyebrow {
   font-size: 0.72rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.14em;
@@ -234,6 +251,15 @@ body {
 .form-group input.error {
   border-color: var(--danger);
   box-shadow: 0 0 0 3px rgba(192,57,43,0.08);
+}
+
+/* Specific styling for the 6-digit MFA token input */
+.form-group input.token-input {
+  text-align: center;
+  font-size: 1.5rem;
+  letter-spacing: 0.3em;
+  font-family: monospace;
+  padding-left: 1rem; /* Override icon padding */
 }
 
 .field-error {
@@ -323,7 +349,14 @@ body {
 @media (max-width: 900px) {
   .brand-panel { display: none; }
   .form-panel { padding: 2.5rem 1.5rem; }
+  
+  /* Show mobile logo and hide desktop back link */
+  .mobile-logo { display: flex; }
+  #desktopBack { display: none; }
 }
+
+/* 2FA Panel hidden by default */
+#step2 { display: none; animation: fadeUp 0.3s ease both; }
 </style>
 </head>
 <body>
@@ -355,10 +388,15 @@ body {
 
 <div class="form-panel">
   <div class="form-box">
-    <div class="form-eyebrow">Sign in</div>
-    <h1>Good to see<br><em>you again.</em></h1>
-    <p class="form-subtitle">New here? <a href="signup.html">Create an account →</a></p>
-    <div class="rule"></div>
+    
+    <!-- Desktop Back Link -->
+    <a href="index.html" class="back-link" id="desktopBack">← Back to home</a>
+    
+    <!-- Mobile Logo -->
+    <a href="index.html" class="mobile-logo">
+      <div class="brand-icon">🏦</div>
+      <span class="logo-text">Lume<em>Bank</em></span>
+    </a>
 
     <div class="alert error" id="alertError">
       <span class="alert-icon">⚠</span>
@@ -369,29 +407,56 @@ body {
       <span id="alertSuccessMsg"></span>
     </div>
 
-    <form id="signinForm" novalidate>
-      <div class="form-group">
-        <label for="email">Email address</label>
-        <div class="input-wrap">
-          <span class="input-icon">✉</span>
-          <input type="email" id="email" placeholder="john@example.com" autocomplete="email"/>
-        </div>
-        <div class="field-error" id="emailError">⚠ Please enter a valid email address</div>
-      </div>
+    <!-- ─── STEP 1: EMAIL & PASSWORD ─── -->
+    <div id="step1">
+      <div class="form-eyebrow">Sign in</div>
+      <h1>Good to see<br><em>you again.</em></h1>
+      <p class="form-subtitle">New here? <a href="signup.html">Create an account →</a></p>
+      <div class="rule"></div>
 
-      <div class="form-group">
-        <label for="password">Password</label>
-        <div class="input-wrap">
-          <span class="input-icon">🔒</span>
-          <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" style="padding-right:3rem"/>
-          <button type="button" id="togglePw" style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;opacity:0.45;transition:opacity 0.2s;" title="Show password">👁</button>
+      <form id="signinForm" novalidate>
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <div class="input-wrap">
+            <span class="input-icon">✉</span>
+            <input type="email" id="email" placeholder="john@example.com" autocomplete="email"/>
+          </div>
+          <div class="field-error" id="emailError">⚠ Please enter a valid email address</div>
         </div>
-        <div class="field-error" id="passwordError">⚠ Password is required</div>
-        <div class="forgot-row"><a href="#">Forgot password?</a></div>
-      </div>
 
-      <button type="submit" class="btn-submit" id="submitBtn">Sign in to my account</button>
-    </form>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" style="padding-right:3rem"/>
+            <button type="button" id="togglePw" style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;opacity:0.45;transition:opacity 0.2s;" title="Show password">👁</button>
+          </div>
+          <div class="field-error" id="passwordError">⚠ Password is required</div>
+          <div class="forgot-row"><a href="#">Forgot password?</a></div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">Continue</button>
+      </form>
+    </div>
+
+    <!-- ─── STEP 2: MFA VERIFICATION ─── -->
+    <div id="step2">
+      <div class="form-eyebrow">Verification</div>
+      <h1>2-Step<br><em>Security.</em></h1>
+      <p class="form-subtitle">Enter the 6-digit code from your authenticator app to securely sign in.</p>
+      <div class="rule"></div>
+
+      <form id="mfaForm" novalidate>
+        <div class="form-group">
+          <label for="mfaToken">Security Code</label>
+          <div class="input-wrap">
+            <input type="text" id="mfaToken" class="token-input" maxlength="6" placeholder="000000" autocomplete="one-time-code" required />
+          </div>
+          <div class="field-error" id="mfaError">⚠ Please enter a valid 6-digit code</div>
+        </div>
+        <button type="submit" class="btn-submit" id="verifyBtn">Verify & Sign in</button>
+      </form>
+    </div>
 
     <!-- Debug panel: shows raw API response so you can see the exact field names -->
     <div class="debug-panel" id="debugPanel">
@@ -407,19 +472,16 @@ body {
 
 <script>
   // ─── CONFIG ────────────────────────────────────────────────────────────────
-  // If your Azure APIM requires a subscription key, add it here.
-  // Find it in Azure Portal → API Management → Subscriptions.
-  // Leave as empty string '' if not required.
+  // Change this if testing locally (e.g., 'http://localhost:3000/api')
+  const API = 'https://apim-banking-app.azure-api.net/api';
   const APIM_SUBSCRIPTION_KEY = '';
 
-  const API = 'https://apim-banking-app.azure-api.net/api';
+  let currentUserEmail = ''; // Stores email temporarily for Step 2
 
   // ─── Helpers ───────────────────────────────────────────────────────────────
   function buildHeaders(includeAuth = false) {
     const headers = { 'Content-Type': 'application/json' };
-    if (APIM_SUBSCRIPTION_KEY) {
-      headers['Ocp-Apim-Subscription-Key'] = APIM_SUBSCRIPTION_KEY;
-    }
+    if (APIM_SUBSCRIPTION_KEY) headers['Ocp-Apim-Subscription-Key'] = APIM_SUBSCRIPTION_KEY;
     if (includeAuth) {
       const token = localStorage.getItem('token');
       if (token) headers['Authorization'] = `Bearer ${token}`;
@@ -427,24 +489,14 @@ body {
     return headers;
   }
 
-  // Safely extracts the token from various API response shapes:
-  // data.token | data.accessToken | data.access_token | data.jwt | data.idToken
   function extractToken(data) {
-    return data.token
-      || data.accessToken
-      || data.access_token
-      || data.jwt
-      || data.idToken
-      || null;
+    return data.token || data.accessToken || data.access_token || data.jwt || data.idToken || null;
   }
 
-  // Safely extracts the user object from various response shapes:
-  // data.user | data.data | data.profile | data (flat)
   function extractUser(data) {
     if (data.user && typeof data.user === 'object') return data.user;
     if (data.data && typeof data.data === 'object') return data.data;
     if (data.profile && typeof data.profile === 'object') return data.profile;
-    // If the root object looks like a user (has email or firstName), use it directly
     if (data.email || data.firstName) return data;
     return null;
   }
@@ -483,15 +535,21 @@ body {
     }
   }
 
+  function showDebug(res, data) {
+    const debugPanel  = document.getElementById('debugPanel');
+    const debugOutput = document.getElementById('debugOutput');
+    debugPanel.classList.add('show');
+    debugOutput.textContent = JSON.stringify({ status: res.status, ok: res.ok, body: data }, null, 2);
+  }
+
   // ─── Redirect if already logged in ────────────────────────────────────────
-  // Done here (not in a blocking script) so body is already visible
   window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('token')) {
       window.location.replace('dashboard.html');
     }
   });
 
-  // ─── Sign-in form ──────────────────────────────────────────────────────────
+  // ─── STEP 1: Sign-in form ──────────────────────────────────────────────────
   document.getElementById('signinForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     ['emailError', 'passwordError'].forEach(clearError);
@@ -517,29 +575,30 @@ body {
 
       let data = {};
       try { data = await res.json(); } catch { /* non-JSON body */ }
-
-      // ── Show raw response in debug panel so you can see exact field names ──
-      const debugPanel  = document.getElementById('debugPanel');
-      const debugOutput = document.getElementById('debugOutput');
-      debugPanel.classList.add('show');
-      debugOutput.textContent = JSON.stringify({
-        status: res.status,
-        ok: res.ok,
-        body: data
-      }, null, 2);
+      showDebug(res, data);
 
       if (!res.ok) {
-        const msg = data.error || data.message || data.detail
-          || `Sign-in failed (HTTP ${res.status}). Check the debug panel below.`;
+        const msg = data.error || data.message || data.detail || `Sign-in failed (HTTP ${res.status}).`;
         showAlert('error', msg);
         return;
       }
 
+      // Check if MFA is required (based on the updated backend response)
+      if (data.mfaRequired) {
+        currentUserEmail = data.email || email; // Save for Step 2
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step2').style.display = 'block';
+        document.getElementById('mfaToken').focus();
+        showAlert('success', 'Password verified. Please enter your 2FA code.');
+        return;
+      }
+
+      // Fallback: If 2FA is not enabled on this account yet
       const token = extractToken(data);
       const user  = extractUser(data);
 
       if (!token) {
-        showAlert('error', 'Signed in but no token was returned. Check the debug panel for the exact response shape.');
+        showAlert('error', 'Signed in but no token was returned. Check debug panel.');
         return;
       }
 
@@ -552,6 +611,57 @@ body {
     } catch (err) {
       console.error('[Signin]', err);
       showAlert('error', 'Unable to reach the server. Check your network or CORS settings.');
+    } finally {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    }
+  });
+
+  // ─── STEP 2: MFA Verification form ─────────────────────────────────────────
+  document.getElementById('mfaForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearError('mfaError');
+
+    const tokenInput = document.getElementById('mfaToken').value.trim();
+    if (!tokenInput || tokenInput.length < 6) {
+      showError('mfaError');
+      return;
+    }
+
+    const btn = document.getElementById('verifyBtn');
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(`${API}/auth/verify-mfa`, {
+        method: 'POST',
+        headers: buildHeaders(),
+        body: JSON.stringify({ email: currentUserEmail, token: tokenInput })
+      });
+
+      let data = {};
+      try { data = await res.json(); } catch { /* non-JSON body */ }
+      showDebug(res, data);
+
+      if (!res.ok) {
+        const msg = data.error || data.message || 'Invalid 2FA code.';
+        showAlert('error', msg);
+        return;
+      }
+
+      // MFA Passed
+      const jwtToken = extractToken(data);
+      const user     = extractUser(data);
+
+      localStorage.setItem('token', jwtToken);
+      if (user) localStorage.setItem('user', JSON.stringify(user));
+
+      showAlert('success', 'Verification complete! Redirecting to dashboard…');
+      setTimeout(() => window.location.href = 'dashboard.html', 1200);
+
+    } catch (err) {
+      console.error('[Verify MFA]', err);
+      showAlert('error', 'Verification failed due to a network error.');
     } finally {
       btn.classList.remove('loading');
       btn.disabled = false;
