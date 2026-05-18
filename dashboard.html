@@ -12,10 +12,8 @@
   (function () {
     const token = localStorage.getItem('token');
     if (!token) {
-      // Hard redirect before the browser paints a single pixel of the dashboard
       window.location.replace('signin.html');
     } else {
-      // Token present — reveal the page once DOM is ready
       document.addEventListener('DOMContentLoaded', function () {
         document.body.style.visibility = 'visible';
       });
@@ -324,35 +322,24 @@ body {
 
 <!-- ─── SIDEBAR ─── -->
 <aside class="sidebar">
-  <a href="#" class="brand-logo">
+  <!-- ✅ Logo now links to index.html -->
+  <a href="index.html" class="brand-logo">
     <div class="brand-icon">🏦</div>
     <span class="logo-text">Lume<em>Bank</em></span>
   </a>
 
   <nav class="nav-section">
     <div class="nav-label">Menu</div>
-    <a class="nav-item active" href="dashboard.html">
-      <span class="nav-icon">📊</span> Dashboard
-    </a>
-    <a class="nav-item" href="#">
-      <span class="nav-icon">💳</span> Accounts
-    </a>
-    <a class="nav-item" href="#">
-      <span class="nav-icon">↕️</span> Transactions
-    </a>
-    <a class="nav-item" href="#">
-      <span class="nav-icon">📤</span> Transfer
-    </a>
+    <a class="nav-item active" href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a>
+    <a class="nav-item" href="#"><span class="nav-icon">💳</span> Accounts</a>
+    <a class="nav-item" href="#"><span class="nav-icon">↕️</span> Transactions</a>
+    <a class="nav-item" href="#"><span class="nav-icon">📤</span> Transfer</a>
   </nav>
 
   <nav class="nav-section">
     <div class="nav-label">Settings</div>
-    <a class="nav-item" href="#">
-      <span class="nav-icon">👤</span> Profile
-    </a>
-    <a class="nav-item" href="#">
-      <span class="nav-icon">🔒</span> Security
-    </a>
+    <a class="nav-item" href="#"><span class="nav-icon">👤</span> Profile</a>
+    <a class="nav-item" href="#"><span class="nav-icon">🔒</span> Security</a>
   </nav>
 
   <div class="sidebar-footer">
@@ -446,30 +433,12 @@ body {
           <div class="panel-title">Account Details</div>
         </div>
         <div class="panel-body">
-          <div class="info-row">
-            <span class="info-key">Full name</span>
-            <span class="info-val" id="infoName">—</span>
-          </div>
-          <div class="info-row">
-            <span class="info-key">Email</span>
-            <span class="info-val" id="infoEmail" style="font-size:0.8rem">—</span>
-          </div>
-          <div class="info-row">
-            <span class="info-key">Account No.</span>
-            <span class="info-val" id="infoAccNum">—</span>
-          </div>
-          <div class="info-row">
-            <span class="info-key">Role</span>
-            <span class="info-val" id="infoRole">—</span>
-          </div>
-          <div class="info-row">
-            <span class="info-key">Last login</span>
-            <span class="info-val" id="infoLastLogin">—</span>
-          </div>
-          <div class="info-row">
-            <span class="info-key">Status</span>
-            <span class="info-val" style="color:var(--success)">✓ Active</span>
-          </div>
+          <div class="info-row"><span class="info-key">Full name</span><span class="info-val" id="infoName">—</span></div>
+          <div class="info-row"><span class="info-key">Email</span><span class="info-val" id="infoEmail" style="font-size:0.8rem">—</span></div>
+          <div class="info-row"><span class="info-key">Account No.</span><span class="info-val" id="infoAccNum">—</span></div>
+          <div class="info-row"><span class="info-key">Role</span><span class="info-val" id="infoRole">—</span></div>
+          <div class="info-row"><span class="info-key">Last login</span><span class="info-val" id="infoLastLogin">—</span></div>
+          <div class="info-row"><span class="info-key">Status</span><span class="info-val" style="color:var(--success)">✓ Active</span></div>
         </div>
       </div>
 
@@ -478,12 +447,23 @@ body {
 </main>
 
 <script>
-const API = 'https://apim-banking-app.azure-api.net/api';
+// ─── ⚙️  CONFIGURATION ────────────────────────────────────────────────────────
+const API_BASE = 'https://apim-banking-app.azure-api.net/api';
+const APIM_KEY = ''; // ← paste your Ocp-Apim-Subscription-Key here if Azure APIM requires it
 
-// Token was already checked in the <head> guard above.
-// Pull both values here for use throughout this script.
+// ─── Auth setup ───────────────────────────────────────────────────────────────
 const token      = localStorage.getItem('token');
 const cachedUser = JSON.parse(localStorage.getItem('user') || 'null');
+
+// ─── Headers builder (includes APIM key + Bearer token) ──────────────────────
+function buildHeaders() {
+  const h = {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  };
+  if (APIM_KEY) h['Ocp-Apim-Subscription-Key'] = APIM_KEY;
+  return h;
+}
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function showAlert(msg) {
@@ -493,11 +473,6 @@ function showAlert(msg) {
 
 function fmt(amount) {
   return new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' }).format(amount ?? 0);
-}
-
-function fmtDate(dateStr) {
-  if (!dateStr) return 'N/A';
-  return new Date(dateStr).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 function fmtDateTime(dateStr) {
@@ -517,29 +492,27 @@ document.getElementById('topbarDate').textContent =
   new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
 // ─── Populate from cache immediately (fast paint) ─────────────────────────────
-if (cachedUser) {
-  populateUser(cachedUser);
-}
+if (cachedUser) populateUser(cachedUser);
 
 function populateUser(user) {
   const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim();
-  document.getElementById('topbarName').textContent = user.firstName || 'there';
-  document.getElementById('sidebarName').textContent = fullName || 'User';
-  document.getElementById('sidebarRole').textContent = user.role || 'Customer';
+  document.getElementById('topbarName').textContent    = user.firstName || 'there';
+  document.getElementById('sidebarName').textContent   = fullName || 'User';
+  document.getElementById('sidebarRole').textContent   = user.role || 'Customer';
   document.getElementById('sidebarAvatar').textContent = initials(user.firstName, user.lastName);
-  document.getElementById('statBalance').textContent = fmt(user.balance);
-  document.getElementById('statAccount').textContent = user.accountNumber || '—';
-  document.getElementById('statSince').textContent = user.createdAt
+  document.getElementById('statBalance').textContent   = fmt(user.balance);
+  document.getElementById('statAccount').textContent   = user.accountNumber || '—';
+  document.getElementById('statSince').textContent     = user.createdAt
     ? new Date(user.createdAt).toLocaleDateString('en-AU', { month: 'short', year: 'numeric' })
     : '—';
-  document.getElementById('infoName').textContent = fullName || '—';
-  document.getElementById('infoEmail').textContent = user.email || '—';
-  document.getElementById('infoAccNum').textContent = user.accountNumber || '—';
-  document.getElementById('infoRole').textContent = user.role || '—';
+  document.getElementById('infoName').textContent      = fullName || '—';
+  document.getElementById('infoEmail').textContent     = user.email || '—';
+  document.getElementById('infoAccNum').textContent    = user.accountNumber || '—';
+  document.getElementById('infoRole').textContent      = user.role || '—';
   document.getElementById('infoLastLogin').textContent = fmtDateTime(user.lastLogin);
   const badge = document.getElementById('roleBadge');
   badge.textContent = user.role || 'Customer';
-  badge.className = 'badge ' + (user.role?.toLowerCase() === 'admin' ? 'admin' : 'customer');
+  badge.className   = 'badge ' + (user.role?.toLowerCase() === 'admin' ? 'admin' : 'customer');
 }
 
 function populateTransactions(transactions) {
@@ -555,8 +528,8 @@ function populateTransactions(transactions) {
   }
   document.getElementById('statTxCount').textContent = transactions.length;
   list.innerHTML = transactions.map(tx => {
-    const isCredit = tx.type?.toLowerCase().includes('credit') || tx.type?.toLowerCase().includes('deposit');
-    const isDebit  = tx.type?.toLowerCase().includes('debit')  || tx.type?.toLowerCase().includes('withdrawal');
+    const isCredit  = tx.type?.toLowerCase().includes('credit') || tx.type?.toLowerCase().includes('deposit');
+    const isDebit   = tx.type?.toLowerCase().includes('debit')  || tx.type?.toLowerCase().includes('withdrawal');
     const iconClass = isCredit ? 'credit' : isDebit ? 'debit' : 'neutral';
     const icon      = isCredit ? '⬆️' : isDebit ? '⬇️' : '↔️';
     const amtClass  = isCredit ? 'credit' : 'debit';
@@ -576,16 +549,14 @@ function populateTransactions(transactions) {
 // ─── Fetch live profile ───────────────────────────────────────────────────────
 async function loadProfile() {
   try {
-    const res = await fetch(`${API}/user/profile`, {
-      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
-    });
+    const res = await fetch(`${API_BASE}/user/profile`, { headers: buildHeaders() });
     if (res.status === 401 || res.status === 403) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.replace('signin.html');
       return;
     }
-    if (!res.ok) throw new Error(`Profile fetch failed: ${res.status}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const user = await res.json();
     localStorage.setItem('user', JSON.stringify(user));
     populateUser(user);
@@ -598,12 +569,12 @@ async function loadProfile() {
 // ─── Fetch transactions ───────────────────────────────────────────────────────
 async function loadTransactions() {
   try {
-    const res = await fetch(`${API}/user/transactions`, {
-      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
-    });
-    if (!res.ok) throw new Error(`Transactions fetch failed: ${res.status}`);
+    const res = await fetch(`${API_BASE}/user/transactions`, { headers: buildHeaders() });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    populateTransactions(data.transactions || []);
+    // Handles { transactions: [] }, { data: [] }, or a plain array
+    const txArray = Array.isArray(data) ? data : (data.transactions || data.data || []);
+    populateTransactions(txArray);
   } catch (err) {
     console.error('[Transactions]', err);
     populateTransactions([]);
