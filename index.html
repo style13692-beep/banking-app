@@ -140,7 +140,6 @@ nav.scrolled {
   justify-content: center;
   overflow: hidden;
 }
-
 .hero-bg {
   position: absolute; inset: 0;
   background:
@@ -148,7 +147,6 @@ nav.scrolled {
     radial-gradient(ellipse 50% 50% at 10% 80%, rgba(201,168,76,0.08) 0%, transparent 50%),
     linear-gradient(160deg, #0f1f0f 0%, #1a3018 40%, #0f1f0f 100%);
 }
-
 .hero-grid {
   position: absolute; inset: 0;
   background-image:
@@ -157,7 +155,6 @@ nav.scrolled {
   background-size: 80px 80px;
   mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
 }
-
 .orb {
   position: absolute;
   border-radius: 50%;
@@ -167,7 +164,6 @@ nav.scrolled {
 .orb-1 { width: 500px; height: 500px; background: rgba(61,122,57,0.18); top: -100px; right: -100px; animation-delay: 0s; }
 .orb-2 { width: 300px; height: 300px; background: rgba(201,168,76,0.1); bottom: 50px; left: -80px; animation-delay: -3s; }
 .orb-3 { width: 200px; height: 200px; background: rgba(90,158,85,0.15); top: 40%; left: 40%; animation-delay: -6s; }
-
 @keyframes floatOrb {
   0%, 100% { transform: translate(0, 0) scale(1); }
   33% { transform: translate(30px, -20px) scale(1.05); }
@@ -177,12 +173,10 @@ nav.scrolled {
 .hero-inner {
   position: relative; z-index: 2;
   max-width: 1200px; margin: 0 auto;
-  padding: 0 3rem;
-  padding-top: 100px;
+  padding: 0 3rem; padding-top: 100px;
   display: grid; grid-template-columns: 1fr 1fr;
   align-items: center; gap: 4rem;
 }
-
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
   background: rgba(201,168,76,0.12);
@@ -190,8 +184,7 @@ nav.scrolled {
   border-radius: 20px; padding: 0.35rem 1rem;
   font-size: 0.78rem; font-weight: 600;
   color: var(--gold-light); letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin-bottom: 1.75rem;
+  text-transform: uppercase; margin-bottom: 1.75rem;
   animation: fadeUp 0.8s ease both;
 }
 .badge-dot {
@@ -203,28 +196,22 @@ nav.scrolled {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.5; transform: scale(0.7); }
 }
-
 .hero-title {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(3.5rem, 6vw, 5.5rem);
-  font-weight: 300;
-  color: var(--white);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-weight: 300; color: var(--white);
+  line-height: 1.05; letter-spacing: -0.02em;
   margin-bottom: 1.5rem;
   animation: fadeUp 0.8s 0.1s ease both;
 }
 .hero-title em { font-style: italic; color: var(--gold-light); display: block; }
 .hero-title strong { font-weight: 600; display: block; }
-
 .hero-sub {
   color: rgba(255,255,255,0.55);
   font-size: 1.05rem; line-height: 1.75;
-  max-width: 440px;
-  margin-bottom: 2.5rem;
+  max-width: 440px; margin-bottom: 2.5rem;
   animation: fadeUp 0.8s 0.2s ease both;
 }
-
 .hero-actions {
   display: flex; align-items: center; gap: 1rem;
   animation: fadeUp 0.8s 0.3s ease both;
@@ -237,8 +224,7 @@ nav.scrolled {
   font-size: 0.95rem; font-weight: 700;
   text-decoration: none; cursor: pointer;
   box-shadow: 0 8px 32px rgba(201,168,76,0.4);
-  transition: all 0.25s;
-  letter-spacing: 0.01em;
+  transition: all 0.25s; letter-spacing: 0.01em;
 }
 .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(201,168,76,0.55); }
 .btn-hero-secondary {
@@ -253,7 +239,6 @@ nav.scrolled {
   display: flex; align-items: center; gap: 8px;
 }
 .btn-hero-secondary:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.35); }
-
 .hero-trust {
   margin-top: 3rem;
   display: flex; align-items: center; gap: 1.5rem;
@@ -263,38 +248,19 @@ nav.scrolled {
 .trust-item { font-size: 0.78rem; color: rgba(255,255,255,0.45); line-height: 1.3; }
 .trust-item strong { display: block; font-size: 1.05rem; color: rgba(255,255,255,0.85); font-weight: 600; }
 
-/* Hero right - card mockup */
-.hero-right {
-  animation: fadeIn 1s 0.5s ease both;
-  position: relative;
-}
-
+/* Hero right */
+.hero-right { animation: fadeIn 1s 0.5s ease both; position: relative; }
 .card-mockup {
   background: linear-gradient(135deg, #1e3d1b 0%, #2d5a2a 50%, #1a3018 100%);
-  border-radius: 20px;
-  padding: 2rem 2.25rem;
-  box-shadow:
-    0 40px 80px rgba(0,0,0,0.5),
-    0 0 0 1px rgba(255,255,255,0.07),
-    inset 0 1px 0 rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 2rem 2.25rem;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.07), inset 0 1px 0 rgba(255,255,255,0.1);
   position: relative; overflow: hidden;
   transform: perspective(1000px) rotateY(-8deg) rotateX(3deg);
   transition: transform 0.5s ease;
 }
 .card-mockup:hover { transform: perspective(1000px) rotateY(-4deg) rotateX(1deg); }
-.card-mockup::before {
-  content: '';
-  position: absolute; top: -80px; right: -80px;
-  width: 200px; height: 200px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(201,168,76,0.15), transparent 70%);
-}
-.card-mockup::after {
-  content: '';
-  position: absolute; bottom: -40px; left: -40px;
-  width: 150px; height: 150px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(90,158,85,0.12), transparent 70%);
-}
-
+.card-mockup::before { content: ''; position: absolute; top: -80px; right: -80px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(201,168,76,0.15), transparent 70%); }
+.card-mockup::after { content: ''; position: absolute; bottom: -40px; left: -40px; width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle, rgba(90,158,85,0.12), transparent 70%); }
 .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; }
 .card-bank-name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 500; color: rgba(255,255,255,0.9); letter-spacing: 0.02em; }
 .card-chip { width: 36px; height: 28px; background: linear-gradient(135deg, var(--gold), var(--gold-light)); border-radius: 5px; position: relative; box-shadow: 0 2px 8px rgba(201,168,76,0.4); }
@@ -304,12 +270,9 @@ nav.scrolled {
 .card-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); margin-bottom: 3px; }
 .card-value { font-size: 0.9rem; font-weight: 500; color: rgba(255,255,255,0.85); }
 .card-logo { font-size: 1.6rem; opacity: 0.7; }
-
 .float-card {
-  position: absolute;
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(20px);
-  border-radius: 14px;
+  position: absolute; background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(20px); border-radius: 14px;
   padding: 1rem 1.25rem;
   box-shadow: 0 20px 40px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.5);
   animation: floatCard 4s ease-in-out infinite;
@@ -327,12 +290,7 @@ nav.scrolled {
 @keyframes fadeIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
 
 /* ─── MARQUEE ─── */
-.marquee-section {
-  background: var(--g900);
-  border-top: 1px solid rgba(255,255,255,0.05);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  padding: 1rem 0; overflow: hidden;
-}
+.marquee-section { background: var(--g900); border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 1rem 0; overflow: hidden; }
 .marquee-track { display: flex; width: max-content; animation: marquee 30s linear infinite; }
 .marquee-item { padding: 0 3rem; font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.12em; white-space: nowrap; display: flex; align-items: center; gap: 1.5rem; }
 .marquee-item span { color: var(--gold); }
@@ -340,24 +298,13 @@ nav.scrolled {
 
 /* ─── FEATURES ─── */
 .features { padding: 8rem 3rem; max-width: 1200px; margin: 0 auto; }
-
 .section-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--g600); margin-bottom: 1rem; }
 .section-tag::before { content: ''; width: 24px; height: 2px; background: var(--g500); }
-
 .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem, 4vw, 3.5rem); font-weight: 400; line-height: 1.1; color: var(--ink); margin-bottom: 1rem; letter-spacing: -0.02em; }
 .section-title em { font-style: italic; color: var(--g600); }
-
 .section-sub { color: var(--ink-soft); font-size: 1rem; line-height: 1.7; max-width: 520px; margin-bottom: 4rem; }
-
 .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-
-.feature-card {
-  background: var(--white);
-  border: 1.5px solid rgba(0,0,0,0.07);
-  border-radius: 18px; padding: 2rem;
-  transition: all 0.3s ease;
-  position: relative; overflow: hidden; cursor: default;
-}
+.feature-card { background: var(--white); border: 1.5px solid rgba(0,0,0,0.07); border-radius: 18px; padding: 2rem; transition: all 0.3s ease; position: relative; overflow: hidden; cursor: default; }
 .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--g500), var(--gold)); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; }
 .feature-card:hover { transform: translateY(-4px); border-color: rgba(61,122,57,0.2); box-shadow: 0 20px 50px rgba(0,0,0,0.08); }
 .feature-card:hover::before { transform: scaleX(1); }
@@ -365,12 +312,11 @@ nav.scrolled {
 .feature-card.featured .feat-title { color: var(--white); }
 .feature-card.featured .feat-desc { color: rgba(255,255,255,0.55); }
 .feature-card.featured .feat-icon-wrap { background: rgba(255,255,255,0.1); }
-
 .feat-icon-wrap { width: 48px; height: 48px; background: var(--g50); border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 1.25rem; }
 .feat-title { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 600; color: var(--ink); margin-bottom: 0.6rem; }
 .feat-desc { font-size: 0.875rem; color: var(--ink-soft); line-height: 1.7; }
 
-/* ─── STATS BAND ─── */
+/* ─── STATS ─── */
 .stats-band { background: var(--g800); padding: 5rem 3rem; position: relative; overflow: hidden; }
 .stats-band::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(61,122,57,0.2), transparent), radial-gradient(ellipse 40% 60% at 20% 50%, rgba(201,168,76,0.08), transparent); }
 .stats-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; position: relative; z-index: 1; }
@@ -389,7 +335,6 @@ nav.scrolled {
 .sec-ring-2 { width: 260px; height: 260px; animation-delay: 0.5s; }
 .sec-ring-3 { width: 340px; height: 340px; animation-delay: 1s; }
 @keyframes ringExpand { 0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 0.15; transform: translate(-50%, -50%) scale(1.04); } }
-
 .sec-badges { display: flex; flex-direction: column; gap: 0.75rem; }
 .sec-badge { background: var(--white); border: 1.5px solid rgba(0,0,0,0.07); border-radius: 12px; padding: 1rem 1.25rem; display: flex; align-items: center; gap: 12px; transition: all 0.25s; }
 .sec-badge:hover { border-color: rgba(61,122,57,0.3); transform: translateX(4px); }
@@ -398,126 +343,38 @@ nav.scrolled {
 .sec-badge-sub { font-size: 0.75rem; color: var(--ink-soft); margin-top: 1px; }
 .sec-badge-status { margin-left: auto; font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: var(--g50); color: var(--g600); text-transform: uppercase; letter-spacing: 0.06em; }
 
-/* ─── GUIDES SECTION ─── */
-.guides-section {
-  background: var(--g50);
-  border-top: 1px solid rgba(0,0,0,0.06);
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-  padding: 7rem 3rem;
-}
+/* ─── GUIDES ─── */
+.guides-section { background: var(--g50); border-top: 1px solid rgba(0,0,0,0.06); border-bottom: 1px solid rgba(0,0,0,0.06); padding: 7rem 3rem; }
 .guides-inner { max-width: 1200px; margin: 0 auto; }
 .guides-header { text-align: center; margin-bottom: 3.5rem; }
 .guides-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-
-.guide-card {
-  background: var(--white);
-  border: 1.5px solid rgba(0,0,0,0.07);
-  border-radius: 18px; padding: 2rem;
-  text-decoration: none; color: inherit;
-  transition: all 0.3s ease;
-  display: flex; flex-direction: column;
-  position: relative; overflow: hidden;
-}
+.guide-card { background: var(--white); border: 1.5px solid rgba(0,0,0,0.07); border-radius: 18px; padding: 2rem; text-decoration: none; color: inherit; transition: all 0.3s ease; display: flex; flex-direction: column; position: relative; overflow: hidden; }
 .guide-card:hover { transform: translateY(-5px); box-shadow: 0 25px 60px rgba(0,0,0,0.1); border-color: rgba(61,122,57,0.25); }
-
-/* Video thumbnail wrapper */
-.guide-thumb {
-  width: 100%; height: 180px;
-  background: linear-gradient(135deg, var(--g800), var(--g700));
-  border-radius: 12px; margin-bottom: 1.5rem;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 3.5rem;
-  position: relative; overflow: hidden;
-  cursor: pointer;
-}
+.guide-thumb { width: 100%; height: 180px; background: linear-gradient(135deg, var(--g800), var(--g700)); border-radius: 12px; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; position: relative; overflow: hidden; cursor: pointer; }
 .guide-thumb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(201,168,76,0.08), transparent); pointer-events: none; }
-
-/* Native video inside thumbnail */
-.guide-thumb video {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  border-radius: 12px;
-  display: none; /* shown after JS loads */
-}
-.guide-thumb.has-video video { display: block; }
-.guide-thumb.has-video .thumb-icon { display: none; }
-.guide-thumb.has-video::after { display: none; }
-
-/* Play button overlay */
-.play-overlay {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  z-index: 3;
-  background: rgba(0,0,0,0.25);
-  border-radius: 12px;
-  transition: background 0.2s;
-}
+.play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 3; background: rgba(0,0,0,0.25); border-radius: 12px; transition: background 0.2s; }
 .play-overlay:hover { background: rgba(0,0,0,0.1); }
-.play-btn {
-  width: 52px; height: 52px;
-  background: rgba(255,255,255,0.95);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  transition: transform 0.2s;
-  padding-left: 3px; /* optical centering of play triangle */
-}
+.play-btn { width: 52px; height: 52px; background: rgba(255,255,255,0.95); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: transform 0.2s; padding-left: 3px; }
 .play-overlay:hover .play-btn { transform: scale(1.1); }
-
-.thumb-badge {
-  position: absolute; bottom: 12px; right: 12px;
-  border-radius: 8px; padding: 4px 10px;
-  font-size: 0.72rem; font-weight: 600; z-index: 2;
-}
+.thumb-badge { position: absolute; bottom: 12px; right: 12px; border-radius: 8px; padding: 4px 10px; font-size: 0.72rem; font-weight: 600; z-index: 2; }
 .badge-video { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); }
 .badge-pdf   { background: rgba(201,168,76,0.25); color: var(--gold-light); }
-
 .guide-type { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--g600); margin-bottom: 0.5rem; }
 .guide-title { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; color: var(--ink); margin-bottom: 0.5rem; line-height: 1.25; }
 .guide-desc { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.6; margin-bottom: 1.5rem; flex: 1; }
-.guide-cta { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; color: var(--g600); text-decoration: none; }
+.guide-cta { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; color: var(--g600); }
 .guide-cta .arrow { width: 22px; height: 22px; border-radius: 50%; background: var(--g50); display: flex; align-items: center; justify-content: center; font-size: 11px; transition: all 0.2s; }
 .guide-card:hover .guide-cta .arrow { background: var(--g500); color: white; transform: translateX(2px); }
 
-/* Video modal */
-.video-modal {
-  display: none;
-  position: fixed; inset: 0; z-index: 2000;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(8px);
-  align-items: center; justify-content: center;
-}
+/* ─── VIDEO MODAL ─── */
+.video-modal { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,0.88); backdrop-filter: blur(8px); align-items: center; justify-content: center; }
 .video-modal.open { display: flex; }
-.video-modal-inner {
-  position: relative;
-  width: 90vw; max-width: 900px;
-  background: var(--g900);
-  border-radius: 20px; overflow: hidden;
-  box-shadow: 0 40px 100px rgba(0,0,0,0.6);
-}
-.video-modal video {
-  width: 100%; display: block;
-  max-height: 80vh; object-fit: contain;
-  background: #000;
-}
-.modal-close {
-  position: absolute; top: 14px; right: 14px;
-  width: 36px; height: 36px;
-  background: rgba(255,255,255,0.15);
-  border: none; border-radius: 50%;
-  color: white; font-size: 18px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.2s; z-index: 10;
-}
+.video-modal-inner { position: relative; width: 90vw; max-width: 900px; background: var(--g900); border-radius: 20px; overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,0.6); }
+.video-modal video { width: 100%; display: block; max-height: 80vh; object-fit: contain; background: #000; }
+.modal-close { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; background: rgba(255,255,255,0.15); border: none; border-radius: 50%; color: white; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; z-index: 10; }
 .modal-close:hover { background: rgba(255,255,255,0.3); }
-.modal-title {
-  padding: 1rem 1.5rem;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.1rem; color: rgba(255,255,255,0.8);
-  border-top: 1px solid rgba(255,255,255,0.08);
-}
+.modal-title { padding: 1rem 1.5rem; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: rgba(255,255,255,0.8); border-top: 1px solid rgba(255,255,255,0.08); }
+.modal-loading { padding: 2rem; text-align: center; color: rgba(255,255,255,0.5); font-size: 0.9rem; display: none; }
 
 /* ─── FOOTER ─── */
 footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
@@ -601,7 +458,6 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
-
   <div class="hero-inner">
     <div class="hero-left">
       <div class="hero-badge">
@@ -616,9 +472,7 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
       <p class="hero-sub">Manage your money with confidence. LumeBank gives you the tools to track, save, and plan — secured by enterprise-grade infrastructure.</p>
       <div class="hero-actions">
         <a href="signup.html" class="btn-hero-primary">Open your account</a>
-        <a href="signin.html" class="btn-hero-secondary">
-          <span>→</span> Sign in
-        </a>
+        <a href="signin.html" class="btn-hero-secondary"><span>→</span> Sign in</a>
       </div>
       <div class="hero-trust">
         <div class="trust-item"><strong>256-bit</strong>SSL Encrypted</div>
@@ -630,7 +484,6 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
         <div class="trust-item"><strong>RBAC</strong>Access Control</div>
       </div>
     </div>
-
     <div class="hero-right">
       <div class="float-card float-card-1">
         <div class="fc-label">Available balance</div>
@@ -804,14 +657,12 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
       <h2 class="section-title" style="text-align:center">User guides &amp; <em>documentation</em></h2>
       <p class="section-sub" style="margin:0.5rem auto 0;text-align:center">Everything you need to get started and make the most of LumeBank.</p>
     </div>
-
     <div class="guides-grid">
 
-      <!-- ── CARD 1: Desktop Guide video ── -->
-      <div class="guide-card" style="cursor:pointer;" onclick="openModal('desktop-guide.mp4', 'Desktop Guide — Sign up &amp; log in on laptop')">
-        <div class="guide-thumb" id="thumb-desktop">
-          <span class="thumb-icon" style="position:relative;z-index:1;">🖥️</span>
-          <video src="desktop-guide.mp4" muted preload="metadata" tabindex="-1" aria-hidden="true"></video>
+      <!-- Desktop Guide -->
+      <div class="guide-card" style="cursor:pointer;" onclick="openModal('https://raw.githubusercontent.com/style13692-beep/banking-app/main/desktop-guide.mp4', 'Desktop Guide — Sign up &amp; log in on laptop')">
+        <div class="guide-thumb">
+          <span style="position:relative;z-index:1;">🖥️</span>
           <div class="play-overlay">
             <div class="play-btn">▶</div>
           </div>
@@ -823,11 +674,10 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
         <div class="guide-cta">Watch now <span class="arrow">▶</span></div>
       </div>
 
-      <!-- ── CARD 2: Mobile Guide video ── -->
-      <div class="guide-card" style="cursor:pointer;" onclick="openModal('mobile-guide.mp4', 'Mobile Guide — Sign up &amp; log in on phone')">
-        <div class="guide-thumb" id="thumb-mobile">
-          <span class="thumb-icon" style="position:relative;z-index:1;">📱</span>
-          <video src="mobile-guide.mp4" muted preload="metadata" tabindex="-1" aria-hidden="true"></video>
+      <!-- Mobile Guide -->
+      <div class="guide-card" style="cursor:pointer;" onclick="openModal('https://raw.githubusercontent.com/style13692-beep/banking-app/main/mobile-guide.mp4', 'Mobile Guide — Sign up &amp; log in on phone')">
+        <div class="guide-thumb">
+          <span style="position:relative;z-index:1;">📱</span>
           <div class="play-overlay">
             <div class="play-btn">▶</div>
           </div>
@@ -839,8 +689,8 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
         <div class="guide-cta">Watch now <span class="arrow">▶</span></div>
       </div>
 
-      <!-- ── CARD 3: PDF Manual ── -->
-      <a href="user-manual.pdf" class="guide-card" target="_blank" rel="noopener">
+      <!-- PDF Manual -->
+      <a href="https://raw.githubusercontent.com/style13692-beep/banking-app/main/user-manual.pdf" class="guide-card" target="_blank" rel="noopener">
         <div class="guide-thumb">
           <span style="position:relative;z-index:1;">📄</span>
           <div class="thumb-badge badge-pdf">PDF</div>
@@ -876,7 +726,7 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
         <h4>Resources</h4>
         <a href="#guides" onclick="document.getElementById('guides').scrollIntoView({behavior:'smooth'});return false;">Desktop Guide</a>
         <a href="#guides" onclick="document.getElementById('guides').scrollIntoView({behavior:'smooth'});return false;">Mobile Guide</a>
-        <a href="user-manual.pdf" target="_blank">PDF manual</a>
+        <a href="https://raw.githubusercontent.com/style13692-beep/banking-app/main/user-manual.pdf" target="_blank">PDF manual</a>
       </div>
       <div class="footer-col">
         <h4>Security</h4>
@@ -902,7 +752,6 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
 const cursor = document.getElementById('cursor');
 const ring   = document.getElementById('cursorRing');
 let mx = 0, my = 0, rx = 0, ry = 0;
-
 document.addEventListener('mousemove', e => {
   mx = e.clientX; my = e.clientY;
   cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
@@ -923,26 +772,6 @@ document.querySelectorAll('a, button, [onclick]').forEach(el => {
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); });
 
-/* ── Video thumbnail preview on hover ── */
-['desktop', 'mobile'].forEach(id => {
-  const thumb = document.getElementById(`thumb-${id}`);
-  if (!thumb) return;
-  const vid = thumb.querySelector('video');
-  if (!vid) return;
-
-  // Once metadata loads, show video as thumbnail background
-  vid.addEventListener('loadedmetadata', () => {
-    vid.currentTime = 1; // seek to 1s for a real thumbnail frame
-  });
-  vid.addEventListener('seeked', () => {
-    thumb.classList.add('has-video');
-  });
-
-  // Hover to preview
-  thumb.addEventListener('mouseenter', () => { vid.play().catch(()=>{}); });
-  thumb.addEventListener('mouseleave', () => { vid.pause(); vid.currentTime = 1; });
-});
-
 /* ── Video modal ── */
 const modal      = document.getElementById('videoModal');
 const modalVideo = document.getElementById('modalVideo');
@@ -951,8 +780,9 @@ const modalClose = document.getElementById('modalClose');
 
 function openModal(src, title) {
   modalVideo.src = src;
-  modalTitle.textContent = title;
+  modalTitle.innerHTML = title;
   modal.classList.add('open');
+  modalVideo.load();
   modalVideo.play().catch(() => {});
   document.body.style.overflow = 'hidden';
 }
@@ -984,7 +814,6 @@ document.querySelectorAll('.feature-card, .guide-card, .sec-badge, .stat-item').
   el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
   observer.observe(el);
 });
-
 document.querySelectorAll('.features-grid .feature-card, .guides-grid .guide-card').forEach((el, i) => {
   el.style.transitionDelay = `${i * 0.08}s`;
 });
