@@ -6,7 +6,6 @@
 <title>Sign Up — LumeBank</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 
-<!-- Already logged in? Go straight to dashboard -->
 <script>
   if (localStorage.getItem('token')) {
     window.location.replace('dashboard.html');
@@ -145,15 +144,52 @@ body {
 .btn-submit.loading .btn-text { display: none; }
 .btn-submit.loading .spinner { display: block; }
 
-/* Debug panel */
-.debug-panel {
-  margin-top: 1rem; background: #0d1117; border-radius: 10px;
-  padding: 0.9rem 1rem; font-family: monospace; font-size: 0.72rem;
-  color: #7ee787; display: none; max-height: 200px; overflow-y: auto;
-  border: 1px solid rgba(126,231,135,0.2);
+/* ─── MFA SETUP STEP ─── */
+#stepMfa { display: none; animation: fadeUp 0.4s ease both; }
+
+.mfa-box {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
 }
-.debug-panel.show { display: block; }
-.debug-title { color: rgba(126,231,135,0.5); margin-bottom: 0.4rem; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.mfa-box img {
+  width: 180px; height: 180px;
+  border-radius: 10px;
+  margin: 0.75rem auto;
+  display: block;
+  border: 3px solid var(--g50);
+}
+.mfa-box .qr-label {
+  font-size: 0.78rem; color: var(--ink-soft);
+  line-height: 1.6; margin-top: 0.5rem;
+}
+
+.mfa-steps {
+  display: flex; flex-direction: column; gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+.mfa-step {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 0.83rem; color: var(--ink-soft); line-height: 1.5;
+}
+.mfa-step-num {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  background: var(--g500); color: var(--white);
+  font-size: 0.7rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+}
+
+.token-field input {
+  text-align: center;
+  font-size: 1.6rem;
+  letter-spacing: 0.3em;
+  font-family: monospace;
+  font-weight: 700;
+}
 
 .terms { font-size: 0.73rem; color: var(--ink-soft); text-align: center; margin-top: 1rem; line-height: 1.5; }
 .terms a { color: var(--g500); text-decoration: none; }
@@ -198,88 +234,109 @@ body {
 
 <div class="right-panel">
   <div class="form-card">
-    <div class="form-title">Create account</div>
-    <div class="form-sub">Already have an account? <a href="signin.html">Sign in</a></div>
 
     <div class="alert-banner error"   id="alertError">  <span>⚠</span><span id="alertErrorMsg">Something went wrong.</span></div>
-    <div class="alert-banner success" id="alertSuccess"><span>✓</span><span id="alertSuccessMsg">Account created! Redirecting…</span></div>
+    <div class="alert-banner success" id="alertSuccess"><span>✓</span><span id="alertSuccessMsg"></span></div>
 
-    <form id="signupForm" novalidate>
-      <div class="row-2">
-        <div class="field">
-          <label for="firstName">First name</label>
-          <input type="text" id="firstName" name="firstName" placeholder="Alex" autocomplete="given-name"/>
-          <div class="field-error" id="errFirstName">Required</div>
-        </div>
-        <div class="field">
-          <label for="lastName">Last name</label>
-          <input type="text" id="lastName" name="lastName" placeholder="Morgan" autocomplete="family-name"/>
-          <div class="field-error" id="errLastName">Required</div>
-        </div>
-      </div>
-      <div class="field">
-        <label for="email">Email address</label>
-        <input type="email" id="email" name="email" placeholder="alex@example.com" autocomplete="email"/>
-        <div class="field-error" id="errEmail">Enter a valid email address</div>
-      </div>
-      <div class="field">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="At least 8 characters" autocomplete="new-password"/>
-        <div class="strength-bar">
-          <div class="strength-seg" id="seg1"></div><div class="strength-seg" id="seg2"></div>
-          <div class="strength-seg" id="seg3"></div><div class="strength-seg" id="seg4"></div>
-        </div>
-        <div class="strength-label" id="strengthLabel"></div>
-        <div class="field-error" id="errPassword">Must be at least 8 characters</div>
-      </div>
-      <div class="field">
-        <label for="confirmPassword">Confirm password</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repeat your password" autocomplete="new-password"/>
-        <div class="field-error" id="errConfirm">Passwords do not match</div>
-      </div>
-      <button type="submit" class="btn-submit" id="submitBtn">
-        <span class="btn-text">Create my account</span>
-        <div class="spinner"></div>
-      </button>
-    </form>
+    <!-- ─── STEP 1: Registration form ─── -->
+    <div id="stepRegister">
+      <div class="form-title">Create account</div>
+      <div class="form-sub">Already have an account? <a href="signin.html">Sign in</a></div>
 
-    <div class="debug-panel" id="debugPanel">
-      <div class="debug-title">🛠 Debug — remove before going live</div>
-      <pre id="debugOutput"></pre>
+      <form id="signupForm" novalidate>
+        <div class="row-2">
+          <div class="field">
+            <label for="firstName">First name</label>
+            <input type="text" id="firstName" placeholder="Alex" autocomplete="given-name"/>
+            <div class="field-error" id="errFirstName">Required</div>
+          </div>
+          <div class="field">
+            <label for="lastName">Last name</label>
+            <input type="text" id="lastName" placeholder="Morgan" autocomplete="family-name"/>
+            <div class="field-error" id="errLastName">Required</div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="email">Email address</label>
+          <input type="email" id="email" placeholder="alex@example.com" autocomplete="email"/>
+          <div class="field-error" id="errEmail">Enter a valid email address</div>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="At least 8 characters" autocomplete="new-password"/>
+          <div class="strength-bar">
+            <div class="strength-seg" id="seg1"></div><div class="strength-seg" id="seg2"></div>
+            <div class="strength-seg" id="seg3"></div><div class="strength-seg" id="seg4"></div>
+          </div>
+          <div class="strength-label" id="strengthLabel"></div>
+          <div class="field-error" id="errPassword">Must be at least 8 characters</div>
+        </div>
+        <div class="field">
+          <label for="confirmPassword">Confirm password</label>
+          <input type="password" id="confirmPassword" placeholder="Repeat your password" autocomplete="new-password"/>
+          <div class="field-error" id="errConfirm">Passwords do not match</div>
+        </div>
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <span class="btn-text">Create my account</span>
+          <div class="spinner"></div>
+        </button>
+      </form>
+
+      <p class="terms">By creating an account you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
     </div>
 
-    <p class="terms">By creating an account you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+    <!-- ─── STEP 2: MFA Setup ─── -->
+    <div id="stepMfa">
+      <div class="form-title">Set up 2FA</div>
+      <div class="form-sub">One last step — secure your account with an authenticator app.</div>
+
+      <div class="mfa-steps">
+        <div class="mfa-step"><div class="mfa-step-num">1</div><span>Download <strong>Google Authenticator</strong> or <strong>Authy</strong> on your phone.</span></div>
+        <div class="mfa-step"><div class="mfa-step-num">2</div><span>Tap <strong>Add account</strong> and scan the QR code below.</span></div>
+        <div class="mfa-step"><div class="mfa-step-num">3</div><span>Enter the <strong>6-digit code</strong> shown in the app to confirm.</span></div>
+      </div>
+
+      <div class="mfa-box">
+        <img id="qrCodeImg" src="" alt="MFA QR Code"/>
+        <div class="qr-label">Scan this with your authenticator app.<br>Can't scan? Enter the code manually in your app.</div>
+      </div>
+
+      <form id="mfaForm" novalidate>
+        <div class="field token-field">
+          <label for="mfaToken">6-digit code from your app</label>
+          <input type="text" id="mfaToken" maxlength="6" placeholder="000000" autocomplete="one-time-code" inputmode="numeric"/>
+          <div class="field-error" id="errMfa">Enter the 6-digit code from your authenticator app</div>
+        </div>
+        <button type="submit" class="btn-submit" id="verifyBtn">
+          <span class="btn-text">Verify &amp; go to dashboard</span>
+          <div class="spinner"></div>
+        </button>
+      </form>
+    </div>
+
   </div>
 </div>
 
 <script>
-// ─── ⚙️  CONFIGURATION ────────────────────────────────────────────────────────
 const API_BASE      = 'https://apim-banking-app.azure-api.net/api';
-const REGISTER_PATH = 'auth/signup';   // ← UPDATED to match your backend
-const APIM_KEY      = '';              // ← paste your Ocp-Apim-Subscription-Key here if needed
+const APIM_KEY      = '';
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
 function buildHeaders() {
   const h = { 'Content-Type': 'application/json' };
   if (APIM_KEY) h['Ocp-Apim-Subscription-Key'] = APIM_KEY;
   return h;
 }
 
-function extractToken(data) {
-  return data.token || data.accessToken || data.access_token || data.jwt || data.idToken || null;
-}
-
-function extractUser(data) {
-  if (data.user    && typeof data.user    === 'object') return data.user;
-  if (data.data    && typeof data.data    === 'object') return data.data;
-  if (data.profile && typeof data.profile === 'object') return data.profile;
-  if (data.email || data.firstName) return data;
-  return null;
-}
-
-function showDebug(payload) {
-  document.getElementById('debugPanel').classList.add('show');
-  document.getElementById('debugOutput').textContent = JSON.stringify(payload, null, 2);
+function showAlert(type, msg) {
+  document.getElementById('alertError').classList.remove('show');
+  document.getElementById('alertSuccess').classList.remove('show');
+  if (type === 'error') {
+    document.getElementById('alertErrorMsg').textContent = msg;
+    document.getElementById('alertError').classList.add('show');
+  } else {
+    document.getElementById('alertSuccessMsg').textContent = msg;
+    document.getElementById('alertSuccess').classList.add('show');
+  }
 }
 
 // ─── Password strength ────────────────────────────────────────────────────────
@@ -303,7 +360,7 @@ document.getElementById('password').addEventListener('input', function () {
 // ─── Field error helpers ──────────────────────────────────────────────────────
 function setFieldError(errId, inputId, show) {
   document.getElementById(errId).classList.toggle('show', show);
-  document.getElementById(inputId).classList.toggle('error-field', show);
+  if (inputId) document.getElementById(inputId).classList.toggle('error-field', show);
 }
 
 function clearAll() {
@@ -314,7 +371,10 @@ function clearAll() {
   document.getElementById('alertSuccess').classList.remove('show');
 }
 
-// ─── Form submit ──────────────────────────────────────────────────────────────
+// ─── Store email for MFA step ─────────────────────────────────────────────────
+let pendingEmail = '';
+
+// ─── STEP 1: Register ─────────────────────────────────────────────────────────
 document.getElementById('signupForm').addEventListener('submit', async function (e) {
   e.preventDefault();
   clearAll();
@@ -326,8 +386,8 @@ document.getElementById('signupForm').addEventListener('submit', async function 
   const confirmPassword = document.getElementById('confirmPassword').value;
 
   let valid = true;
-  if (!firstName)                                { setFieldError('errFirstName','firstName',true); valid = false; }
-  if (!lastName)                                 { setFieldError('errLastName','lastName',true);   valid = false; }
+  if (!firstName)                             { setFieldError('errFirstName','firstName',true); valid = false; }
+  if (!lastName)                              { setFieldError('errLastName','lastName',true);   valid = false; }
   if (!email || !/\S+@\S+\.\S+/.test(email)) { setFieldError('errEmail','email',true);         valid = false; }
   if (password.length < 8)                   { setFieldError('errPassword','password',true);   valid = false; }
   if (password !== confirmPassword)           { setFieldError('errConfirm','confirmPassword',true); valid = false; }
@@ -336,46 +396,80 @@ document.getElementById('signupForm').addEventListener('submit', async function 
   const btn = document.getElementById('submitBtn');
   btn.classList.add('loading'); btn.disabled = true;
 
-  const url = `${API_BASE}/${REGISTER_PATH}`;
-
   try {
-    const res = await fetch(url, {
+    const res = await fetch(`${API_BASE}/auth/signup`, {
       method: 'POST',
       headers: buildHeaders(),
       body: JSON.stringify({ firstName, lastName, email, password })
     });
 
     let data = {};
-    try { data = await res.json(); } catch { /* non-JSON body */ }
-
-    // Show debug so you can inspect the exact response
-    showDebug({ urlCalled: url, status: res.status, ok: res.ok, responseBody: data });
+    try { data = await res.json(); } catch { /* non-JSON */ }
 
     if (!res.ok) {
-      const msg = data.message || data.error || data.detail
-        || `Registration failed (HTTP ${res.status}). See debug panel below for the full response.`;
-      document.getElementById('alertErrorMsg').textContent = msg;
-      document.getElementById('alertError').classList.add('show');
+      const msg = data.message || data.error || data.detail || `Registration failed (HTTP ${res.status}).`;
+      showAlert('error', msg);
       return;
     }
 
-    const token = extractToken(data);
-    const user  = extractUser(data);
-    if (token) {
-      localStorage.setItem('token', token);
-      if (user) localStorage.setItem('user', JSON.stringify(user));
-    }
-
-    document.getElementById('alertSuccessMsg').textContent = 'Account created! Taking you to your dashboard…';
-    document.getElementById('alertSuccess').classList.add('show');
-    setTimeout(() => window.location.replace('dashboard.html'), 1400);
+    // ✅ Account created — now show the MFA setup QR code
+    pendingEmail = data.email || email;
+    document.getElementById('qrCodeImg').src = data.qrCodeUrl;
+    document.getElementById('stepRegister').style.display = 'none';
+    document.getElementById('stepMfa').style.display = 'block';
+    showAlert('success', 'Account created! Now set up your authenticator to continue.');
 
   } catch (err) {
     console.error('[Signup]', err);
-    showDebug({ urlCalled: url, error: err.message, hint: 'Likely a CORS or network error — check browser console for details' });
-    document.getElementById('alertErrorMsg').textContent =
-      'Connection error — could not reach the server. Check the debug panel below.';
-    document.getElementById('alertError').classList.add('show');
+    showAlert('error', 'Connection error — could not reach the server.');
+  } finally {
+    btn.classList.remove('loading'); btn.disabled = false;
+  }
+});
+
+// ─── STEP 2: Verify MFA code ──────────────────────────────────────────────────
+document.getElementById('mfaForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  setFieldError('errMfa', null, false);
+  document.getElementById('alertError').classList.remove('show');
+
+  const token = document.getElementById('mfaToken').value.trim();
+  if (!token || token.length < 6) {
+    setFieldError('errMfa', null, true);
+    return;
+  }
+
+  const btn = document.getElementById('verifyBtn');
+  btn.classList.add('loading'); btn.disabled = true;
+
+  try {
+    const res = await fetch(`${API_BASE}/auth/verify-mfa`, {
+      method: 'POST',
+      headers: buildHeaders(),
+      body: JSON.stringify({ email: pendingEmail, token })
+    });
+
+    let data = {};
+    try { data = await res.json(); } catch { /* non-JSON */ }
+
+    if (!res.ok) {
+      const msg = data.message || data.error || 'Invalid code — check your authenticator app and try again.';
+      showAlert('error', msg);
+      return;
+    }
+
+    // ✅ MFA verified — store token and go to dashboard
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+      if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
+    }
+
+    showAlert('success', 'All set! Taking you to your dashboard…');
+    setTimeout(() => window.location.replace('dashboard.html'), 1200);
+
+  } catch (err) {
+    console.error('[MFA Verify]', err);
+    showAlert('error', 'Connection error — could not verify your code.');
   } finally {
     btn.classList.remove('loading'); btn.disabled = false;
   }
