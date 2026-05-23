@@ -374,7 +374,27 @@ nav.scrolled {
 .modal-close { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; background: rgba(255,255,255,0.15); border: none; border-radius: 50%; color: white; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; z-index: 10; }
 .modal-close:hover { background: rgba(255,255,255,0.3); }
 .modal-title { padding: 1rem 1.5rem; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: rgba(255,255,255,0.8); border-top: 1px solid rgba(255,255,255,0.08); }
-.modal-loading { padding: 2rem; text-align: center; color: rgba(255,255,255,0.5); font-size: 0.9rem; display: none; }
+
+/* Fallback panel shown when streaming fails */
+.modal-fallback {
+  display: none;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.9rem;
+  line-height: 1.9;
+}
+.modal-fallback .fallback-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.modal-fallback p { margin-bottom: 1.25rem; color: rgba(255,255,255,0.55); }
+.modal-fallback .btn-open {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 0.7rem 1.5rem;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  border-radius: 9px; color: var(--g900);
+  font-weight: 700; font-size: 0.88rem;
+  text-decoration: none;
+}
+.modal-fallback .btn-open:hover { opacity: 0.9; }
 
 /* ─── FOOTER ─── */
 footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
@@ -429,7 +449,12 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
 <div class="video-modal" id="videoModal">
   <div class="video-modal-inner">
     <button class="modal-close" id="modalClose">✕</button>
-    <video id="modalVideo" controls playsinline></video>
+    <video id="modalVideo" controls playsinline preload="metadata"></video>
+    <div class="modal-fallback" id="modalFallback">
+      <div class="fallback-icon">🎬</div>
+      <p>This video can't be streamed directly — GitHub blocks direct video embedding.<br>Click below to watch it in a new tab.</p>
+      <a id="modalFallbackLink" href="#" target="_blank" rel="noopener" class="btn-open">▶ &nbsp;Open video in new tab</a>
+    </div>
     <div class="modal-title" id="modalTitle"></div>
   </div>
 </div>
@@ -660,7 +685,7 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
     <div class="guides-grid">
 
       <!-- Desktop Guide -->
-      <div class="guide-card" style="cursor:pointer;" onclick="openModal('https://raw.githubusercontent.com/style13692-beep/banking-app/main/desktop-guide.mp4', 'Desktop Guide — Sign up &amp; log in on laptop')">
+      <div class="guide-card" style="cursor:pointer;" onclick="openVideoModal('ExternalItems/desktop-guide.mp4', 'Desktop Guide — Sign up &amp; log in on laptop')">
         <div class="guide-thumb">
           <span style="position:relative;z-index:1;">🖥️</span>
           <div class="play-overlay">
@@ -675,7 +700,7 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
       </div>
 
       <!-- Mobile Guide -->
-      <div class="guide-card" style="cursor:pointer;" onclick="openModal('https://raw.githubusercontent.com/style13692-beep/banking-app/main/mobile-guide.mp4', 'Mobile Guide — Sign up &amp; log in on phone')">
+      <div class="guide-card" style="cursor:pointer;" onclick="openVideoModal('ExternalItems/mobile-guide.mp4', 'Mobile Guide — Sign up &amp; log in on phone')">
         <div class="guide-thumb">
           <span style="position:relative;z-index:1;">📱</span>
           <div class="play-overlay">
@@ -690,7 +715,7 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
       </div>
 
       <!-- PDF Manual -->
-      <a href="https://raw.githubusercontent.com/style13692-beep/banking-app/main/user-manual.pdf" class="guide-card" target="_blank" rel="noopener">
+      <div class="guide-card" style="cursor:pointer;" onclick="openPdf('ExternalItems/user-manual.pdf')">
         <div class="guide-thumb">
           <span style="position:relative;z-index:1;">📄</span>
           <div class="thumb-badge badge-pdf">PDF</div>
@@ -698,8 +723,8 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
         <div class="guide-type">Downloadable manual</div>
         <div class="guide-title">Full user manual</div>
         <div class="guide-desc">The complete reference document — all features, settings, security overview and FAQ in a single printable PDF.</div>
-        <div class="guide-cta">Download PDF <span class="arrow">↓</span></div>
-      </a>
+        <div class="guide-cta">View PDF <span class="arrow">↗</span></div>
+      </div>
 
     </div>
   </div>
@@ -726,7 +751,7 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
         <h4>Resources</h4>
         <a href="#guides" onclick="document.getElementById('guides').scrollIntoView({behavior:'smooth'});return false;">Desktop Guide</a>
         <a href="#guides" onclick="document.getElementById('guides').scrollIntoView({behavior:'smooth'});return false;">Mobile Guide</a>
-        <a href="https://raw.githubusercontent.com/style13692-beep/banking-app/main/user-manual.pdf" target="_blank">PDF manual</a>
+        <a href="#" onclick="openPdf('ExternalItems/user-manual.pdf');return false;">PDF manual</a>
       </div>
       <div class="footer-col">
         <h4>Security</h4>
@@ -772,25 +797,73 @@ document.querySelectorAll('a, button, [onclick]').forEach(el => {
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); });
 
-/* ── Video modal ── */
-const modal      = document.getElementById('videoModal');
-const modalVideo = document.getElementById('modalVideo');
-const modalTitle = document.getElementById('modalTitle');
-const modalClose = document.getElementById('modalClose');
+/* ─────────────────────────────────────────
+   PDF opener
+   • Uses a relative path (ExternalItems/user-manual.pdf)
+   • Falls back to Google Docs Viewer only for remote/absolute URLs
+───────────────────────────────────────── */
+function openPdf(path) {
+  // If it's a local relative path, open it directly so the browser renders it natively
+  if (!path.startsWith('http')) {
+    window.open(path, '_blank', 'noopener');
+    return;
+  }
+  // For absolute GitHub URLs use Google Docs Viewer so it renders instead of downloading
+  const viewerUrl = 'https://docs.google.com/viewer?embedded=true&url=' + encodeURIComponent(path);
+  window.open(viewerUrl, '_blank', 'noopener');
+}
 
-function openModal(src, title) {
-  modalVideo.src = src;
+/* ─────────────────────────────────────────
+   Video modal
+   • src is a RELATIVE path (e.g. ExternalItems/desktop-guide.mp4)
+   • The <video> element loads it natively — no GitHub media URL involved
+   • If the video fails (network error, missing file) we show a friendly
+     fallback panel with a direct download link instead
+───────────────────────────────────────── */
+const modal          = document.getElementById('videoModal');
+const modalVideo     = document.getElementById('modalVideo');
+const modalTitle     = document.getElementById('modalTitle');
+const modalClose     = document.getElementById('modalClose');
+const modalFallback  = document.getElementById('modalFallback');
+const modalFallbackLink = document.getElementById('modalFallbackLink');
+
+let currentVideoSrc = '';
+
+function openVideoModal(src, title) {
+  currentVideoSrc = src;
+
+  // Reset to video state
+  modalVideo.style.display  = 'block';
+  modalFallback.style.display = 'none';
   modalTitle.innerHTML = title;
+  modalFallbackLink.href = src;   // relative path → direct download/open
   modal.classList.add('open');
-  modalVideo.load();
-  modalVideo.play().catch(() => {});
   document.body.style.overflow = 'hidden';
+
+  // Assign source and attempt playback
+  modalVideo.src = src;
+  modalVideo.load();
+  modalVideo.play().catch(() => {
+    // Autoplay blocked is fine — user can press play button
+  });
+
+  // If the file genuinely can't load, show the fallback
+  modalVideo.onerror = showFallback;
+}
+
+function showFallback() {
+  modalVideo.style.display   = 'none';
+  modalFallback.style.display = 'block';
 }
 
 function closeModal() {
   modal.classList.remove('open');
   modalVideo.pause();
-  modalVideo.src = '';
+  modalVideo.removeAttribute('src');
+  modalVideo.load();                    // fully unload / release the file
+  modalVideo.onerror = null;
+  modalVideo.style.display   = 'block';
+  modalFallback.style.display = 'none';
   document.body.style.overflow = '';
 }
 
