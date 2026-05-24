@@ -375,7 +375,6 @@ nav.scrolled {
 .modal-close:hover { background: rgba(255,255,255,0.3); }
 .modal-title { padding: 1rem 1.5rem; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: rgba(255,255,255,0.8); border-top: 1px solid rgba(255,255,255,0.08); }
 
-/* Fallback panel shown when streaming fails */
 .modal-fallback {
   display: none;
   padding: 2.5rem 2rem;
@@ -449,10 +448,10 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
 <div class="video-modal" id="videoModal">
   <div class="video-modal-inner">
     <button class="modal-close" id="modalClose">✕</button>
-    <video id="modalVideo" controls playsinline preload="metadata"></video>
+    <video id="modalVideo" controls playsinline preload="none"></video>
     <div class="modal-fallback" id="modalFallback">
       <div class="fallback-icon">🎬</div>
-      <p>This video can't be streamed directly — GitHub blocks direct video embedding.<br>Click below to watch it in a new tab.</p>
+      <p>This video can't be streamed directly — click below to open it in a new tab.</p>
       <a id="modalFallbackLink" href="#" target="_blank" rel="noopener" class="btn-open">▶ &nbsp;Open video in new tab</a>
     </div>
     <div class="modal-title" id="modalTitle"></div>
@@ -487,26 +486,26 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
     <div class="hero-left">
       <div class="hero-badge">
         <div class="badge-dot"></div>
-        Now available — University demo
+        Cloud Computing — Azure Security for Applications
       </div>
       <h1 class="hero-title">
         <span>Banking</span>
         <em>reimagined</em>
         <strong>for you.</strong>
       </h1>
-      <p class="hero-sub">Manage your money with confidence. LumeBank gives you the tools to track, save, and plan — secured by enterprise-grade infrastructure.</p>
+      <p class="hero-sub">A university demonstration project built on Microsoft Azure — showcasing JWT authentication, Azure Key Vault secrets management, Managed Identity, and Role-Based Access Control using the same security patterns found in production banking systems.</p>
       <div class="hero-actions">
         <a href="signup.html" class="btn-hero-primary">Open your account</a>
         <a href="signin.html" class="btn-hero-secondary"><span>→</span> Sign in</a>
       </div>
       <div class="hero-trust">
-        <div class="trust-item"><strong>256-bit</strong>SSL Encrypted</div>
-        <div class="trust-divider"></div>
         <div class="trust-item"><strong>Azure</strong>Key Vault</div>
         <div class="trust-divider"></div>
         <div class="trust-item"><strong>JWT</strong>Auth Tokens</div>
         <div class="trust-divider"></div>
-        <div class="trust-item"><strong>RBAC</strong>Access Control</div>
+        <div class="trust-item"><strong>RBAC</strong>Entra ID Roles</div>
+        <div class="trust-divider"></div>
+        <div class="trust-item"><strong>Managed</strong>Identity</div>
       </div>
     </div>
     <div class="hero-right">
@@ -548,19 +547,27 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
     <div class="marquee-item">Azure Key Vault <span>✦</span></div>
     <div class="marquee-item">JWT Authentication <span>✦</span></div>
     <div class="marquee-item">Role-Based Access Control <span>✦</span></div>
-    <div class="marquee-item">Real-Time Transactions <span>✦</span></div>
-    <div class="marquee-item">256-bit Encryption <span>✦</span></div>
+    <div class="marquee-item">Azure Entra ID <span>✦</span></div>
     <div class="marquee-item">Managed Identity <span>✦</span></div>
-    <div class="marquee-item">Instant Dashboard <span>✦</span></div>
-    <div class="marquee-item">Secure Admin Panel <span>✦</span></div>
+    <div class="marquee-item">Node.js + Express API <span>✦</span></div>
+    <div class="marquee-item">bcrypt Password Hashing <span>✦</span></div>
+    <div class="marquee-item">GitHub Actions CI/CD <span>✦</span></div>
+    <div class="marquee-item">Azure Static Web Apps <span>✦</span></div>
+    <div class="marquee-item">Azure SQL Database <span>✦</span></div>
+    <div class="marquee-item">Rate Limiting <span>✦</span></div>
+    <div class="marquee-item">Helmet Security Headers <span>✦</span></div>
     <div class="marquee-item">Azure Key Vault <span>✦</span></div>
     <div class="marquee-item">JWT Authentication <span>✦</span></div>
     <div class="marquee-item">Role-Based Access Control <span>✦</span></div>
-    <div class="marquee-item">Real-Time Transactions <span>✦</span></div>
-    <div class="marquee-item">256-bit Encryption <span>✦</span></div>
+    <div class="marquee-item">Azure Entra ID <span>✦</span></div>
     <div class="marquee-item">Managed Identity <span>✦</span></div>
-    <div class="marquee-item">Instant Dashboard <span>✦</span></div>
-    <div class="marquee-item">Secure Admin Panel <span>✦</span></div>
+    <div class="marquee-item">Node.js + Express API <span>✦</span></div>
+    <div class="marquee-item">bcrypt Password Hashing <span>✦</span></div>
+    <div class="marquee-item">GitHub Actions CI/CD <span>✦</span></div>
+    <div class="marquee-item">Azure Static Web Apps <span>✦</span></div>
+    <div class="marquee-item">Azure SQL Database <span>✦</span></div>
+    <div class="marquee-item">Rate Limiting <span>✦</span></div>
+    <div class="marquee-item">Helmet Security Headers <span>✦</span></div>
   </div>
 </div>
 
@@ -568,59 +575,59 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
 <section class="features" id="features">
   <div class="section-tag">Platform features</div>
   <h2 class="section-title">Everything you need,<br><em>nothing you don't.</em></h2>
-  <p class="section-sub">A fully functional banking platform built with modern security architecture and a clean, intuitive interface.</p>
+  <p class="section-sub">A fully functional banking platform built with Node.js, Express, and Azure SQL — deployed on a Windows Server VM and secured with Azure Key Vault, Managed Identity, and Entra ID.</p>
   <div class="features-grid">
     <div class="feature-card featured">
       <div class="feat-icon-wrap">🏦</div>
       <div class="feat-title" style="color:var(--white)">Live dashboard</div>
-      <div class="feat-desc" style="color:rgba(255,255,255,0.5)">See your balance, recent transactions, and account status at a glance — updated in real time every session.</div>
+      <div class="feat-desc" style="color:rgba(255,255,255,0.5)">See your balance, recent transactions, and account status at a glance — powered by the Node.js API and Azure SQL Database, updated in real time each session.</div>
     </div>
     <div class="feature-card">
       <div class="feat-icon-wrap">🔐</div>
       <div class="feat-title">JWT security</div>
-      <div class="feat-desc">Industry-standard JSON Web Token authentication keeps your session secure and verifiable on every request.</div>
+      <div class="feat-desc">Sessions are secured with a 64-character signing key stored in Azure Key Vault — signed and verified on every API request, with a configurable 24-hour token lifetime.</div>
     </div>
     <div class="feature-card">
       <div class="feat-icon-wrap">☁️</div>
       <div class="feat-title">Azure Key Vault</div>
-      <div class="feat-desc">Secrets, keys and credentials are stored in Microsoft Azure Key Vault — never hardcoded, always encrypted.</div>
+      <div class="feat-desc">All 8 application secrets — SQL connection string, JWT signing key, Entra ID credentials, CORS origins — are stored in Key Vault and never hardcoded in source code.</div>
     </div>
     <div class="feature-card">
       <div class="feat-icon-wrap">👥</div>
       <div class="feat-title">RBAC roles</div>
-      <div class="feat-desc">Role-based access control separates customer and admin capabilities, so the right people see the right data.</div>
+      <div class="feat-desc">Two roles — Customer and Admin — are defined in Azure Entra ID App Roles. Admins can view all users via a protected endpoint; customers see only their own data.</div>
     </div>
     <div class="feature-card">
       <div class="feat-icon-wrap">📊</div>
       <div class="feat-title">Transaction history</div>
-      <div class="feat-desc">A full ledger of credits and debits, with timestamps, descriptions and easy-to-read formatting.</div>
+      <div class="feat-desc">A full ledger of credits and debits stored in Azure SQL Database, with timestamps, descriptions, and running balance — displayed clearly on your personal dashboard.</div>
     </div>
     <div class="feature-card">
       <div class="feat-icon-wrap">🆔</div>
       <div class="feat-title">Managed identity</div>
-      <div class="feat-desc">Azure Managed Identity handles service-to-service authentication automatically — no secrets passed in code.</div>
+      <div class="feat-desc">The Windows Server VM uses a System-Assigned Managed Identity to authenticate with Azure Key Vault — no passwords or credentials are stored anywhere in code or config files.</div>
     </div>
   </div>
 </section>
 
-<!-- ─── STATS ─── -->
+<!-- ─── STATS ─── */-->
 <div class="stats-band">
   <div class="stats-inner">
     <div class="stat-item">
-      <div class="stat-num">256<em>-bit</em></div>
-      <div class="stat-label">Encryption standard</div>
+      <div class="stat-num">8<em>+</em></div>
+      <div class="stat-label">Secrets in Key Vault</div>
     </div>
     <div class="stat-item">
       <div class="stat-num"><em>&lt;</em>200<em>ms</em></div>
       <div class="stat-label">Average API response</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">3<em>+</em></div>
-      <div class="stat-label">Security layers</div>
+      <div class="stat-num">12<em>x</em></div>
+      <div class="stat-label">bcrypt salt rounds</div>
     </div>
     <div class="stat-item">
       <div class="stat-num">24<em>h</em></div>
-      <div class="stat-label">Session token lifetime</div>
+      <div class="stat-label">JWT token lifetime</div>
     </div>
   </div>
 </div>
@@ -636,13 +643,13 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
   <div class="security-right">
     <div class="section-tag">Security architecture</div>
     <h2 class="section-title">Built secure<br><em>from the ground up.</em></h2>
-    <p class="section-sub" style="margin-bottom:2rem">LumeBank's backend is designed around enterprise security patterns used in production banking systems worldwide.</p>
+    <p class="section-sub" style="margin-bottom:2rem">LumeBank's backend runs on a Windows Server VM (IIS + Node.js) and is designed around enterprise Azure security patterns — the same architecture used in production banking systems worldwide.</p>
     <div class="sec-badges">
       <div class="sec-badge">
         <div class="sec-badge-icon">🔑</div>
         <div>
           <div class="sec-badge-label">JWT token auth</div>
-          <div class="sec-badge-sub">Signed, verified on every request</div>
+          <div class="sec-badge-sub">64-char signing key from Key Vault — verified on every API request</div>
         </div>
         <span class="sec-badge-status">Active</span>
       </div>
@@ -650,7 +657,7 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
         <div class="sec-badge-icon">☁️</div>
         <div>
           <div class="sec-badge-label">Azure Key Vault</div>
-          <div class="sec-badge-sub">All secrets encrypted at rest</div>
+          <div class="sec-badge-sub">8 secrets stored — SQL, JWT key, Entra ID credentials &amp; CORS origins</div>
         </div>
         <span class="sec-badge-status">Connected</span>
       </div>
@@ -658,7 +665,7 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
         <div class="sec-badge-icon">🆔</div>
         <div>
           <div class="sec-badge-label">Managed identity</div>
-          <div class="sec-badge-sub">No credentials in source code</div>
+          <div class="sec-badge-sub">System-Assigned — VM authenticates with no stored credentials</div>
         </div>
         <span class="sec-badge-status">Enabled</span>
       </div>
@@ -666,7 +673,7 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
         <div class="sec-badge-icon">👥</div>
         <div>
           <div class="sec-badge-label">Role-based access</div>
-          <div class="sec-badge-sub">Admin &amp; customer privilege separation</div>
+          <div class="sec-badge-sub">Customer &amp; Admin roles defined in Azure Entra ID App Roles</div>
         </div>
         <span class="sec-badge-status">RBAC</span>
       </div>
@@ -680,12 +687,12 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
     <div class="guides-header">
       <div class="section-tag" style="justify-content:center">Learning resources</div>
       <h2 class="section-title" style="text-align:center">User guides &amp; <em>documentation</em></h2>
-      <p class="section-sub" style="margin:0.5rem auto 0;text-align:center">Everything you need to get started and make the most of LumeBank.</p>
+      <p class="section-sub" style="margin:0.5rem auto 0;text-align:center">Everything you need to register, sign in, and navigate the LumeBank demo platform.</p>
     </div>
     <div class="guides-grid">
 
       <!-- Desktop Guide -->
-      <div class="guide-card" style="cursor:pointer;" onclick="openVideoModal('https://cdn.jsdelivr.net/gh/style13692-beep/banking-app@main/ExternalItems/desktop-guide.mp4', 'Desktop Guide — Sign up &amp; log in on laptop')">
+      <div class="guide-card" style="cursor:pointer;" onclick="openVideoModal('ExternalItems/desktop-guide.mp4', 'Desktop Guide — Sign up &amp; log in on laptop')">
         <div class="guide-thumb">
           <span style="position:relative;z-index:1;">🖥️</span>
           <div class="play-overlay">
@@ -695,12 +702,12 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
         </div>
         <div class="guide-type">Video tutorial</div>
         <div class="guide-title">Desktop Guide</div>
-        <div class="guide-desc">Watch a full walkthrough of signing up and logging in to LumeBank on a laptop — ideal if you're setting up for the first time at your desk.</div>
+        <div class="guide-desc">A full walkthrough of creating an account and signing in to LumeBank on a laptop — covering the sign-up form, JWT authentication flow, and your personal dashboard.</div>
         <div class="guide-cta">Watch now <span class="arrow">▶</span></div>
       </div>
 
       <!-- Mobile Guide -->
-      <div class="guide-card" style="cursor:pointer;" onclick="openVideoModal('https://cdn.jsdelivr.net/gh/style13692-beep/banking-app@main/ExternalItems/mobile-guide.mp4', 'Mobile Guide — Sign up &amp; log in on phone')">
+      <div class="guide-card" style="cursor:pointer;" onclick="openVideoModal('ExternalItems/mobile-guide.mp4', 'Mobile Guide — Sign up &amp; log in on phone')">
         <div class="guide-thumb">
           <span style="position:relative;z-index:1;">📱</span>
           <div class="play-overlay">
@@ -710,19 +717,19 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
         </div>
         <div class="guide-type">Video tutorial</div>
         <div class="guide-title">Mobile Guide</div>
-        <div class="guide-desc">Prefer your phone? This video covers the full sign-up and login flow on mobile, step by step — no confusion, no guessing.</div>
+        <div class="guide-desc">The complete sign-up and login walkthrough on mobile — step by step through the Azure Static Web App frontend hosted at gentle-ground-064220600.7.azurestaticapps.net.</div>
         <div class="guide-cta">Watch now <span class="arrow">▶</span></div>
       </div>
 
       <!-- PDF Manual -->
-      <div class="guide-card" style="cursor:pointer;" onclick="openPdf('https://cdn.jsdelivr.net/gh/style13692-beep/banking-app@main/ExternalItems/user-manual.pdf')">
+      <div class="guide-card" style="cursor:pointer;" onclick="openPdf('ExternalItems/user-manual.pdf')">
         <div class="guide-thumb">
           <span style="position:relative;z-index:1;">📄</span>
           <div class="thumb-badge badge-pdf">PDF</div>
         </div>
         <div class="guide-type">Downloadable manual</div>
         <div class="guide-title">Full user manual</div>
-        <div class="guide-desc">The complete reference document — all features, settings, security overview and FAQ in a single printable PDF.</div>
+        <div class="guide-desc">The complete reference document covering all features, security architecture, account management, and FAQ — ideal for assessors and new users alike.</div>
         <div class="guide-cta">View PDF <span class="arrow">↗</span></div>
       </div>
 
@@ -739,7 +746,7 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
           <div class="nav-logo-icon" style="width:34px;height:34px;font-size:16px;">🏦</div>
           <span class="logo-text">Lume<em>Bank</em></span>
         </a>
-        <p>A university demonstration project showcasing modern banking architecture with enterprise-grade security patterns.</p>
+        <p>Cloud Computing — Azure Security for Applications. A university demonstration project by CareerDC Group Pty. Ltd, supervised by Huu Loc Nguyen. Not a real bank.</p>
       </div>
       <div class="footer-col">
         <h4>Platform</h4>
@@ -751,18 +758,18 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
         <h4>Resources</h4>
         <a href="#guides" onclick="document.getElementById('guides').scrollIntoView({behavior:'smooth'});return false;">Desktop Guide</a>
         <a href="#guides" onclick="document.getElementById('guides').scrollIntoView({behavior:'smooth'});return false;">Mobile Guide</a>
-        <a href="#" onclick="openPdf('https://cdn.jsdelivr.net/gh/style13692-beep/banking-app@main/ExternalItems/user-manual.pdf');return false;">PDF manual</a>
+        <a href="#" onclick="openPdf('ExternalItems/user-manual.pdf');return false;">PDF Manual</a>
       </div>
       <div class="footer-col">
-        <h4>Security</h4>
-        <a href="#security">Architecture</a>
-        <a href="#features">Features</a>
-        <a href="#">Privacy policy</a>
+        <h4>Azure Stack</h4>
+        <a href="#security">Key Vault</a>
+        <a href="#security">Managed Identity</a>
+        <a href="#features">Entra ID &amp; RBAC</a>
       </div>
     </div>
     <div class="footer-divider"></div>
     <div class="footer-bottom">
-      <p>© 2025 LumeBank · University demonstration project · Not a real bank</p>
+      <p>© 2026 LumeBank · Cloud Computing – Azure Security for Applications · BAOAN Australia · Not a real bank</p>
       <div class="footer-legal">
         <a href="#">Terms</a>
         <a href="#">Privacy</a>
@@ -797,62 +804,40 @@ document.querySelectorAll('a, button, [onclick]').forEach(el => {
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); });
 
-/* ─────────────────────────────────────────
-   PDF opener
-   • Uses a relative path (ExternalItems/user-manual.pdf)
-   • Falls back to Google Docs Viewer only for remote/absolute URLs
-───────────────────────────────────────── */
+/* ── PDF opener ── */
 function openPdf(path) {
-  // If it's a local relative path, open it directly so the browser renders it natively
   if (!path.startsWith('http')) {
     window.open(path, '_blank', 'noopener');
     return;
   }
-  // For absolute GitHub URLs use Google Docs Viewer so it renders instead of downloading
   const viewerUrl = 'https://docs.google.com/viewer?embedded=true&url=' + encodeURIComponent(path);
   window.open(viewerUrl, '_blank', 'noopener');
 }
 
-/* ─────────────────────────────────────────
-   Video modal
-   • src is a RELATIVE path (e.g. ExternalItems/desktop-guide.mp4)
-   • The <video> element loads it natively — no GitHub media URL involved
-   • If the video fails (network error, missing file) we show a friendly
-     fallback panel with a direct download link instead
-───────────────────────────────────────── */
-const modal          = document.getElementById('videoModal');
-const modalVideo     = document.getElementById('modalVideo');
-const modalTitle     = document.getElementById('modalTitle');
-const modalClose     = document.getElementById('modalClose');
-const modalFallback  = document.getElementById('modalFallback');
+/* ── Video modal ── */
+const modal             = document.getElementById('videoModal');
+const modalVideo        = document.getElementById('modalVideo');
+const modalTitle        = document.getElementById('modalTitle');
+const modalClose        = document.getElementById('modalClose');
+const modalFallback     = document.getElementById('modalFallback');
 const modalFallbackLink = document.getElementById('modalFallbackLink');
 
-let currentVideoSrc = '';
-
 function openVideoModal(src, title) {
-  currentVideoSrc = src;
-
-  // Reset to video state
-  modalVideo.style.display  = 'block';
+  modalVideo.style.display    = 'block';
   modalFallback.style.display = 'none';
-  modalTitle.innerHTML = title;
-  modalFallbackLink.href = src;   // relative path → direct download/open
+  modalTitle.innerHTML        = title;
+  modalFallbackLink.href      = src;
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
 
-  // Assign source and attempt playback
   modalVideo.src = src;
   modalVideo.load();
-  modalVideo.play().catch(() => {
-    // Autoplay blocked is fine — user can press play button
-  });
-
-  // If the file genuinely can't load, show the fallback
+  modalVideo.play().catch(() => {});
   modalVideo.onerror = showFallback;
 }
 
 function showFallback() {
-  modalVideo.style.display   = 'none';
+  modalVideo.style.display    = 'none';
   modalFallback.style.display = 'block';
 }
 
@@ -860,9 +845,9 @@ function closeModal() {
   modal.classList.remove('open');
   modalVideo.pause();
   modalVideo.removeAttribute('src');
-  modalVideo.load();                    // fully unload / release the file
-  modalVideo.onerror = null;
-  modalVideo.style.display   = 'block';
+  modalVideo.load();
+  modalVideo.onerror          = null;
+  modalVideo.style.display    = 'block';
   modalFallback.style.display = 'none';
   document.body.style.overflow = '';
 }
