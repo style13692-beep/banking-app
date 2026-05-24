@@ -375,25 +375,6 @@ nav.scrolled {
 .modal-close:hover { background: rgba(255,255,255,0.3); }
 .modal-title { padding: 1rem 1.5rem; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: rgba(255,255,255,0.8); border-top: 1px solid rgba(255,255,255,0.08); }
 
-.modal-fallback {
-  display: none;
-  padding: 2.5rem 2rem;
-  text-align: center;
-  color: rgba(255,255,255,0.75);
-  font-size: 0.9rem;
-  line-height: 1.9;
-}
-.modal-fallback .fallback-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-.modal-fallback p { margin-bottom: 1.25rem; color: rgba(255,255,255,0.55); }
-.modal-fallback .btn-open {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 0.7rem 1.5rem;
-  background: linear-gradient(135deg, var(--gold), var(--gold-light));
-  border-radius: 9px; color: var(--g900);
-  font-weight: 700; font-size: 0.88rem;
-  text-decoration: none;
-}
-.modal-fallback .btn-open:hover { opacity: 0.9; }
 
 /* ─── FOOTER ─── */
 footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
@@ -448,12 +429,13 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
 <div class="video-modal" id="videoModal">
   <div class="video-modal-inner">
     <button class="modal-close" id="modalClose">✕</button>
-    <video id="modalVideo" controls playsinline preload="none"></video>
-    <div class="modal-fallback" id="modalFallback">
-      <div class="fallback-icon">🎬</div>
-      <p>This video can't be streamed directly — click below to open it in a new tab.</p>
-      <a id="modalFallbackLink" href="#" target="_blank" rel="noopener" class="btn-open">▶ &nbsp;Open video in new tab</a>
-    </div>
+    <iframe id="modalVideo"
+      src=""
+      frameborder="0"
+      allowfullscreen
+      allow="autoplay; encrypted-media"
+      style="width:100%;aspect-ratio:16/9;display:block;background:#000;max-height:80vh;">
+    </iframe>
     <div class="modal-title" id="modalTitle"></div>
   </div>
 </div>
@@ -692,7 +674,7 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
     <div class="guides-grid">
 
       <!-- Desktop Guide -->
-      <div class="guide-card" style="cursor:pointer;" onclick="openVideoModal('ExternalItems/desktop-guide.mp4', 'Desktop Guide — Sign up &amp; log in on laptop')">
+      <div class="guide-card" style="cursor:pointer;" onclick="openVideoModal('https://drive.google.com/file/d/1XPdyMsewMODQKm3odHAKkiMD8_nKmMLZ/preview', 'Desktop Guide — Sign up &amp; log in on laptop')">
         <div class="guide-thumb">
           <span style="position:relative;z-index:1;">🖥️</span>
           <div class="play-overlay">
@@ -707,7 +689,7 @@ footer { background: var(--g900); padding: 4rem 3rem 2.5rem; }
       </div>
 
       <!-- Mobile Guide -->
-      <div class="guide-card" style="cursor:pointer;" onclick="openVideoModal('ExternalItems/mobile-guide.mp4', 'Mobile Guide — Sign up &amp; log in on phone')">
+      <div class="guide-card" style="cursor:pointer;" onclick="openVideoModal('https://drive.google.com/file/d/1oCuWpKuJxqWZ6JkYNZQRPrIhsLIPMKG6/preview', 'Mobile Guide — Sign up &amp; log in on phone')">
         <div class="guide-thumb">
           <span style="position:relative;z-index:1;">📱</span>
           <div class="play-overlay">
@@ -815,40 +797,21 @@ function openPdf(path) {
 }
 
 /* ── Video modal ── */
-const modal             = document.getElementById('videoModal');
-const modalVideo        = document.getElementById('modalVideo');
-const modalTitle        = document.getElementById('modalTitle');
-const modalClose        = document.getElementById('modalClose');
-const modalFallback     = document.getElementById('modalFallback');
-const modalFallbackLink = document.getElementById('modalFallbackLink');
+const modal      = document.getElementById('videoModal');
+const modalVideo = document.getElementById('modalVideo');
+const modalTitle = document.getElementById('modalTitle');
+const modalClose = document.getElementById('modalClose');
 
 function openVideoModal(src, title) {
-  modalVideo.style.display    = 'block';
-  modalFallback.style.display = 'none';
-  modalTitle.innerHTML        = title;
-  modalFallbackLink.href      = src;
+  modalTitle.innerHTML = title;
+  modalVideo.src       = src;
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
-
-  modalVideo.src = src;
-  modalVideo.load();
-  modalVideo.play().catch(() => {});
-  modalVideo.onerror = showFallback;
-}
-
-function showFallback() {
-  modalVideo.style.display    = 'none';
-  modalFallback.style.display = 'block';
 }
 
 function closeModal() {
   modal.classList.remove('open');
-  modalVideo.pause();
-  modalVideo.removeAttribute('src');
-  modalVideo.load();
-  modalVideo.onerror          = null;
-  modalVideo.style.display    = 'block';
-  modalFallback.style.display = 'none';
+  modalVideo.src = '';   // stops playback by clearing the src
   document.body.style.overflow = '';
 }
 
