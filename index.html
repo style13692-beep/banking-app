@@ -788,14 +788,18 @@ window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', windo
 
 /* ── PDF opener ── */
 function openPdf(path) {
-  if (!path.startsWith('http')) {
-    window.open(path, '_blank', 'noopener');
+  if (path.startsWith('http')) {
+    const viewerUrl = 'https://docs.google.com/viewer?embedded=true&url=' + encodeURIComponent(path);
+    const w = window.open(viewerUrl, '_blank', 'noopener');
+    if (!w) alert('Please allow popups for this site to view the PDF.');
     return;
   }
-  const viewerUrl = 'https://docs.google.com/viewer?embedded=true&url=' + encodeURIComponent(path);
-  window.open(viewerUrl, '_blank', 'noopener');
+  // For local/relative paths — try opening directly
+  const w = window.open(path, '_blank', 'noopener');
+  if (!w) {
+    alert('Popup blocked — please allow popups, or right-click and save the PDF manually.');
+  }
 }
-
 /* ── Video modal ── */
 const modal      = document.getElementById('videoModal');
 const modalVideo = document.getElementById('modalVideo');
